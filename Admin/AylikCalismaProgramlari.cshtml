@@ -1,0 +1,723 @@
+﻿@{
+     Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Aylık Çalışma Programları";
+
+    var programSec="SELECT * FROM aylikPlan";
+    var db=Database.Open("OsgbPortal");
+    var secilenProgram=db.Query(programSec);
+    var mount="";
+    var baslik="";
+    //YILLIK PLAN MADDELERİ BAŞLANGIC//       
+    var madde1="Çalışanların Özlük Dosyalarının Oluşturulması ve Kontrolü";
+    var madde2="İşçi Sağlığı ve Güvenliği Eğitimleri Düzenlenmesi";
+    var madde3="İçme Suyunun Analizi ve Raporlanması";
+    var madde4="Seyyar Yangın Söndürme Cihazlarının Periyodik Kontrolü ";
+    var madde5="Alarm ve Tahliye Denemeleri Yapılması ve Raporlanması";
+    var madde6="Yıllık Çalışma Planı Hazırlanması ve Revize Edilmesi";
+    var madde7="Yıllık Değerlendirme Raporu Hazırlanması";
+    var madde8="Kaldırma Araçlarının Periyodik Kontrollerinin Yapılması ve Raporlanması";
+    var madde9="Basınçlı Kapların Periyodik Kontrollerinin Yapılması ve Raporlanması";
+    var madde10="Elektrik Tesisatı ve Aydınlatma Devresinin Periyodik Kontrolünün Yapılması ";
+    var madde11="Ağır ve Tehlikeli İşlerde Çalışacaklara Ait İşe Giriş / Periyodik Muayenenin Yapılması";
+    var madde12="Mutfak ve Çay Ocağı Çalışanlarına Portör Muayenesi Yaptırılması";
+    var madde13="Laboratuar Tetkiklerinin Yapılması ";
+    var madde14="Ortam Toz Seviyesinin Ölçülmesi ve Raporlanması";
+    var madde15="Ortam Termal Konfor Şartlarının (Sıcaklık-Nem) Ölçülmesi ve Raporlanması";
+    var madde16="Ortam Gürültü Seviyesinin Ölçülmesi ve Raporlanması";
+    var madde17="İş Sağlığı ve Güvenliği Kurul Toplantısının Yapılması";
+    var madde18="Acil Durum Ekiplerinin Oluşturulması /Güncellenmesi";
+    var madde19="İş Sağlığı ve Güvenliği talimatlarının hazırlanması/güncellenmesi ";
+//YILLIK PLAN MADDELERİ SONU//
+
+var firmaAdi="";
+
+  if(IsPost){
+      mount=Request["ay"];
+      if (mount=="OCAK"){
+          baslik="OCAK AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[23]!=null || @ozne[35]!=null || @ozne[47]!=null || @ozne[59]!=null || @ozne[71]!=null || @ozne[83]!=null || @ozne[95]!=null || @ozne[107]!=null || @ozne[119]!=null || @ozne[131]!=null || @ozne[143]!=null || @ozne[155]!=null || @ozne[167]!=null || @ozne[179]!=null || @ozne[191]!=null || @ozne[203]!=null || @ozne[215]!=null || @ozne[227]!=null || @ozne[239]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[23]!=null){
+            <tr><td>@ozne[23]</td><td>@madde1</td></tr>}
+            if(@ozne[35]!=null){
+            <tr><td>@ozne[35]</td><td>@madde2</td></tr>}
+            if(@ozne[47]!=null){
+            <tr><td>@ozne[47]</td><td>@madde3</td></tr>}
+            if(@ozne[59]!=null){
+            <tr><td>@ozne[59]</td><td>@madde4</td></tr>}
+            if(@ozne[71]!=null){
+            <tr><td>@ozne[71]</td><td>@madde5</td></tr>}
+            if(@ozne[83]!=null){
+            <tr><td>@ozne[83]</td><td>@madde6</td></tr>}
+            if(@ozne[95]!=null){
+            <tr><td>@ozne[95]</td><td>@madde7</td></tr>}
+            if(@ozne[107]!=null){
+            <tr><td>@ozne[107]</td><td>@madde8</td></tr>}
+            if(@ozne[119]!=null){
+            <tr><td>@ozne[119]</td><td>@madde9</td></tr>}
+            if(@ozne[131]!=null){
+            <tr><td>@ozne[131]</td><td>@madde10</td></tr>}
+            if(@ozne[143]!=null){
+            <tr><td>@ozne[143]</td><td>@madde11</td></tr>}
+            if(@ozne[155]!=null){
+            <tr><td>@ozne[155]</td><td>@madde12</td></tr>}
+            if(@ozne[167]!=null){
+            <tr><td>@ozne[167]</td><td>@madde13</td></tr>}
+            if(@ozne[179]!=null){
+            <tr><td>@ozne[179]</td><td>@madde14</td></tr>}
+            if(@ozne[191]!=null){
+            <tr><td>@ozne[191]</td><td>@madde15</td></tr>}
+            if(@ozne[203]!=null){
+            <tr><td>@ozne[203]</td><td>@madde16</td></tr>}
+            if(@ozne[215]!=null){
+            <tr><td>@ozne[215]</td><td>@madde17</td></tr>}
+            if(@ozne[227]!=null){
+            <tr><td>@ozne[227]</td><td>@madde18</td></tr>}
+            if(@ozne[239]!=null){
+            <tr><td>@ozne[239]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+              
+      if (mount=="ŞUBAT"){
+          baslik="ŞUBAT AYI YAPILACAKLAR LİSTESİ";
+      }
+      if (mount=="MART"){
+          baslik="MART AYI YAPILACAKLAR LİSTESİ";
+      }
+
+
+      //şubat ayı başlangıç
+      if (mount=="ŞUBAT"){
+          baslik="ŞUBAT AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[24]!=null || @ozne[36]!=null || @ozne[48]!=null || @ozne[60]!=null || @ozne[72]!=null || @ozne[84]!=null || @ozne[96]!=null || @ozne[108]!=null || @ozne[120]!=null || @ozne[132]!=null || @ozne[144]!=null || @ozne[156]!=null || @ozne[168]!=null || @ozne[180]!=null || @ozne[192]!=null || @ozne[204]!=null || @ozne[216]!=null || @ozne[228]!=null || @ozne[240]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[24]!=null){
+            <tr><td>@ozne[24]</td><td>@madde1</td></tr>}
+            if(@ozne[36]!=null){
+            <tr><td>@ozne[36]</td><td>@madde2</td></tr>}
+            if(@ozne[48]!=null){
+            <tr><td>@ozne[48]</td><td>@madde3</td></tr>}
+            if(@ozne[60]!=null){
+            <tr><td>@ozne[60]</td><td>@madde4</td></tr>}
+            if(@ozne[72]!=null){
+            <tr><td>@ozne[72]</td><td>@madde5</td></tr>}
+            if(@ozne[84]!=null){
+            <tr><td>@ozne[84]</td><td>@madde6</td></tr>}
+            if(@ozne[96]!=null){
+            <tr><td>@ozne[96]</td><td>@madde7</td></tr>}
+            if(@ozne[108]!=null){
+            <tr><td>@ozne[108]</td><td>@madde8</td></tr>}
+            if(@ozne[120]!=null){
+            <tr><td>@ozne[120]</td><td>@madde9</td></tr>}
+            if(@ozne[132]!=null){
+            <tr><td>@ozne[132]</td><td>@madde10</td></tr>}
+            if(@ozne[144]!=null){
+            <tr><td>@ozne[144]</td><td>@madde11</td></tr>}
+            if(@ozne[156]!=null){
+            <tr><td>@ozne[156]</td><td>@madde12</td></tr>}
+            if(@ozne[168]!=null){
+            <tr><td>@ozne[168]</td><td>@madde13</td></tr>}
+            if(@ozne[180]!=null){
+            <tr><td>@ozne[180]</td><td>@madde14</td></tr>}
+            if(@ozne[192]!=null){
+            <tr><td>@ozne[192]</td><td>@madde15</td></tr>}
+            if(@ozne[204]!=null){
+            <tr><td>@ozne[204]</td><td>@madde16</td></tr>}
+            if(@ozne[216]!=null){
+            <tr><td>@ozne[216]</td><td>@madde17</td></tr>}
+            if(@ozne[228]!=null){
+            <tr><td>@ozne[228]</td><td>@madde18</td></tr>}
+            if(@ozne[240]!=null){
+            <tr><td>@ozne[240]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+      //şubat ayı son
+
+
+      //mart ayı başlangıç
+      if (mount=="MART"){
+          baslik="MART AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[25]!=null || @ozne[37]!=null || @ozne[49]!=null || @ozne[61]!=null || @ozne[73]!=null || @ozne[85]!=null || @ozne[97]!=null || @ozne[109]!=null || @ozne[121]!=null || @ozne[133]!=null || @ozne[145]!=null || @ozne[157]!=null || @ozne[169]!=null || @ozne[181]!=null || @ozne[193]!=null || @ozne[205]!=null || @ozne[217]!=null || @ozne[229]!=null || @ozne[241]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[25]!=null){
+            <tr><td>@ozne[25]</td><td>@madde1</td></tr>}
+            if(@ozne[37]!=null){
+            <tr><td>@ozne[37]</td><td>@madde2</td></tr>}
+            if(@ozne[49]!=null){
+            <tr><td>@ozne[49]</td><td>@madde3</td></tr>}
+            if(@ozne[61]!=null){
+            <tr><td>@ozne[61]</td><td>@madde4</td></tr>}
+            if(@ozne[73]!=null){
+            <tr><td>@ozne[73]</td><td>@madde5</td></tr>}
+            if(@ozne[85]!=null){
+            <tr><td>@ozne[85]</td><td>@madde6</td></tr>}
+            if(@ozne[97]!=null){
+            <tr><td>@ozne[97]</td><td>@madde7</td></tr>}
+            if(@ozne[109]!=null){
+            <tr><td>@ozne[109]</td><td>@madde8</td></tr>}
+            if(@ozne[121]!=null){
+            <tr><td>@ozne[121]</td><td>@madde9</td></tr>}
+            if(@ozne[133]!=null){
+            <tr><td>@ozne[133]</td><td>@madde10</td></tr>}
+            if(@ozne[145]!=null){
+            <tr><td>@ozne[145]</td><td>@madde11</td></tr>}
+            if(@ozne[157]!=null){
+            <tr><td>@ozne[157]</td><td>@madde12</td></tr>}
+            if(@ozne[169]!=null){
+            <tr><td>@ozne[169]</td><td>@madde13</td></tr>}
+            if(@ozne[181]!=null){
+            <tr><td>@ozne[181]</td><td>@madde14</td></tr>}
+            if(@ozne[193]!=null){
+            <tr><td>@ozne[193]</td><td>@madde15</td></tr>}
+            if(@ozne[205]!=null){
+            <tr><td>@ozne[205]</td><td>@madde16</td></tr>}
+            if(@ozne[217]!=null){
+            <tr><td>@ozne[217]</td><td>@madde17</td></tr>}
+            if(@ozne[229]!=null){
+            <tr><td>@ozne[229]</td><td>@madde18</td></tr>}
+            if(@ozne[241]!=null){
+            <tr><td>@ozne[241]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+      //MART ayı son
+
+      //nisan ayı başlangıç
+      if (mount=="NİSAN"){
+          baslik="NİSAN AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[26]!=null || @ozne[38]!=null || @ozne[50]!=null || @ozne[62]!=null || @ozne[74]!=null || @ozne[86]!=null || @ozne[98]!=null || @ozne[110]!=null || @ozne[122]!=null || @ozne[134]!=null || @ozne[146]!=null || @ozne[158]!=null || @ozne[170]!=null || @ozne[182]!=null || @ozne[194]!=null || @ozne[206]!=null || @ozne[218]!=null || @ozne[230]!=null || @ozne[242]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[26]!=null){
+            <tr><td>@ozne[26]</td><td>@madde1</td></tr>}
+            if(@ozne[38]!=null){
+            <tr><td>@ozne[38]</td><td>@madde2</td></tr>}
+            if(@ozne[50]!=null){
+            <tr><td>@ozne[50]</td><td>@madde3</td></tr>}
+            if(@ozne[62]!=null){
+            <tr><td>@ozne[62]</td><td>@madde4</td></tr>}
+            if(@ozne[74]!=null){
+            <tr><td>@ozne[74]</td><td>@madde5</td></tr>}
+            if(@ozne[86]!=null){
+            <tr><td>@ozne[86]</td><td>@madde6</td></tr>}
+            if(@ozne[98]!=null){
+            <tr><td>@ozne[98]</td><td>@madde7</td></tr>}
+            if(@ozne[110]!=null){
+            <tr><td>@ozne[110]</td><td>@madde8</td></tr>}
+            if(@ozne[122]!=null){
+            <tr><td>@ozne[122]</td><td>@madde9</td></tr>}
+            if(@ozne[134]!=null){
+            <tr><td>@ozne[134]</td><td>@madde10</td></tr>}
+            if(@ozne[146]!=null){
+            <tr><td>@ozne[146]</td><td>@madde11</td></tr>}
+            if(@ozne[158]!=null){
+            <tr><td>@ozne[158]</td><td>@madde12</td></tr>}
+            if(@ozne[170]!=null){
+            <tr><td>@ozne[170]</td><td>@madde13</td></tr>}
+            if(@ozne[182]!=null){
+            <tr><td>@ozne[182]</td><td>@madde14</td></tr>}
+            if(@ozne[194]!=null){
+            <tr><td>@ozne[194]</td><td>@madde15</td></tr>}
+            if(@ozne[206]!=null){
+            <tr><td>@ozne[206]</td><td>@madde16</td></tr>}
+            if(@ozne[218]!=null){
+            <tr><td>@ozne[218]</td><td>@madde17</td></tr>}
+            if(@ozne[230]!=null){
+            <tr><td>@ozne[230]</td><td>@madde18</td></tr>}
+            if(@ozne[242]!=null){
+            <tr><td>@ozne[242]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+      //nisan ayı son
+
+
+      //MAYIS ayı başlangıç
+      if (mount=="MAYIS"){
+          baslik="MAYIS AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[27]!=null || @ozne[39]!=null || @ozne[51]!=null || @ozne[63]!=null || @ozne[75]!=null || @ozne[87]!=null || @ozne[99]!=null || @ozne[111]!=null || @ozne[123]!=null || @ozne[135]!=null || @ozne[147]!=null || @ozne[159]!=null || @ozne[171]!=null || @ozne[183]!=null || @ozne[195]!=null || @ozne[207]!=null || @ozne[219]!=null || @ozne[231]!=null || @ozne[243]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[27]!=null){
+            <tr><td>@ozne[27]</td><td>@madde1</td></tr>}
+            if(@ozne[39]!=null){
+            <tr><td>@ozne[39]</td><td>@madde2</td></tr>}
+            if(@ozne[51]!=null){
+            <tr><td>@ozne[51]</td><td>@madde3</td></tr>}
+            if(@ozne[63]!=null){
+            <tr><td>@ozne[63]</td><td>@madde4</td></tr>}
+            if(@ozne[75]!=null){
+            <tr><td>@ozne[75]</td><td>@madde5</td></tr>}
+            if(@ozne[87]!=null){
+            <tr><td>@ozne[87]</td><td>@madde6</td></tr>}
+            if(@ozne[99]!=null){
+            <tr><td>@ozne[99]</td><td>@madde7</td></tr>}
+            if(@ozne[111]!=null){
+            <tr><td>@ozne[111]</td><td>@madde8</td></tr>}
+            if(@ozne[123]!=null){
+            <tr><td>@ozne[123]</td><td>@madde9</td></tr>}
+            if(@ozne[135]!=null){
+            <tr><td>@ozne[135]</td><td>@madde10</td></tr>}
+            if(@ozne[147]!=null){
+            <tr><td>@ozne[147]</td><td>@madde11</td></tr>}
+            if(@ozne[159]!=null){
+            <tr><td>@ozne[159]</td><td>@madde12</td></tr>}
+            if(@ozne[171]!=null){
+            <tr><td>@ozne[171]</td><td>@madde13</td></tr>}
+            if(@ozne[183]!=null){
+            <tr><td>@ozne[183]</td><td>@madde14</td></tr>}
+            if(@ozne[195]!=null){
+            <tr><td>@ozne[195]</td><td>@madde15</td></tr>}
+            if(@ozne[207]!=null){
+            <tr><td>@ozne[207]</td><td>@madde16</td></tr>}
+            if(@ozne[219]!=null){
+            <tr><td>@ozne[219]</td><td>@madde17</td></tr>}
+            if(@ozne[231]!=null){
+            <tr><td>@ozne[231]</td><td>@madde18</td></tr>}
+            if(@ozne[243]!=null){
+            <tr><td>@ozne[243]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+      //MAYIS ayı son
+
+
+
+            //haziran ayı başlangıç
+      if (mount=="HAZİRAN"){
+          baslik="HAZİRAN AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[28]!=null || @ozne[40]!=null || @ozne[52]!=null || @ozne[64]!=null || @ozne[76]!=null || @ozne[88]!=null || @ozne[100]!=null || @ozne[112]!=null || @ozne[124]!=null || @ozne[136]!=null || @ozne[148]!=null || @ozne[160]!=null || @ozne[172]!=null || @ozne[184]!=null || @ozne[196]!=null || @ozne[208]!=null || @ozne[220]!=null || @ozne[232]!=null || @ozne[244]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[28]!=null){
+            <tr><td>@ozne[28]</td><td>@madde1</td></tr>}
+            if(@ozne[40]!=null){
+            <tr><td>@ozne[40]</td><td>@madde2</td></tr>}
+            if(@ozne[52]!=null){
+            <tr><td>@ozne[52]</td><td>@madde3</td></tr>}
+            if(@ozne[64]!=null){
+            <tr><td>@ozne[64]</td><td>@madde4</td></tr>}
+            if(@ozne[76]!=null){
+            <tr><td>@ozne[76]</td><td>@madde5</td></tr>}
+            if(@ozne[88]!=null){
+            <tr><td>@ozne[88]</td><td>@madde6</td></tr>}
+            if(@ozne[100]!=null){
+            <tr><td>@ozne[100]</td><td>@madde7</td></tr>}
+            if(@ozne[112]!=null){
+            <tr><td>@ozne[112]</td><td>@madde8</td></tr>}
+            if(@ozne[124]!=null){
+            <tr><td>@ozne[124]</td><td>@madde9</td></tr>}
+            if(@ozne[136]!=null){
+            <tr><td>@ozne[136]</td><td>@madde10</td></tr>}
+            if(@ozne[148]!=null){
+            <tr><td>@ozne[148]</td><td>@madde11</td></tr>}
+            if(@ozne[160]!=null){
+            <tr><td>@ozne[160]</td><td>@madde12</td></tr>}
+            if(@ozne[172]!=null){
+            <tr><td>@ozne[172]</td><td>@madde13</td></tr>}
+            if(@ozne[184]!=null){
+            <tr><td>@ozne[184]</td><td>@madde14</td></tr>}
+            if(@ozne[196]!=null){
+            <tr><td>@ozne[196]</td><td>@madde15</td></tr>}
+            if(@ozne[208]!=null){
+            <tr><td>@ozne[208]</td><td>@madde16</td></tr>}
+            if(@ozne[220]!=null){
+            <tr><td>@ozne[220]</td><td>@madde17</td></tr>}
+            if(@ozne[232]!=null){
+            <tr><td>@ozne[232]</td><td>@madde18</td></tr>}
+            if(@ozne[244]!=null){
+            <tr><td>@ozne[244]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+      //haziran ayı son
+       //TEMMUZ ayı başlangıç
+      if (mount=="TEMMUZ"){
+          baslik="TEMMUZ AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[29]!=null || @ozne[41]!=null || @ozne[53]!=null || @ozne[65]!=null || @ozne[77]!=null || @ozne[89]!=null || @ozne[101]!=null || @ozne[113]!=null || @ozne[125]!=null || @ozne[137]!=null || @ozne[149]!=null || @ozne[161]!=null || @ozne[173]!=null || @ozne[185]!=null || @ozne[197]!=null || @ozne[209]!=null || @ozne[221]!=null || @ozne[233]!=null || @ozne[245]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[29]!=null){
+            <tr><td>@ozne[29]</td><td>@madde1</td></tr>}
+            if(@ozne[41]!=null){
+            <tr><td>@ozne[41]</td><td>@madde2</td></tr>}
+            if(@ozne[53]!=null){
+            <tr><td>@ozne[53]</td><td>@madde3</td></tr>}
+            if(@ozne[65]!=null){
+            <tr><td>@ozne[65]</td><td>@madde4</td></tr>}
+            if(@ozne[77]!=null){
+            <tr><td>@ozne[77]</td><td>@madde5</td></tr>}
+            if(@ozne[89]!=null){
+            <tr><td>@ozne[89]</td><td>@madde6</td></tr>}
+            if(@ozne[101]!=null){
+            <tr><td>@ozne[101]</td><td>@madde7</td></tr>}
+            if(@ozne[113]!=null){
+            <tr><td>@ozne[113]</td><td>@madde8</td></tr>}
+            if(@ozne[125]!=null){
+            <tr><td>@ozne[125]</td><td>@madde9</td></tr>}
+            if(@ozne[137]!=null){
+            <tr><td>@ozne[137]</td><td>@madde10</td></tr>}
+            if(@ozne[149]!=null){
+            <tr><td>@ozne[149]</td><td>@madde11</td></tr>}
+            if(@ozne[161]!=null){
+            <tr><td>@ozne[161]</td><td>@madde12</td></tr>}
+            if(@ozne[173]!=null){
+            <tr><td>@ozne[173]</td><td>@madde13</td></tr>}
+            if(@ozne[185]!=null){
+            <tr><td>@ozne[185]</td><td>@madde14</td></tr>}
+            if(@ozne[197]!=null){
+            <tr><td>@ozne[197]</td><td>@madde15</td></tr>}
+            if(@ozne[209]!=null){
+            <tr><td>@ozne[209]</td><td>@madde16</td></tr>}
+            if(@ozne[221]!=null){
+            <tr><td>@ozne[221]</td><td>@madde17</td></tr>}
+            if(@ozne[233]!=null){
+            <tr><td>@ozne[233]</td><td>@madde18</td></tr>}
+            if(@ozne[245]!=null){
+            <tr><td>@ozne[245]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+      //TEMMUZ ayı son
+      //AĞUSTOS ayı başlangıç
+      if (mount=="AĞUSTOS"){
+          baslik="AĞUSTOS AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[30]!=null || @ozne[42]!=null || @ozne[54]!=null || @ozne[66]!=null || @ozne[78]!=null || @ozne[90]!=null || @ozne[102]!=null || @ozne[114]!=null || @ozne[126]!=null || @ozne[138]!=null || @ozne[150]!=null || @ozne[162]!=null || @ozne[174]!=null || @ozne[186]!=null || @ozne[198]!=null || @ozne[210]!=null || @ozne[222]!=null || @ozne[234]!=null || @ozne[246]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[30]!=null){
+            <tr><td>@ozne[30]</td><td>@madde1</td></tr>}
+            if(@ozne[42]!=null){
+            <tr><td>@ozne[42]</td><td>@madde2</td></tr>}
+            if(@ozne[54]!=null){
+            <tr><td>@ozne[54]</td><td>@madde3</td></tr>}
+            if(@ozne[66]!=null){
+            <tr><td>@ozne[66]</td><td>@madde4</td></tr>}
+            if(@ozne[78]!=null){
+            <tr><td>@ozne[78]</td><td>@madde5</td></tr>}
+            if(@ozne[90]!=null){
+            <tr><td>@ozne[90]</td><td>@madde6</td></tr>}
+            if(@ozne[102]!=null){
+            <tr><td>@ozne[102]</td><td>@madde7</td></tr>}
+            if(@ozne[114]!=null){
+            <tr><td>@ozne[114]</td><td>@madde8</td></tr>}
+            if(@ozne[126]!=null){
+            <tr><td>@ozne[126]</td><td>@madde9</td></tr>}
+            if(@ozne[138]!=null){
+            <tr><td>@ozne[138]</td><td>@madde10</td></tr>}
+            if(@ozne[150]!=null){
+            <tr><td>@ozne[150]</td><td>@madde11</td></tr>}
+            if(@ozne[162]!=null){
+            <tr><td>@ozne[162]</td><td>@madde12</td></tr>}
+            if(@ozne[174]!=null){
+            <tr><td>@ozne[174]</td><td>@madde13</td></tr>}
+            if(@ozne[186]!=null){
+            <tr><td>@ozne[186]</td><td>@madde14</td></tr>}
+            if(@ozne[198]!=null){
+            <tr><td>@ozne[198]</td><td>@madde15</td></tr>}
+            if(@ozne[210]!=null){
+            <tr><td>@ozne[210]</td><td>@madde16</td></tr>}
+            if(@ozne[222]!=null){
+            <tr><td>@ozne[222]</td><td>@madde17</td></tr>}
+            if(@ozne[234]!=null){
+            <tr><td>@ozne[234]</td><td>@madde18</td></tr>}
+            if(@ozne[246]!=null){
+            <tr><td>@ozne[246]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+      //AĞUSTOS ayı son
+      
+ //EYLÜL ayı başlangıç
+      if (mount=="EYLÜL"){
+          baslik="EYLÜL AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[31]!=null || @ozne[43]!=null || @ozne[55]!=null || @ozne[67]!=null || @ozne[79]!=null || @ozne[91]!=null || @ozne[103]!=null || @ozne[115]!=null || @ozne[127]!=null || @ozne[139]!=null || @ozne[151]!=null || @ozne[163]!=null || @ozne[175]!=null || @ozne[187]!=null || @ozne[199]!=null || @ozne[211]!=null || @ozne[223]!=null || @ozne[235]!=null || @ozne[247]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[31]!=null){
+            <tr><td>@ozne[31]</td><td>@madde1</td></tr>}
+            if(@ozne[43]!=null){
+            <tr><td>@ozne[43]</td><td>@madde2</td></tr>}
+            if(@ozne[55]!=null){
+            <tr><td>@ozne[55]</td><td>@madde3</td></tr>}
+            if(@ozne[67]!=null){
+            <tr><td>@ozne[67]</td><td>@madde4</td></tr>}
+            if(@ozne[79]!=null){
+            <tr><td>@ozne[79]</td><td>@madde5</td></tr>}
+            if(@ozne[91]!=null){
+            <tr><td>@ozne[91]</td><td>@madde6</td></tr>}
+            if(@ozne[103]!=null){
+            <tr><td>@ozne[103]</td><td>@madde7</td></tr>}
+            if(@ozne[115]!=null){
+            <tr><td>@ozne[115]</td><td>@madde8</td></tr>}
+            if(@ozne[127]!=null){
+            <tr><td>@ozne[127]</td><td>@madde9</td></tr>}
+            if(@ozne[139]!=null){
+            <tr><td>@ozne[139]</td><td>@madde10</td></tr>}
+            if(@ozne[151]!=null){
+            <tr><td>@ozne[151]</td><td>@madde11</td></tr>}
+            if(@ozne[163]!=null){
+            <tr><td>@ozne[163]</td><td>@madde12</td></tr>}
+            if(@ozne[175]!=null){
+            <tr><td>@ozne[175]</td><td>@madde13</td></tr>}
+            if(@ozne[187]!=null){
+            <tr><td>@ozne[187]</td><td>@madde14</td></tr>}
+            if(@ozne[199]!=null){
+            <tr><td>@ozne[199]</td><td>@madde15</td></tr>}
+            if(@ozne[211]!=null){
+            <tr><td>@ozne[211]</td><td>@madde16</td></tr>}
+            if(@ozne[223]!=null){
+            <tr><td>@ozne[223]</td><td>@madde17</td></tr>}
+            if(@ozne[235]!=null){
+            <tr><td>@ozne[235]</td><td>@madde18</td></tr>}
+            if(@ozne[247]!=null){
+            <tr><td>@ozne[247]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+      //EYLÜL ayı son
+ //EKİM ayı başlangıç
+      if (mount=="EKİM"){
+          baslik="EKİM AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[32]!=null || @ozne[44]!=null || @ozne[56]!=null || @ozne[68]!=null || @ozne[80]!=null || @ozne[92]!=null || @ozne[104]!=null || @ozne[116]!=null || @ozne[128]!=null || @ozne[140]!=null || @ozne[152]!=null || @ozne[164]!=null || @ozne[176]!=null || @ozne[188]!=null || @ozne[200]!=null || @ozne[212]!=null || @ozne[224]!=null || @ozne[236]!=null || @ozne[248]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[32]!=null){
+            <tr><td>@ozne[32]</td><td>@madde1</td></tr>}
+            if(@ozne[44]!=null){
+            <tr><td>@ozne[44]</td><td>@madde2</td></tr>}
+            if(@ozne[56]!=null){
+            <tr><td>@ozne[56]</td><td>@madde3</td></tr>}
+            if(@ozne[68]!=null){
+            <tr><td>@ozne[68]</td><td>@madde4</td></tr>}
+            if(@ozne[80]!=null){
+            <tr><td>@ozne[80]</td><td>@madde5</td></tr>}
+            if(@ozne[92]!=null){
+            <tr><td>@ozne[92]</td><td>@madde6</td></tr>}
+            if(@ozne[104]!=null){
+            <tr><td>@ozne[104]</td><td>@madde7</td></tr>}
+            if(@ozne[116]!=null){
+            <tr><td>@ozne[116]</td><td>@madde8</td></tr>}
+            if(@ozne[128]!=null){
+            <tr><td>@ozne[128]</td><td>@madde9</td></tr>}
+            if(@ozne[140]!=null){
+            <tr><td>@ozne[140]</td><td>@madde10</td></tr>}
+            if(@ozne[152]!=null){
+            <tr><td>@ozne[152]</td><td>@madde11</td></tr>}
+            if(@ozne[164]!=null){
+            <tr><td>@ozne[164]</td><td>@madde12</td></tr>}
+            if(@ozne[176]!=null){
+            <tr><td>@ozne[176]</td><td>@madde13</td></tr>}
+            if(@ozne[188]!=null){
+            <tr><td>@ozne[188]</td><td>@madde14</td></tr>}
+            if(@ozne[200]!=null){
+            <tr><td>@ozne[200]</td><td>@madde15</td></tr>}
+            if(@ozne[212]!=null){
+            <tr><td>@ozne[212]</td><td>@madde16</td></tr>}
+            if(@ozne[224]!=null){
+            <tr><td>@ozne[224]</td><td>@madde17</td></tr>}
+            if(@ozne[236]!=null){
+            <tr><td>@ozne[236]</td><td>@madde18</td></tr>}
+            if(@ozne[248]!=null){
+            <tr><td>@ozne[248]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+      //EKİM ayı son
+ //KASIM ayı başlangıç
+      if (mount=="KASIM"){
+          baslik="KASIM AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[33]!=null || @ozne[45]!=null || @ozne[57]!=null || @ozne[69]!=null || @ozne[81]!=null || @ozne[93]!=null || @ozne[105]!=null || @ozne[117]!=null || @ozne[129]!=null || @ozne[141]!=null || @ozne[153]!=null || @ozne[165]!=null || @ozne[177]!=null || @ozne[189]!=null || @ozne[201]!=null || @ozne[213]!=null || @ozne[225]!=null || @ozne[237]!=null || @ozne[249]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[33]!=null){
+            <tr><td>@ozne[33]</td><td>@madde1</td></tr>}
+            if(@ozne[45]!=null){
+            <tr><td>@ozne[45]</td><td>@madde2</td></tr>}
+            if(@ozne[57]!=null){
+            <tr><td>@ozne[57]</td><td>@madde3</td></tr>}
+            if(@ozne[69]!=null){
+            <tr><td>@ozne[69]</td><td>@madde4</td></tr>}
+            if(@ozne[81]!=null){
+            <tr><td>@ozne[81]</td><td>@madde5</td></tr>}
+            if(@ozne[93]!=null){
+            <tr><td>@ozne[93]</td><td>@madde6</td></tr>}
+            if(@ozne[105]!=null){
+            <tr><td>@ozne[105]</td><td>@madde7</td></tr>}
+            if(@ozne[117]!=null){
+            <tr><td>@ozne[117]</td><td>@madde8</td></tr>}
+            if(@ozne[129]!=null){
+            <tr><td>@ozne[129]</td><td>@madde9</td></tr>}
+            if(@ozne[141]!=null){
+            <tr><td>@ozne[141]</td><td>@madde10</td></tr>}
+            if(@ozne[153]!=null){
+            <tr><td>@ozne[153]</td><td>@madde11</td></tr>}
+            if(@ozne[165]!=null){
+            <tr><td>@ozne[165]</td><td>@madde12</td></tr>}
+            if(@ozne[177]!=null){
+            <tr><td>@ozne[177]</td><td>@madde13</td></tr>}
+            if(@ozne[189]!=null){
+            <tr><td>@ozne[189]</td><td>@madde14</td></tr>}
+            if(@ozne[201]!=null){
+            <tr><td>@ozne[201]</td><td>@madde15</td></tr>}
+            if(@ozne[213]!=null){
+            <tr><td>@ozne[213]</td><td>@madde16</td></tr>}
+            if(@ozne[225]!=null){
+            <tr><td>@ozne[225]</td><td>@madde17</td></tr>}
+            if(@ozne[237]!=null){
+            <tr><td>@ozne[237]</td><td>@madde18</td></tr>}
+            if(@ozne[249]!=null){
+            <tr><td>@ozne[249]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+      //KASIM ayı son
+//ARALIK ayı başlangıç
+      if (mount=="ARALIK"){
+          baslik="ARALIK AYI YAPILACAKLAR LİSTESİ";
+          <table>
+              <thead><H1>@baslik</H1><br/></thead>
+              
+          @foreach(var ozne in secilenProgram){
+              if(@ozne[34]!=null || @ozne[46]!=null || @ozne[58]!=null || @ozne[70]!=null || @ozne[82]!=null || @ozne[94]!=null || @ozne[106]!=null || @ozne[118]!=null || @ozne[130]!=null || @ozne[142]!=null || @ozne[154]!=null || @ozne[166]!=null || @ozne[178]!=null || @ozne[190]!=null || @ozne[202]!=null || @ozne[214]!=null || @ozne[226]!=null || @ozne[238]!=null || @ozne[250]!=null){
+            <tr id="firmaAdi"><td colspan="2"><h5 style="text-transform: uppercase;">@ozne[251]</h5></td><td>@ozne[2]</td><td>@ozne[3]</td></tr>
+<tr id="tarih"><td>Tarih</td><td>Faaliyet</td><td>İş Güvenliği Uzmanı</td><td>İşyeri Hekimi</td></tr>
+            if(@ozne[34]!=null){
+            <tr><td>@ozne[34]</td><td>@madde1</td></tr>}
+            if(@ozne[46]!=null){
+            <tr><td>@ozne[46]</td><td>@madde2</td></tr>}
+            if(@ozne[58]!=null){
+            <tr><td>@ozne[58]</td><td>@madde3</td></tr>}
+            if(@ozne[70]!=null){
+            <tr><td>@ozne[70]</td><td>@madde4</td></tr>}
+            if(@ozne[82]!=null){
+            <tr><td>@ozne[82]</td><td>@madde5</td></tr>}
+            if(@ozne[94]!=null){
+            <tr><td>@ozne[94]</td><td>@madde6</td></tr>}
+            if(@ozne[106]!=null){
+            <tr><td>@ozne[106]</td><td>@madde7</td></tr>}
+            if(@ozne[118]!=null){
+            <tr><td>@ozne[118]</td><td>@madde8</td></tr>}
+            if(@ozne[130]!=null){
+            <tr><td>@ozne[130]</td><td>@madde9</td></tr>}
+            if(@ozne[142]!=null){
+            <tr><td>@ozne[142]</td><td>@madde10</td></tr>}
+            if(@ozne[154]!=null){
+            <tr><td>@ozne[154]</td><td>@madde11</td></tr>}
+            if(@ozne[166]!=null){
+            <tr><td>@ozne[166]</td><td>@madde12</td></tr>}
+            if(@ozne[178]!=null){
+            <tr><td>@ozne[178]</td><td>@madde13</td></tr>}
+            if(@ozne[190]!=null){
+            <tr><td>@ozne[190]</td><td>@madde14</td></tr>}
+            if(@ozne[202]!=null){
+            <tr><td>@ozne[202]</td><td>@madde15</td></tr>}
+            if(@ozne[214]!=null){
+            <tr><td>@ozne[214]</td><td>@madde16</td></tr>}
+            if(@ozne[226]!=null){
+            <tr><td>@ozne[226]</td><td>@madde17</td></tr>}
+            if(@ozne[238]!=null){
+            <tr><td>@ozne[238]</td><td>@madde18</td></tr>}
+            if(@ozne[250]!=null){
+            <tr><td>@ozne[250]</td><td>@madde19</td></tr>}
+}
+            
+          }</table>
+      }
+      //ARALIK ayı son
+  }
+    
+    
+}
+<style>
+    
+    table tr td{
+        border: 1px solid #669571;
+    }
+    #firmaAdi{
+        background-color: #669571;
+        color: #fff;
+    }
+    #tarih{
+        background-color: #e2d9d9;
+    }
+</style>
+
+<form name="aylikPlanListesi" action="" method="post">
+<select name="ay">
+        <option>Ay Seçiniz</option>
+        <option>OCAK</option>
+        <option>ŞUBAT</option>
+        <option>MART</option>
+        <option>NİSAN</option>
+        <option>MAYIS</option>
+        <option>HAZİRAN</option>
+        <option>TEMMUZ</option>
+        <option>AĞUSTOS</option>
+        <option>EYLÜL</option>
+        <option>EKİM</option>
+        <option>KASIM</option>
+        <option>ARALIK</option>
+    </select>
+    <input type="submit" value="Göster" />
+</form>

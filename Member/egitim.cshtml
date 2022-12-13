@@ -1,0 +1,40 @@
+﻿@{
+    var id=Request["id"];
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var db=Database.Open("OsgbPortal");
+    var firmam=db.QuerySingle(sec,id);
+    var firmaAdi=firmam.name;
+    var calisanSec="SELECT id,isim, soyisim,tckimlik,telefon,adres,gorev,cinsiyet,medenihal, cocuksayisi,puan FROM calisanlar WHERE firmaID=@0 AND isegirisegitim = @1 AND sertifika=@2";
+    var calisanlar=db.Query(calisanSec,id,"Var","Yok");
+    var grid=new WebGrid(calisanlar,ajaxUpdateContainerId: "grid");
+}
+
+<h1><a href="~/Member/edit?id=@id">@firmaAdi</a></h1>
+<br/>
+<h2>Eğitim Alan Personel Listesi</h2><br/>
+<div class="gridContainer">
+    <div class="grid">
+       
+
+        @grid.GetHtml(    
+            tableStyle : "table",
+            alternatingRowStyle : "alternate",
+            headerStyle : "header",
+            columns: grid.Columns(
+                grid.Column(format: @<a href="~/Member/sertifika?id=@item.id" target="_blank">Sertifika Bas</a>),
+                grid.Column(format: @<a href="~/Member/calisandetay?id=@item.id">Çalışan Bilgileri</a>),
+                grid.Column("isim","İsim"),
+                grid.Column("soyisim","Soyisim"),
+                grid.Column("tckimlik","T.C. Kimlik No"),
+                grid.Column("telefon","Telefon"),
+                grid.Column("adres","Adres"),
+                grid.Column("gorev","Görev"),
+                grid.Column("cinsiyet","Cinsiyet"),
+                grid.Column("medenihal","Medeni Hal"),
+                grid.Column("cocuksayisi","Çocuk Sayısı"),
+                grid.Column("puan","Eğitimi Geçti mi?")
+           )
+        )        
+        
+        </div>  
+        </div>

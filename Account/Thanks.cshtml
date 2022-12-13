@@ -1,0 +1,25 @@
+﻿@{
+    // Düzen sayfasını ve sayfa başlığını ayarla
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Kaydolduğunuz için teşekkürler";
+}
+
+@if (!WebSecurity.IsAuthenticated) {
+    <hgroup class="title">
+        <h1>@Page.Title.</h1><br/>
+        <h2>Ancak işlem henüz tamamlanmadı!</h2>
+    </hgroup>
+
+    <p>
+       Hesabınız incelendikten sonra aktifleştirilecek ve görevlendirildiğiniz firmalar sisteminize tanımlanacaktır.
+    </p>
+} else {
+    <hgroup class="title">
+        <h1>@Page.Title.</h1>
+        <h2>Hazırsınız.</h2>
+    </hgroup>
+
+    <p>
+        Sistem üzerinde kaydınız oluşturulmuş, görevli olduğunuz firmalar hesabınıza tanımlanmıştır. Devam edebilirsiniz.
+    </p>
+}

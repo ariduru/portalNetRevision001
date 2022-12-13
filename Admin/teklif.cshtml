@@ -1,0 +1,264 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Teklif";
+
+
+}
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+<style type="text/css">
+<!--
+.table_div {
+	width: 620px;
+}
+#table6 {
+	border: none;
+}
+#table6 th {
+	background-color: #FFF;
+}
+table {
+	width: 610px;
+	padding: 15px;
+	margin-bottom: 5px;
+	border: 1px solid #60b681;
+}
+td {
+	padding: 3px;
+	padding-left: 10px;
+}
+th {
+	padding: 2px;
+	font-weight: normal;
+	background-color: #F8F8F8;
+	width: 150px;
+}
+#table1 th {
+	padding-left: 8px;
+	text-align:left;
+}
+input{
+        border-color: #60b681;
+    }
+-->
+</style>
+
+  <div class="govde_sag">
+    <h1>İş Sağlığı ve Güvenliği Hizmetleri Teklif Hazırlama</h1>
+    <div class="clear"></div>
+    <p>&nbsp;</p>
+      <p><strong>TEKLİF İSTEYEN KURUM:</strong></p>
+        <select name="firma" ><option></option></select>
+   <p>&nbsp;</p>
+    <div class="table_div">
+  <form name="form1" method="post" action="teklifOlustur">
+    <p><strong>FİRMA BİLGİLERİ:</strong></p>
+    <table border="0" cellspacing="2" cellpadding="0" id="table1">
+
+      <tr>
+        <th>Firma Adı</th>
+        <td><input name="firma_adi" type="text" id="firma_adi" size="65" maxlength="65" /></td>
+      </tr>
+
+      <tr>
+        <th>Faaliyet Konusu</th>
+        <td><input name="faaliyet" type="text" id="faaliyet" size="65" maxlength="65" /></td>
+      </tr>
+
+      <tr>
+        <th>Fabrika/Şantiye Sayısı</th>
+        <td><input name="fabrika_sayi" type="text" id="fabrika_sayi" size="5" maxlength="5" /></td>
+      </tr>
+
+      <tr>
+        <th>Firma Nace Kodu</th>
+        <td><input name="nacekodu" type="text" id="nacekodu" size="15" maxlength="15" /></td>
+      </tr>
+
+      <tr>
+        <th>Çalışan Sayısı</th>
+        <td><input name="calisan_sayisi" type="text" id="calisan_sayisi" size="5" maxlength="5" /></td>
+      </tr>
+
+      <tr>
+        <th>Yetkili Adı ve G&ouml;revi</th>
+        <td><input name="ad_soyad" type="text" id="ad_soyad" size="55" maxlength="50" /></td>
+      </tr>
+
+      <tr>
+        <th>Firma Adresi</th>
+        <td><input name="adres" type="text" id="adres" size="65" maxlength="120" /></td>
+      </tr>
+
+      <tr>
+        <th>Telefon - Faks</th>
+        <td><input name="tel_faks" type="text" id="tel_faks" size="41" maxlength="50" /></td>
+      </tr>
+
+      <tr>
+        <th>E-posta</th>
+        <td><input name="email" type="text" id="email" size="41" maxlength="50" /></td>
+      </tr>
+
+      <tr>
+        <th>Web Sitesi</th>
+        <td><input name="web_sitesi" type="text" id="web_sitesi" size="41" maxlength="50" /></td>
+      </tr>
+
+    </table>
+
+    <p><strong>İSTENEN HİZMETLERİ İŞARETLEYİNİZ:</strong></p>
+
+    <table border="0" cellpadding="0" cellspacing="0" id="table2">
+
+      <tr>
+        <th width="140">OSGB HİZMETLERİ</th>
+        <td>
+<input name="kod1" type="checkbox" id="kod1" value="(Hizmet-1) A/B/C Sınıfı İş G&uuml;venliği Uzmanı G&ouml;revlendirme" /> (Hizmet-1) A/B/C Sınıfı İş G&uuml;venliği Uzmanı G&ouml;revlendirme<br>
+<input name="kod2" type="checkbox" id="kod2" value="(Hizmet-2) İş Yeri Hekimi G&ouml;revlendirme" /> (Hizmet-2) İş Yeri Hekimi G&ouml;revlendirme<br>
+<input name="kod3" type="checkbox" id="kod3" value="(Hizmet-3) Yardımcı Sağlık Personeli G&ouml;revlendirme" /> (Hizmet-3) Yardımcı Sağlık Personeli G&ouml;revlendirme<br>
+<input name="kod4" type="checkbox" id="kod4" value="(Hizmet-4) Diğer" /> (Hizmet-4) Diğer<br>
+</td>
+      </tr>
+    </table>
+
+
+    <table border="0" cellspacing="0" cellpadding="0" id="table3">
+
+      <tr>
+        <th width="140">SAĞLIK<br>HİZMETLERİ</th>
+        <td>
+<input name="kod5" type="checkbox" id="kod5" value="(Hizmet-5) Port&ouml;r Muayenesi" /> (Hizmet-5) Port&ouml;r Muayenesi<br>
+<input name="kod6" type="checkbox" id="kod6" value="(Hizmet-6) Gaita K&uuml;lt&uuml;r&uuml;" /> (Hizmet-6) Gaita K&uuml;lt&uuml;r&uuml;<br>
+<input name="kod7" type="checkbox" id="kod7" value="(Hizmet-7) Boğaz K&uuml;lt&uuml;r&uuml;" /> (Hizmet-7) Boğaz K&uuml;lt&uuml;r&uuml;<br>
+<input name="kod8" type="checkbox" id="kod8" value="(Hizmet-8) Burun K&uuml;lt&uuml;r&uuml;" /> (Hizmet-8) Burun K&uuml;lt&uuml;r&uuml;<br>
+<input name="kod9" type="checkbox" id="kod9" value="(Hizmet-9) Gaita Parazit" /> (Hizmet-9) Gaita Parazit<br>
+<input name="kod10" type="checkbox" id="kod10" value="(Hizmet-10) Akciğer Grafisi (Makro)" /> (Hizmet-10) Akciğer Grafisi (Makro)<br>
+<input name="kod11" type="checkbox" id="kod11" value="(Hizmet-11) Odyometri" /> (Hizmet-11) Odyometri<br>
+<input name="kod12" type="checkbox" id="kod12" value="(Hizmet-12) Diğer" /> (Hizmet-12) Diğer<br>
+</td>
+      </tr>
+    </table>
+
+
+    <table border="0" cellspacing="0" cellpadding="0" id="table4">
+
+      <tr>
+        <th width="140">LABORATUVAR<br>HİZMETLERİ</th>
+        <td>
+<input name="kod13" type="checkbox" id="kod13" value="(Hizmet-13) Tam Kan (18 Parametre)" /> (Hizmet-13) Tam Kan (18 Parametre)<br>
+<input name="kod14" type="checkbox" id="kod14" value="(Hizmet-14) Tam İdrar Tahlili" /> (Hizmet-14) Tam İdrar Tahlili<br>
+<input name="kod15" type="checkbox" id="kod15" value="(Hizmet-15) İdrarda Kurşun" /> (Hizmet-15) İdrarda Kurşun<br>
+<input name="kod16" type="checkbox" id="kod16" value="(Hizmet-16) Kanda Kurşun" /> (Hizmet-16) Kanda Kurşun<br>
+<input name="kod17" type="checkbox" id="kod17" value="(Hizmet-17) Kan Grubu" /> (Hizmet-17) Kan Grubu<br>
+<input name="kod18" type="checkbox" id="kod18" value="(Hizmet-18) Karaciğer Fonk. Testleri (Sgot Sgpt Alp)" /> (Hizmet-18) Karaciğer Fonk. Testleri (Sgot Sgpt Alp)<br>
+<input name="kod19" type="checkbox" id="kod19" value="(Hizmet-19) HBs Ag Testi" /> (Hizmet-19) HBs Ag Testi<br>
+<input name="kod20" type="checkbox" id="kod20" value="(Hizmet-20) Anti Hbs" /> (Hizmet-20) Anti Hbs<br>
+<input name="kod21" type="checkbox" id="kod21" value="(Hizmet-21) HCV" /> (Hizmet-21) HCV<br>
+<input name="kod22" type="checkbox" id="kod22" value="(Hizmet-22) HIV Testi" /> (Hizmet-22) HIV Testi<br>
+<input name="kod23" type="checkbox" id="kod23" value="(Hizmet-23) T. Kolesterol" /> (Hizmet-23) T. Kolesterol<br>
+<input name="kod24" type="checkbox" id="kod24" value="(Hizmet-24) Trigliserid" /> (Hizmet-24) Trigliserid<br>
+<input name="kod25" type="checkbox" id="kod25" value="(Hizmet-25) Sedimantasyon" /> (Hizmet-25) Sedimantasyon<br>
+<input name="kod26" type="checkbox" id="kod26" value="(Hizmet-26) &Uuml;re" /> (Hizmet-26) &Uuml;re<br>
+<input name="kod27" type="checkbox" id="kod27" value="(Hizmet-27) Kreatin" /> (Hizmet-27) Kreatin<br>
+<input name="kod28" type="checkbox" id="kod28" value="(Hizmet-28) İdrarda Fenol" /> (Hizmet-28) İdrarda Fenol<br>
+<input name="kod29" type="checkbox" id="kod29" value="(Hizmet-29) EKG" /> (Hizmet-29) EKG<br>
+<input name="kod30" type="checkbox" id="kod30" value="(Hizmet-30) Hipp&uuml;rik Asit" /> (Hizmet-30) Hipp&uuml;rik Asit <br>
+<input name="kod31" type="checkbox" id="kod31" value="(Hizmet-31) Bakır" /> (Hizmet-31) Bakır<br>
+<input name="kod32" type="checkbox" id="kod32" value="(Hizmet-32) &Ccedil;inko" /> (Hizmet-32) &Ccedil;inko<br>
+<input name="kod33" type="checkbox" id="kod33" value="(Hizmet-33) Solunum Fonksiyon Testi" /> (Hizmet-33) Solunum Fonksiyon Testi<br>
+<input name="kod34" type="checkbox" id="kod34" value="(Hizmet-34) Bilgisayarlı G&ouml;z Muayenesi" /> (Hizmet-34) Bilgisayarlı G&ouml;z Muayenesi<br>
+<input name="kod35" type="checkbox" id="kod35" value="(Hizmet-35) Ağır ve Tehikeli İş Raporu" /> (Hizmet-35) Ağır ve Tehikeli İş Raporu<br>
+<input name="kod36" type="checkbox" id="kod36" value="(Hizmet-36) Tetanoz Aşısı" /> (Hizmet-36) Tetanoz Aşısı<br>
+<input name="kod37" type="checkbox" id="kod37" value="(Hizmet-37) Hepatit Aşısı" /> (Hizmet-37) Hepatit Aşısı<br>
+<input name="kod38" type="checkbox" id="kod38" value="(Hizmet-38) Grip Aşısı" /> (Hizmet-38) Grip Aşısı<br>
+<input name="kod39" type="checkbox" id="kod39" value="(Hizmet-39) Diğer" /> (Hizmet-39) Diğer<br>
+</td>
+      </tr>
+
+    </table>
+
+
+    <table border="0" cellspacing="0" cellpadding="0" id="table4">
+
+      <tr>
+        <th width="140">M&Uuml;HENDİSLİK<br>KONTROL<br>HİZMETLERİ</th>
+        <td>
+<input name="kod40" type="checkbox" id="kod40" value="(Hizmet-40) Elektrik Topraklama &Ouml;l&ccedil;&uuml;m&uuml;" /> (Hizmet-40) Elektrik Topraklama &Ouml;l&ccedil;&uuml;m&uuml; <br>
+<input name="kod41" type="checkbox" id="kod41" value="(Hizmet-41) Pratoner Tesisatının Kontrol &Ouml;l&ccedil;&uuml;m&uuml;" /> (Hizmet-41) Pratoner Tesisatının Kontrol &Ouml;l&ccedil;&uuml;m&uuml;<br>
+<input name="kod42" type="checkbox" id="kod42" value="(Hizmet-42) Kompres&ouml;rlerin Basın&ccedil; Kontrolleri" /> (Hizmet-42) Kompres&ouml;rlerin Basın&ccedil; Kontrolleri <br>
+<input name="kod43" type="checkbox" id="kod43" value="(Hizmet-43) Kazan ve Hidrofor Basın&ccedil; Kontrolleri" /> (Hizmet-43) Kazan ve Hidrofor Basın&ccedil; Kontrolleri <br>
+<input name="kod44" type="checkbox" id="kod44" value="(Hizmet-44) Forklift Periyodik Testi" /> (Hizmet-44) Forklift Periyodik Testi<br>
+<input name="kod45" type="checkbox" id="kod45" value="(Hizmet-45) Lift Periyodik Testi" /> (Hizmet-45) Lift Periyodik Testi<br>
+<input name="kod46" type="checkbox" id="kod46" value="(Hizmet-46) Caraskal Periyodik Testi" /> (Hizmet-46) Caraskal Periyodik Testi<br>
+<input name="kod47" type="checkbox" id="kod47" value="(Hizmet-47) Vin&ccedil; Periyodik Testi" /> (Hizmet-47) Vin&ccedil; Periyodik Testi <br>
+<input name="kod48" type="checkbox" id="kod48" value="(Hizmet-48) Mobil Vin&ccedil; Periyodik Testi" /> (Hizmet-48) Mobil Vin&ccedil; Periyodik Testi<br>
+<input name="kod49" type="checkbox" id="kod49" value="(Hizmet-49) Diğer" /> (Hizmet-49) Diğer<br>
+</td>
+      </tr>
+
+    </table>
+    <table border="0" cellspacing="0" cellpadding="0" id="table4">
+
+      <tr>
+        <th width="140">ORTAM<br>ÖLÇÜMLERİ</th>
+        <td>
+<input name="kod50" type="checkbox" id="kod50" value="(Hizmet-50) İşyeri Ortamından Gaz Numunesi Alma ve Analizi" /> (Hizmet-50) İşyeri Ortamından Gaz Numunesi Alma ve Analizi <br>
+<input name="kod51" type="checkbox" id="kod51" value="(Hizmet-51) İşyeri Ortamından Toz Numunesi Alma ve Analizi" /> (Hizmet-51) İşyeri Ortamından Toz Numunesi Alma ve Analizi <br>
+<input name="kod52" type="checkbox" id="kod52" value="(Hizmet-52) Nokta G&uuml;r&uuml;lt&uuml; &Ouml;l&ccedil;&uuml;m&uuml;" /> (Hizmet-52) Nokta G&uuml;r&uuml;lt&uuml; &Ouml;l&ccedil;&uuml;m&uuml; <br>
+<input name="kod53" type="checkbox" id="kod53" value="(Hizmet-53) İşyeri G&uuml;r&uuml;lt&uuml; Haritası &Ccedil;ıkarılması" /> (Hizmet-53) İşyeri G&uuml;r&uuml;lt&uuml; Haritası &Ccedil;ıkarılması<br>
+<input name="kod54" type="checkbox" id="kod54" value="(Hizmet-54) Hava Akım Hızının &Ouml;l&ccedil;&uuml;m&uuml;" /> (Hizmet-54) Hava Akım Hızının &Ouml;l&ccedil;&uuml;m&uuml; <br>
+<input name="kod55" type="checkbox" id="kod55" value="(Hizmet-55) Aydınlatma &Ouml;l&ccedil;&uuml;m&uuml;" /> (Hizmet-55) Aydınlatma &Ouml;l&ccedil;&uuml;m&uuml;<br>
+<input name="kod56" type="checkbox" id="kod56" value="(Hizmet-56) İşyeri Nem &Ouml;l&ccedil;&uuml;m&uuml;" /> (Hizmet-56) İşyeri Nem &Ouml;l&ccedil;&uuml;m&uuml; <br>
+<input name="kod57" type="checkbox" id="kod57" value="(Hizmet-57) İşyeri Isı &Ouml;l&ccedil;&uuml;m&uuml;" /> (Hizmet-57) İşyeri Isı &Ouml;l&ccedil;&uuml;m&uuml; <br>
+<input name="kod58" type="checkbox" id="kod58" value="(Hizmet-58) Diğer" /> (Hizmet-58) Diğer<br>
+</td>
+      </tr>
+
+    </table>
+
+
+    <table border="0" cellspacing="0" cellpadding="0" id="table4">
+
+      <tr>
+        <th width="140">EĞİTİM<br>HİZMETLERİ</th>
+        <td>
+<input name="kod59" type="checkbox" id="kod59" value="(Hizmet-59) İş Sağlığı ve G&uuml;venliği Eğitimleri" /> (Hizmet-59) İş Sağlığı ve G&uuml;venliği Eğitimleri<br>
+<input name="kod60" type="checkbox" id="kod60" value="(Hizmet-60) Yangın Eğitimi" /> (Hizmet-60) Yangın Eğitimi<br>
+<input name="kod61" type="checkbox" id="kod61" value="(Hizmet-61) İlk Yardım Eğitimi" /> (Hizmet-61) İlk Yardım Eğitimi<br>
+<input name="kod62" type="checkbox" id="kod62" value="(Hizmet-62) Diğer" /> (Hizmet-62) Diğer<br>
+</td>
+      </tr>
+
+    </table>
+
+
+    <table border="0" cellspacing="0" cellpadding="0" id="table5">
+      <tr>
+        <th width="140" valign="TOP" style="color:#666">Eklemek istedikleriniz</th>
+        <td><textarea name="notunuz" cols="45" rows="2" wrap="VIRTUAL" id="notunuz"></textarea></td>
+      </tr>
+    </table>
+
+
+    <table border="0" cellspacing="0" cellpadding="0" id="table6">
+      <tr>
+        <th><input name="kime_mail" type="hidden" id="kime_mail" value="info@yasamyildizi.com.tr" /></th>
+        <td><input name="yolla" type="SUBMIT" id="yolla" value="Gönder" />
+          &nbsp;
+          <input name="sifirla" type="RESET" id="sifirla" value="Temizle" /></td>
+      </tr>
+      <tr>
+        <th>&nbsp;</th>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+
+  </form>
+</div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+  </div>
+</div>
+<div class="clear"></div>

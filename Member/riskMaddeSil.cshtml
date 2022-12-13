@@ -1,0 +1,21 @@
+﻿@{
+     var id=Request["id"];
+     var firmaID=Request["firmaID"];
+     var maddeSil="DELETE FROM riskAnalizi WHERE RiskID=@0";
+     var db=Database.Open("OsgbPortal");
+     db.Execute(maddeSil,id);           
+     Response.Redirect("~/Member/riskanalizi?id="+@firmaID);
+
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        
+    </body>
+</html>

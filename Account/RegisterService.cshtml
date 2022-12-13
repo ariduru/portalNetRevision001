@@ -1,0 +1,68 @@
+﻿@* Paketleme kullanıyorsanız bu bölümü kaldırın *@
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Kaydol";
+
+    string email = "";
+    string loginData = "";
+    string providerDisplayName = "";
+
+    var returnUrl = Request.QueryString["ReturnUrl"];
+    if (returnUrl.IsEmpty()) {
+        // Bazı dışarıdan oturum açma sağlayıcıları her zaman bir dönüş URL değeri gerektirir
+        returnUrl = Href("~/");
+    }
+
+    // Kurulum doğrulama
+    Validation.RequireField("email", "Kullanıcı adı alanı zorunludur.");
+
+    if (IsPost && Request.Form["newAccount"].AsBool()) {
+        // Yeni hesap kayıt formunu işle
+        AntiForgery.Validate();
+        email = Request.Form["email"];
+        loginData = Request.Form["loginData"];
+
+        string provider = "";
+        string providerUserId = "";
+       
+
+      
+       
+
+          
+    }
+}
+<hgroup class="title">
+    <h1>@Page.Title.</h1>
+    <h2>@providerDisplayName hesabınızı ilişkilendirin.</h2>
+</hgroup>
+
+<form method="post">
+    @AntiForgery.GetHtml()
+    <input type="hidden" name="loginData" value="@loginData" />
+    @* En az bir doğrulama hatası varsa, kullanıcıyı uyar *@
+    @Html.ValidationSummary(excludeFieldErrors: true)
+
+    <fieldset>
+        <legend>Kayıt Formu</legend>
+        <p>
+            Kimliğiniz şu öğe ile başarıyla doğrulandı: <strong>@providerDisplayName</strong>. Lütfen
+            aşağıdaki site için bir kullanıcı adı girin ve oturum açma işlemini tamamlamak için Onayla düğmesini
+            tıklatın.
+        </p>
+        <ol>
+            <li class="email">
+                <label for="email" @if (!ModelState.IsValidField("email")) {<text>class="error-label"</text>}>E-posta adresi</label>
+                <input type="text" id="email" name="email" value="@email" @Validation.For("email") />
+                @* E-posta doğrulama hatalarını sayfaya yaz *@
+                @Html.ValidationMessage("email")
+            </li>
+        </ol>
+        <button type="submit" name="newAccount" value="true">Kaydol</button>
+    </fieldset>
+</form>

@@ -1,0 +1,18 @@
+﻿@{
+    var db = Database.Open("OsgbPortal"); 
+    var books = db.Query("SELECT id, name, sgkNo, vergiDairesi, vergiNo FROM firmalar ORDER BY id DESC");
+	var outp ="";
+	
+}
+
+
+@foreach (var firm in books){
+if (outp != "") { outp = outp + ",";}
+outp = outp + "{"+ '\"'+"Firma Adı:" + @firm.name + ",";
+outp = outp + "VergiDairesi:" + @firm.vergiDairesi + ",";
+outp = outp + "vergiNo:" + @firm.vergiNo + ",";
+outp = outp + "SgkNo:" + @firm.sgkNo + "}";
+}
+@if(outp != ""){
+    outp="{records:[" + outp +"]}";
+      }

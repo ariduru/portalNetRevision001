@@ -1,0 +1,122 @@
+﻿@{
+    var id=Request["id"];
+    var calisanSec="SELECT * FROM calisanlar WHERE id=@0";
+    var db=Database.Open("OsgbPortal");
+    var calisan=db.QuerySingle(calisanSec,id);
+
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var firmam=db.QuerySingle(sec,calisan.firmaID);
+
+    var isim="";
+    var soyisim="";
+    var tckimlik="";
+    var telefon="";
+    var adres="";
+    var gorev="";
+    var cinsiyet="";
+    var medenihal="";
+    var cocuksayisi="";
+    var aktif="";
+
+    if (IsPost){
+        isim=Request["isim"];
+        soyisim=Request["soyisim"];
+        tckimlik=Request["tckimlik"];
+        telefon=Request["telefon"];
+        adres=Request["adres"];
+        gorev=Request["gorev"];
+        cinsiyet=Request["cinsiyet"];
+        medenihal=Request["medenihal"];
+        cocuksayisi=Request["cocuksayisi"];
+        aktif=Request["aktif"];
+
+       var UPDATE="UPDATE calisanlar Set isim=@0,soyisim=@1,tckimlik=@2,telefon=@3,adres=@4,gorev=@5,cinsiyet=@6,medenihal=@7,cocuksayisi=@8,aktif=@9 WHERE id=@10";
+       db.Execute(UPDATE,isim,soyisim,tckimlik,telefon,adres,gorev,cinsiyet,medenihal,cocuksayisi,aktif,id);
+       }
+    }
+
+
+<h1>@calisan.isim @calisan.soyisim</h1>
+<a href="~/Member/calisanlar?id=@firmam.id"><input type="submit" value="Çalışanlar"/></a>
+<table border="1">
+ <tr>
+    <th scope="col">T.C. Kimlik No : </th>
+      <th scope="col">@calisan.tckimlik</th>
+  </tr>
+     <tr>
+    <th scope="col">Telefon : </th>
+      <th scope="col">@calisan.telefon</th>
+  </tr>
+     <tr>
+    <th scope="col">Adres : </th>
+      <th scope="col">@calisan.adres</th>
+  </tr>
+     <tr>
+    <th scope="col">Görevi : </th>
+      <th scope="col">@calisan.gorev</th>
+  </tr>
+     <tr>
+    <th scope="col">Cinsiyet : </th>
+      <th scope="col">@calisan.cinsiyet</th>
+  </tr>
+     <tr>
+    <th scope="col">Medeni Hali : </th>
+      <th scope="col">@calisan.medenihal</th>
+  </tr>
+     <tr>
+    <th scope="col">Çocuk Sayısı : </th>
+      <th scope="col">@calisan.cocuksayisi</th>
+  </tr>
+    <tr>
+    <th scope="col">Aktif Olarak Çalışıyormu : </th>
+      <th scope="col">@calisan.aktif</th>
+  </tr>
+ 
+</table>
+</br></br></br>
+<h2>Bilgi Düzenleme Bölümü</h2>
+<form action="" method="post">
+    <table border="1">
+        <tr>
+   <th scope="col">İsim : </th>
+      <th scope="col"><input type="text" name="isim" value="@calisan.isim"></th>
+  </tr>
+        <th scope="col">Soyisim : </th>
+      <th scope="col"><input type="text" name="soyisim" value="@calisan.soyisim" ></th>
+  </tr>
+ <tr>
+    <th scope="col">T.C. Kimlik No : </th>
+      <th scope="col"><input type="text" name="tckimlik" value="@calisan.tckimlik" ></th>
+  </tr>
+     <tr>
+    <th scope="col">Telefon : </th>
+      <th scope="col"><input type="text" name="telefon" value="@calisan.telefon" ></th>
+  </tr>
+     <tr>
+    <th scope="col">Adres : </th>
+      <th scope="col"><input type="text" name="adres" value="@calisan.adres" ></th>
+  </tr>
+     <tr>
+    <th scope="col">Görevi : </th>
+      <th scope="col"><input type="text" name="gorev" value="@calisan.gorev" ></th>
+  </tr>
+     <tr>
+    <th scope="col">Cinsiyet : </th>
+      <th scope="col"><input type="text" name="cinsiyet" value="@calisan.cinsiyet" ></th>
+  </tr>
+     <tr>
+    <th scope="col">Medeni Hali : </th>
+      <th scope="col"><input type="text" name="medenihal" value="@calisan.medenihal" ></th>
+  </tr>
+     <tr>
+    <th scope="col">Çocuk Sayısı : </th>
+      <th scope="col"><input type="text" name="cocuksayisi" value="@calisan.cocuksayisi" ></th>
+  </tr>
+<tr>
+    <th scope="col">Aktif Çalışanmı : </th>
+      <th scope="col"><select name="aktif"><option>Evet</option><option>Hayır</option></select></th>
+  </tr>
+ 
+</table>
+    <input type="submit" value="Bilgileri Güncelle"/>
+</form>

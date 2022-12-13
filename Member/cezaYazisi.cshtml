@@ -1,0 +1,97 @@
+﻿@{
+    
+ Layout="~/_sertifikaLayout.cshtml";
+    var id=Request["id"];
+    var db=Database.Open("OsgbPortal");
+    var firma=db.QuerySingle("SELECT * FROM firmalar WHERE id=@0",id);
+    var cezasayi=db.QueryValue("SELECT MAX(cezasayi) FROM yazismalar WHERE firmaID=@0",id);
+   var yazi="";
+    
+  
+   var cezasayisi=(cezasayi+1);
+  
+    var iletisim="";
+    var uyari="";
+    var ceza="";
+
+    var konu="";
+    var kime="";
+    var message="";
+    var tarih="";
+   
+    yazi="C-"+cezasayisi;
+    
+    if (IsPost){
+        konu=Request["konu"];
+        tarih=Request["tarih"];
+     var yaziekle=db.Execute("INSERT INTO yazismalar (firmaID,yazi,cezasayi,konu,tarih) VALUES (@0,@1,@2,@3,@4)",id,yazi,cezasayisi,konu,tarih);
+   }
+}
+<form action="" method="post" name="Form1" style="background-color: #fff;">
+<table width="100%">
+  <tr align="center" valign="middle">
+    <th height="80"><h2>@firma.name</h2></th>
+  </tr>
+</table>
+
+<table width="100%">
+    <tr align="right">
+   <th width="15%" height="31" valign="middle"></th>
+    <th width="55%" height="31" valign="middle"></th>
+    <th width="15%" height="31" valign="middle">Tarih: </th>
+    <th width="10%" valign="middle"><input type="date" name="tarih" style="margin-right: 5%; " /></th>
+  </tr>
+  <tr align="left">
+    <th width="15%" height="31" valign="middle">Sayı</th>
+    <th width="55%" valign="middle">: <input type="text" name="name" value="@yazi" disabled /></th>
+      <th width="20%" align="left" scope="col">İletişim Yazısı </th><th width="10%" align="left"> <input type="checkbox" name="iletisim" disabled /></th>
+      </tr>
+  <tr align="left">
+    <td height="31" valign="middle">Konu</td>
+    <td valign="middle">: <input type="text" name="konu" /></td>
+       <th align="left" scope="col">Uyarı Yazısı </th><th align="left"><input type="checkbox" name="uyari"  disabled/></th>
+  </tr>
+  <tr align="left">
+    <td height="31" valign="middle">Kime</td>
+    <td valign="middle">: <input type="text" name="kime" /></td>
+       <th align="left" scope="col">Ceza Yazısı </th><th align="left"><input type="checkbox" name="ceza" checked="checked" disabled /></th>
+  </tr>
+  
+</table>
+<br/><br/>
+<table width="100%">
+  <tr>
+    <th colspan="3" align="left" scope="col">Sayın Yetkili,</th>
+  </tr>
+  <tr>
+    <td height="160" colspan="3" align="left" valign="top"><textarea name="icerik" wrap="soft" cols="70" rows="10" style="width: 96%"></textarea></td>
+  </tr>
+  <tr>
+    <td height="40" colspan="3" align="left" valign="top">Bilgilerinize Sunarım</td>
+  </tr>
+  <tr>
+    <td width="33%">Hazırlayan - Teslim Eden<br/><input type="text" name="teslimeden" /></td>
+    <td width="33%">Onaylayan<br/><input type="text" name="onaylayan" /></td>
+    <td width="34%">Teslim Alan<br/><input type="text" name="teslimalan" /></td>
+  </tr>
+ <tr>
+    <td></td><td></td><td></td>
+  </tr><tr>
+    <td></td><td></td><td></td>
+  </tr>
+    <tr>
+    <td>Ekler: <br/><input type="text" name="ekler" /></td><td></td><td></td>
+  </tr>
+</table>
+    <table width="100%">
+        
+    </table>
+    <script type="text/javascript">
+        function print_page() {
+            var ButtonControl = document.getElementById("btnprint");
+            ButtonControl.style.visibility = "hidden";
+            window.print();
+        }
+    </script>
+    <input type="submit" id="btnprint" value="Oluştur" onclick="print_page()" />
+</form>

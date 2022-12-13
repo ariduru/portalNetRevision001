@@ -1,0 +1,151 @@
+﻿@{
+      
+    var id=Request["id"];
+    var calisanSec="SELECT * FROM calisanlar WHERE id=@0";
+    
+    var db=Database.Open("OsgbPortal");
+    var calisan=db.QuerySingle(calisanSec,id);
+      
+    var taahhut="";
+    var sgk="";
+    var sozlesme="";
+    var gorevtanimi="";
+    var agirisraporu="";
+    var meslekiegitim="";
+    var talimat="";
+    var kkd="";
+    var isegirisegitim="";
+    var gorevlendirme="";
+    var sabikakaydi="";
+    var ikametgah="";
+    var nufus="";
+    var sertifika="";
+    var istifa="";
+    var egitimpuani="";
+    var isegirisegitimtarihi="";
+       if (IsPost){
+           
+        taahhut=Request["taahhut"];
+        sgk=Request["sgkGiris"];
+        sozlesme=Request["sozlesme"];
+        gorevtanimi=Request["gorev"];
+        agirisraporu=Request["agirisraporu"];
+        meslekiegitim=Request["meslekiegitim"];
+        talimat=Request["talimat"];
+        kkd=Request["kkd"];
+        isegirisegitim=Request["isegirisegitim"];
+        gorevlendirme=Request["gorevlendirme"];
+        sabikakaydi=Request["sabikakaydi"];
+        ikametgah=Request["ikametgah"];
+        nufus=Request["nufus"];
+        sertifika=Request["sertifika"];
+        istifa=Request["istifa"];
+        egitimpuani=Request["puan"];
+        isegirisegitimtarihi=Request["isegirisegitimtarihi"];
+    //,sozlesme@2,gorevtanimi=@3,agirisraporu=@4,meslekiegitim=@5,talimat=@6,kkd=@7,isegirisegitim=@8,gorevlendirme=@9,sabikakaydi=@10,ikametgah=@11,nufus=@12,sertifika=@13,istifa=@14 
+    var UPDATE="UPDATE calisanlar Set taahhut=@0,sgk=@1,sozlesme=@2,gorevtanimi=@3,agirisraporu=@4,meslekiegitim=@5,talimat=@6,kkd=@7,isegirisegitim=@8,gorevlendirme=@9,sabikakaydi=@10,ikametgah=@11,nufus=@12,sertifika=@13,istifa=@14,puan=@15,isegirisegitimtarihi=@16 WHERE id=@17";
+    db.Execute(UPDATE,taahhut,sgk,sozlesme,gorevtanimi,agirisraporu,meslekiegitim,talimat,kkd,isegirisegitim,gorevlendirme,sabikakaydi,ikametgah,nufus,sertifika,istifa,egitimpuani,isegirisegitimtarihi,id);
+    //db.Execute(UPDATE,taahhut,sgk,sozlesme,gorevtanimi,agirisraporu,meslekiegitim,talimat,kkd,isegirisegitim,gorevlendirme,sabikakaydi,ikametgah,nufus,sertifika,istifa,id);
+   
+    }
+    
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("fieldset").hide();
+        $(".duzenle").click(function () {
+            $("fieldset").show(1000);
+        });
+   });
+
+</script>
+<h1>@calisan.isim @calisan.soyisim</h1>
+<table>
+  <tr>
+    <td scope="col">İşçi Taahhütü</td><td>@calisan.taahhut</td>
+  </tr><tr>
+    <td scope="col">SGK İşe Giriş Bildirisi</td><td>@calisan.sgk</td>
+  </tr><tr>
+    <td scope="col">İşçinin Sözleşmesi</td><td>@calisan.sozlesme</td>
+  </tr><tr>
+    <td scope="col">Görev Tanımı</td><td>@calisan.gorevtanimi</td>
+  </tr><tr>
+    <td scope="col">Ağır İşler Raporu</td><td>@calisan.agirisraporu</td>
+  </tr><tr>
+    <td scope="col">Mesleki Eğitim Belgesi</td><td>@calisan.meslekiegitim</td>
+  </tr><tr>
+    <td scope="col">İSG Talimatı</td><td>@calisan.talimat</td>
+  </tr><tr>
+    <td scope="col">KKD Teslim Tutanağı</td><td>@calisan.kkd</td>
+  </tr><tr>
+    <td scope="col">İşe Giriş Eğitimi</td><td>@calisan.isegirisegitim</td>
+  </tr><tr>
+    <td scope="col">İşe Giriş Eğitim Tarihi</td><td>@calisan.isegirisegitimtarihi</td>
+  </tr><tr>
+    <td scope="col">Görevlendirme Yazısı (Gerekli_İse)</td><td>@calisan.gorevlendirme</td>
+  </tr><tr>
+    <td scope="col">Sabıka Kaydı</td><td>@calisan.sabikakaydi</td>
+  </tr><tr>
+    <td scope="col">İkametgah Belgesi</td><td>@calisan.ikametgah</td>
+  </tr><tr>
+    <td scope="col">Nüfus Cüzdanı Fotokopisi</td><td>@calisan.nufus</td>
+  </tr><tr>
+    <td scope="col">Eğitim Sertifikası</td><td>@calisan.sertifika</td>
+  </tr>
+    <tr>
+    <td scope="col">Eğitimi Geçtimi</td><td>@calisan.puan</td>
+  </tr>
+    <tr>
+    <td scope="col">İstifa/İşten Çıkarma</td><td>@calisan.istifa</td>
+  </tr>
+    
+</table>
+
+
+@if (!Roles.IsUserInRole(WebSecurity.CurrentUserName, "firmaYetkilisi")){ 
+    <input class="duzenle" type="button" value="Düzenle" name="duzenle"/>
+<fieldset id="belgeDuzenlemeBolumu">
+<form action="" method="post">
+<table border="1">
+  <tr>
+    <td scope="col">İşçi Taahhütü</td><td><select name="taahhut"><option selected="selected">@calisan.taahhut</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">SGK İşe Giriş Bildirimi</td><td><select name="sgkGiris"><option selected="selected">@calisan.sgk</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">İşçinin Sözleşmesi</td><td><select name="sozlesme"><option selected="selected">@calisan.sozlesme</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">Görev Tanımı</td><td><select name="gorev"><option selected="selected">@calisan.gorevtanimi</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">Ağır İşler Raporu</td><td><select name="agirisraporu"><option selected="selected">@calisan.agirisraporu</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">Mesleki Eğitim Belgesi</td><td><select name="meslekiegitim"><option selected="selected">@calisan.meslekiegitim</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">İSG Talimatları</td><td><select name="talimat"><option selected="selected">@calisan.talimat</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">KKD Zimmet Formu</td><td><select name="kkd"><option selected="selected">@calisan.kkd</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">İşe Giriş Eğitimi</td><td><select name="isegirisegitim"><option selected="selected">@calisan.isegirisegitim</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">İşe Giriş Eğitim Tarihi</td><td><input type="date" name="isegirisegitimtarihi" value="@calisan.isegirisegitimtarihi"/></td>
+  </tr><tr>
+    <td scope="col">Görevlendirme Yazısı (Gerekli_İse)</td><td><select name="gorevlendirme"><option selected="selected">@calisan.gorevlendirme</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">Sabıka Kaydı</td><td><select name="sabikakaydi"><option selected="selected">@calisan.sabikakaydi</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">İkametgah Belgesi</td><td><select name="ikametgah"><option selected="selected">@calisan.ikametgah</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">Nüfus Cüzdanı Fotokopisi</td><td><select name="nufus"><option selected="selected">@calisan.nufus</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">Eğitim Sertifikası</td><td><select name="sertifika"><option selected="selected">@calisan.sertifika</option><option>Var</option><option>Yok</option></select></td>
+  </tr><tr>
+    <td scope="col">Eğitimi Geçtimi</td><td><select name="puan"><option selected="selected">@calisan.puan</option><option>Geçti</option><option>Kaldı</option></select></td>
+  </tr><tr>
+    <td scope="col">İstifa/İşten Çıkarma</td><td><select name="istifa"><option selected="selected">@calisan.istifa</option><option>Var</option><option>Yok</option></select></td>
+  </tr>    
+</table>
+    <input type="submit" value="Güncelle" />
+</form>
+    </fieldset>
+}
+
+<a href="~/Member/calisanlar?id=@calisan.firmaID"><input type="submit" value="Çalışanlar" /></a>

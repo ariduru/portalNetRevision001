@@ -1,0 +1,31 @@
+﻿@using WebMatrix.WebData
+
+@* Paketleme kullanıyorsanız bu bölümü kaldırın *@
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@{
+
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Hesabı Yönet";
+
+ 
+           
+}
+<hgroup class="title">
+    <h1>@Page.Title.</h1>
+</hgroup>
+
+
+
+
+
+<section id="externalLogins">
+   
+    }
+
+    <h3>Dışarıdan oturum açma ekle</h3>
+    @RenderPage("~/Account/_ExternalLoginsList.cshtml")
+</section>

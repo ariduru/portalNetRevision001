@@ -1,0 +1,68 @@
+﻿@{
+    var firmaAdi="";
+    var sgk="";
+    var calisanSayisi="";
+    var vergiDairesi="";
+    var vergiNo="";
+    var tel="";
+    var fax="";
+    var web="";
+    var adress="";
+    var muhasebeName="";
+    var muhasebeTel="";
+    var muhasebeEmail="";
+    var yetkili="";
+    var isgUzman="";
+    var hekim="";
+    var dsp="";
+    if (IsPost){
+        firmaAdi=Request["firmaadi"];
+        sgk=Request["sgk"];
+        calisanSayisi=Request["calisan"];
+        vergiDairesi=Request["vergiDairesi"];
+        vergiNo=Request["vergiNo"];
+        tel=Request["telefon"];
+        fax=Request["fax"];
+        web=Request["webUrl"];
+        adress=Request["adres"];
+        muhasebeName=Request["muhasebeci"];
+        muhasebeTel=Request["muhasebeciTel"];
+        muhasebeEmail=Request["muhasebeciEmail"];
+        yetkili=Request["yetkili"];
+        isgUzman=Request["isgUzman"];
+        hekim=Request["hekim"];
+        dsp=Request["dsp"];
+    
+    var EKLE="INSERT INTO firmalar (name,sgkNo,calisanSayi,vergiDairesi,vergiNo,telefon,fax,web,adres,muhasebeci,muhasebeTel,muhasebeMail,yetkili,isgUzman,hekim,dsp) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15)";
+    var db=Database.Open("OsgbPortal");
+    db.Execute(EKLE,firmaAdi,sgk,calisanSayisi,vergiDairesi,vergiNo,tel,fax,web,adress,muhasebeName,muhasebeTel,muhasebeEmail,yetkili,isgUzman,hekim,dsp);
+    Response.Redirect("~/Admin/Firmalar");
+    }
+    
+}
+<form action="" method="post">
+    <div class="floatleft">
+    <p>Firma Unvanı :</br> <input type="text" name="firmaadi" /></p>
+    <p>SGK Sicil No :</br> <input type="text" name="sgk" /></p>
+    <p>Çalışan Sayısı :</br> <input type="text" name="calisan" /></p>
+    <p>Vergi Dairesi :</br> <input type="text" name="vergiDairesi" /></p>
+    <p>Vergi No :</br> <input type="text" name="vergiNo" /></p>
+    <p>Telefon :</br> <input type="text" name="telefon" /></p>
+    </div>
+    <div class="floatleft">
+    <p>fax :</br> <input type="text" name="fax" /></p>
+    <p>Web Sitesi :</br> <input type="text" name="webUrl" /></p>
+    <p>Adres :</br> <input type="text" name="adres" /></p>
+    <p>Muhasebeci Adı :</br> <input type="text" name="muhasebeci" /></p>
+    <p>Muhasebeci Telefon :</br> <input type="text" name="muhasebeciTel" /></p>
+    <p>Muhasebeci E-mail :</br> <input type="text" name="muhasebeciEmail" /></p>
+    </div>
+    <div class="floatleft">
+    <p>Firma Yetkilisi :</br> <input type="text" name="yetkili" /></p>
+    <p>İş Güvenliği UZmanı :</br> <input type="text" name="isgUzman" /></p>
+    <p>İşyeri Hekimi :</br> <input type="text" name="hekim" /></p>
+    <p>Sağlık Personeli :</br> <input type="text" name="dsp" /></p>
+    </div>
+    <input type="submit" value="Firma Ekle" />
+</form>
+ <a href="~/Member/firmalar"><input type="submit" value="Firmalar"/></a>

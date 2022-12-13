@@ -1,0 +1,376 @@
+﻿@{
+Layout = "~/_RiskAnaliziLayout.cshtml";
+    var id=Request["id"];
+    var firmasec="SELECT * FROM firmalar WHERE id=@0";
+    
+    var db = Database.Open("OsgbPortal"); 
+    var firmam=db.QuerySingle(firmasec,id);
+    var riskAnalizi = db.Query(@"SELECT * FROM riskAnalizi WHERE firmaID=@0 ORDER BY MaddeNo ASC",id);
+                                                  
+                         
+    var grid = new WebGrid(riskAnalizi,ajaxUpdateContainerId:"grid",canPage: false);  
+    int i =0;
+   var comma=",";
+   int maxx=0;
+   int sayac=0;
+   //maxx değişkenine madde sayısını atayarak grafiğin x exseninin "max" özelliğinde kullanıyoruz
+   foreach(var num in riskAnalizi){
+       maxx++;
+   }                      
+}
+<script>
+    $(function () {
+
+        
+
+        $('#excel').on('hover', function () {
+            $(this).css('cursor', 'pointer');
+        });
+        $("#excel").on('click', function () {
+            $(".table").table2excel({
+                exclude: ".noExl",
+                name: "deneme",
+                filename: "@firmam.Name Risk Analiz Formu"
+            });
+        });
+        $('#word').on('hover', function () {
+            $(this).css('cursor', 'pointer');
+        });
+        $("#word").on('click', function () {
+            $(".table").table2word({
+                exclude: ".noExl",
+                name: "deneme",
+                filename: "@firmam.Name Risk Analiz Formu"
+            });
+        });
+        $('.save-icon').on('hover', function () {
+            $(this).css('cursor', 'pointer');
+        });
+        $('.edit-icon').on('hover', function () {
+            $(this).css('cursor', 'pointer');
+        });
+        $('#plus').on('hover', function () {
+            $(this).css('cursor', 'pointer');
+        });
+        $('#plus').on('click', function () {
+
+            $('table').append('<tr><td colspan=\'2\'><input type=\'submit\' class=\'float-left ekle\' id=\'ekle\' name=\'ekle\' value=\'Ekle\' width=\'20px\' /></td>' +
+            '<td><input type=\'text\' id=\'maddeNo\' name=\'maddeNoform\' width=\'27px\' placeholder=\'No\'/></td>' +
+            '<td><input type=\'text\' id=\'bolum\' name=\'bolumform\' width=\'46px\' placeholder=\'Bölüm\'></td>' +
+            '<td><input type=\'text\' id=\'faaliyet\' name=\'faaliyetform\' width=\'53px\' placeholder=\'Faaliyet\'/></td>' +
+            '<td><input type=\'text\' id=\'tehlike\' name=\'tehlikeform\' width=\'63px\' placeholder=\'Tehlike\'/></td>' +
+            '<td><input type=\'text\' id=\'risk\' name=\'riskform\' width=\'50px\' placeholder=\'Risk\'/></td>' +
+            '<td><input type=\'text\' id=\'sonuc\' name=\'sonucform\' width=\'67px\' placeholder=\'Sonuç\'/></td>' +
+            '<td><input type=\'text\' id=\'mevcut1\' name=\'mevcut1form\' width=\'63px\' placeholder=\'Mevcut Durum\'/></td>' +
+            '<td><input type=\'text\' id=\'olasilik1\' name=\'olasilik1form\' width=\'50px\' placeholder=\'Olasılık\'/></td>' +
+            '<td><input type=\'text\' id=\'siddet1\' name=\'siddet1form\' width=\'44px\' placeholder=\'Şiddet\'/></td>' +
+            '<td><input type=\'text\' id=\'rds1\' name=\'rds1form\' width=\'20px\' placeholder=\'RDS\' disabled/></td>' +
+            '<td><input type=\'text\' id=\'oncelik1\' name=\'oncelik1form\' width=\'20px\' placeholder=\'Öncelik\' disabled/></td>' +
+            '<td><input type=\'text\' id=\'aciklama1\' name=\'aciklama1form\' width=\'20px\' placeholder=\'Açıklama\' disabled/></td>' +
+            '<td><input type=\'text\' id=\'onlem\' name=\'onlemform\' width=\'20px\' placeholder=\'Önlem\'/></td>' +
+            '<td><input type=\'text\' id=\'sorumlu\' name=\'sorumluform\' width=\'20px\' placeholder=\'Sorumlu\'/></td>' +
+            '<td><input type=\'date\' id=\'termin\' name=\'terminform\' /></td>' +
+            '<td><select id=\'dof\' name=\'dofform\' width=\'20px\' placeholder=\'Seçiniz\'><option>Hayır</option><option>Evet</option></select></td>' +
+            '<td><input type=\'text\' id=\'olasilik2\' name=\'olasilik2form\' width=\'20px\' placeholder=\'Olasılık\'/></td>' +
+            '<td><input type=\'text\' id=\'siddet2\' name=\'siddet2form\' width=\'20px\' placeholder=\'Şiddet\'/></td>' +
+            '<td><input type=\'text\' id=\'rds2\' name=\'rds2form\' width=\'20px\' placeholder=\'RDS\' disabled/></td>' +
+            '<td><input type=\'text\' id=\'oncelik2\' name=\'oncelik2form\' width=\'20px\' placeholder=\'Öncelik\' disabled/></td>' +
+            '<td><input type=\'text\' id=\'aciklama2\' name=\'aciklama2form\' width=\'20px\' placeholder=\'Açıklama\' disabled/></td></tr>');
+        });
+        $('.edit-mode').hide();
+        $('.edit-book').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            var riskId = $(this).prop('id');
+            $('.edit-icon-' + riskId).hide();
+            $('.save-icon-' + riskId).show();
+            var currentMaddeNo = $('table').find('#maddeno-' + riskId).text();
+            $('table').find('#maddeno-' + riskId).html('<input class="maddeno textboxx edit-mode" id="edit-mode-maddeno-' + riskId + '" type="text" value="' + currentMaddeNo + '"/>');
+            var currentBolum = $('table').find('#bolum-' + riskId).text();
+            $('table').find('#bolum-' + riskId).html('<textarea class="bolum textboxx edit-mode" id="edit-mode-bolum-' + riskId + '" >' + currentBolum + '</textarea>');
+            var currentFaaliyet = $('table').find('#faaliyet-' + riskId).text();
+            $('table').find('#faaliyet-' + riskId).html('<textarea class="faaliyet textboxx edit-mode" id="edit-mode-faaliyet-' + riskId + '" >' + currentFaaliyet + '</textarea>');
+            var currentTehlike = $('table').find('#tehlike-' + riskId).text();
+            $('table').find('#tehlike-' + riskId).html('<textarea class="tehlike textboxx edit-mode" id="edit-mode-tehlike-' + riskId + '" >' + currentTehlike + '</textarea>');
+            var currentRisk = $('table').find('#risk-' + riskId).text();
+            $('table').find('#risk-' + riskId).html('<textarea class="risk textboxx edit-mode" id="edit-mode-risk-' + riskId + '" >' + currentRisk + '</textarea>');
+            var currentSonuc = $('table').find('#sonuc-' + riskId).text();
+            $('table').find('#sonuc-' + riskId).html('<textarea class="sonuc textboxx edit-mode" id="edit-mode-sonuc-' + riskId + '" >' + currentSonuc + '</textarea>');
+            var currentDurum = $('table').find('#mevcutdurum-' + riskId).text();
+            $('table').find('#mevcutdurum-' + riskId).html('<textarea class="mevcutdurum textboxx edit-mode" id="edit-mode-mevcutdurum-' + riskId + '" >' + currentDurum + '</textarea>');
+            var currentOlasilik = $('table').find('#olasilik-' + riskId).text();
+            $('table').find('#olasilik-' + riskId).html('<input class="olasilik textboxx edit-mode" id="edit-mode-olasilik-' + riskId + '" type="text" value="' + currentOlasilik + '"/>');
+            var currentSiddet = $('table').find('#siddet-' + riskId).text();
+            $('table').find('#siddet-' + riskId).html('<input class="siddet textboxx edit-mode" id="edit-mode-siddet-' + riskId + '" type="text" value="' + currentSiddet + '"/>');
+            var currentRDS = $('table').find('#rds-' + riskId).text();
+            $('table').find('#rds-' + riskId).html('<input class="rds textboxx edit-mode" id="edit-mode-rds-' + riskId + '" type="text" value="' + currentRDS + '"/>');
+            var currentOncelik = $('table').find('#oncelik-' + riskId).text();
+            $('table').find('#oncelik-' + riskId).html('<input class="oncelik textboxx edit-mode" id="edit-mode-oncelik-' + riskId + '" type="text" value="' + currentOncelik + '"/>');
+            var currentAciklama = $('table').find('#aciklama-' + riskId).text();
+            $('table').find('#aciklama-' + riskId).html('<textarea class="aciklama textboxx edit-mode" id="edit-mode-aciklama-' + riskId + '" >' + currentAciklama + '</textarea>');
+            var currentOnlem = $('table').find('#onlem-' + riskId).text();
+            $('table').find('#onlem-' + riskId).html('<textarea class="onlem textboxx edit-mode" id="edit-mode-onlem-' + riskId + '" >' + currentOnlem + '</textarea>');
+            var currentSorumlu = $('table').find('#sorumlu-' + riskId).text();
+            $('table').find('#sorumlu-' + riskId).html('<input class="sorumlu textboxx edit-mode" id="edit-mode-sorumlu-' + riskId + '" type="text" value="' + currentSorumlu + '"/>');
+            var currentTermin = $('table').find('#termin-' + riskId).text();
+            $('table').find('#termin-' + riskId).html('<input class="termin edit-mode" id="edit-mode-termin-' + riskId + '" type="date" value="' + currentTermin + '"/>');
+            var currentDuzeltme = $('table').find('#duzeltme-' + riskId).text();
+            if (currentDuzeltme == "Evet") {
+                $('table').find('#duzeltme-' + riskId).html('<select class="duzeltme textboxx edit-mode" id="edit-mode-duzeltme-' + riskId + '" ><option>Evet</option><option>Hayır</option></select>');
+            } else {
+                $('table').find('#duzeltme-' + riskId).html('<select class="duzeltme textboxx edit-mode" id="edit-mode-duzeltme-' + riskId + '" ><option>Hayır</option><option>Evet</option></select>');
+            }
+            var currentOlasilik2 = $('table').find('#olasilik2-' + riskId).text();
+            $('table').find('#olasilik2-' + riskId).html('<input class="olasilik2 textboxx edit-mode" id="edit-mode-olasilik2-' + riskId + '" type="text" value="' + currentOlasilik2 + '"/>');
+            var currentSiddet2 = $('table').find('#siddet2-' + riskId).text();
+            $('table').find('#siddet2-' + riskId).html('<input class="siddet2 textboxx edit-mode" id="edit-mode-siddet2-' + riskId + '" type="text" value="' + currentSiddet2 + '"/>');
+            var currentRDS2 = $('table').find('#rds2-' + riskId).text();
+            $('table').find('#rds2-' + riskId).html('<input class="rds2 textboxx edit-mode" id="edit-mode-rds2-' + riskId + '" type="text" value="' + currentRDS2 + '"/>');
+            var currentOncelik2 = $('table').find('#oncelik2-' + riskId).text();
+            $('table').find('#oncelik2-' + riskId).html('<input class="oncelik2 textboxx edit-mode" id="edit-mode-oncelik2-' + riskId + '" type="text" value="' + currentOncelik2 + '"/>');
+            var currentAciklama2 = $('table').find('#aciklama2-' + riskId).text();
+            $('table').find('#aciklama2-' + riskId).html('<input class="aciklama2 textboxx edit-mode" id="edit-mode-aciklama2-' + riskId + '" type="text" value="' + currentAciklama2 + '"/>');
+
+        });
+        $('.save-book').on('click', function () {
+
+            var tr = $(this).parents('tr:first');
+            var riskId = $(this).prop('id');
+            var maddeNo = tr.find('#edit-mode-maddeno-' + riskId).val();
+            var bolum = tr.find('#edit-mode-bolum-' + riskId).val();
+            var faaliyet = tr.find('#edit-mode-faaliyet-' + riskId).val();
+            var tehlike = tr.find('#edit-mode-tehlike-' + riskId).val();
+            var risk = tr.find('#edit-mode-risk-' + riskId).val();
+            var sonuc = tr.find('#edit-mode-sonuc-' + riskId).val();
+            var mevcutdurum = tr.find('#edit-mode-mevcutdurum-' + riskId).val();
+            var olasilik = tr.find('#edit-mode-olasilik-' + riskId).val();
+            var siddet = tr.find('#edit-mode-siddet-' + riskId).val();
+            var rds = tr.find('#edit-mode-rds-' + riskId).val();
+            var oncelik = tr.find('#edit-mode-oncelik-' + riskId).val();
+            var aciklama = tr.find('#edit-mode-aciklama-' + riskId).val();
+            var onlem = tr.find('#edit-mode-onlem-' + riskId).val();
+            var sorumlu = tr.find('#edit-mode-sorumlu-' + riskId).val();
+            var termin = tr.find('#edit-mode-termin-' + riskId).val();
+            var duzeltme = tr.find('#edit-mode-duzeltme-' + riskId).val();
+            var olasilik2 = tr.find('#edit-mode-olasilik2-' + riskId).val();
+            var siddet2 = tr.find('#edit-mode-siddet2-' + riskId).val();
+            var rds2 = tr.find('#edit-mode-rds2-' + riskId).val();
+            var oncelik2 = tr.find('#edit-mode-oncelik2-' + riskId).val();
+            var aciklama2 = tr.find('#edit-mode-aciklama2-' + riskId).val();
+
+            $.post(
+                'riskMaddeDuzenle',
+                { RiskId: riskId, MaddeNo: maddeNo, Bolum: bolum, Faaliyet: faaliyet, Tehlike: tehlike, Risk: risk, Sonuc: sonuc, MevcutDurum: mevcutdurum, Olasilik: olasilik, Siddet: siddet, Rds: rds, Oncelik: oncelik, Aciklama: aciklama, Onlem: onlem, Sorumlu: sorumlu, Termin: termin, Duzeltme: duzeltme, Olasilik2: olasilik2, Siddet2: siddet2, Rds2: rds2, Oncelik2: oncelik2, Aciklama2: aciklama2 },
+                function (book) {
+                    tr.find('#maddeno').text(book.MaddeNo);
+                    tr.find('#bolum').text(book.Bolum);
+                    tr.find('#faaliyet').text(book.Faaliyet);
+                    tr.find('#tehlike').text(book.Tehlike);
+                    tr.find('#risk').text(book.Risk);
+                    tr.find('#sonuc').text(book.Sonuc);
+                    tr.find('#mevcutdurum').text(book.MevcutDurum);
+                    tr.find('#olasilik').text(book.Olasilik);
+                    tr.find('#siddet').text(book.Siddet);
+                    tr.find('#rds').text(book.Rds);
+                    tr.find('#oncelik').text(book.Oncelik);
+                    tr.find('#aciklama').text(book.Aciklama);
+                    tr.find('#onlem').text(book.AlinacakOnlem);
+                    tr.find('#sorumlu').text(book.Sorumlu);
+                    tr.find('#termin').text(book.Termin);
+                    tr.find('#duzeltme').text(book.OnlemAlindimi);
+                    tr.find('#olasilik2').text(book.OnlemSonrasiOlasilik);
+                    tr.find('#siddet2').text(book.OnlemSonrasiSiddet);
+                    tr.find('#rds2').text(book.OnlemSonrasiRDS);
+                    tr.find('#oncelik2').text(book.OnlemSonrasiOncelik);
+                    tr.find('#aciklama2').text(book.OnlemSonrasiAciklama);
+                }, "json");
+
+            $('.save-icon-' + riskId).hide();
+            $('.edit-icon-' + riskId).show();
+            location.reload();
+        });
+        $("#grafik").on('click', function () { 
+        $('#container').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Risk Analizi Grafiği'
+            },
+            subtitle: {
+                text: 'Kaynak: @firmam.name Risk Analiz Formu'
+            },
+            xAxis: {
+                min: 1,
+                max:@maxx,
+                categories: [],
+                title: {
+                    text: 'Risk Madde No'
+                },
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'RDS Kolon Değerleri'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Önlem Öncesi RDS',
+                data: [0,@foreach(var rds in riskAnalizi){@rds.RDS@comma;}0]
+            }, {
+                name: 'Önlem Sonrası RDS',
+                data: [0,@foreach(var rds in riskAnalizi){@rds.OnlemSonrasiRDS@comma;}0]
+            }]
+        });
+
+
+        $("#chartcontainer").dialog({
+            maxWidth: 1240,
+            maxHeight: 500,
+            width: 1240,
+            height: 500,
+            modal: true,
+            buttons: {
+                Kapat: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+
+        });
+    })
+    </script>
+  
+<div id="chartcontainer">
+    <div id="container" style="width:95%;" ></div>
+</div>
+<button id="grafik">Grafik Raporu Görüntüle</button>
+        <div><h2 style="text-transform: uppercase;text-align: center;margin-bottom: 30px; color: #7e3535;">@firmam.Name <br/><br/>TEHLİKE VE RİSK DEĞERLENDİRME FORMU</h2></div>
+
+    
+
+<form action="riskMaddeEkle?id=@id" name="riskMaddeEkle" id="riskMaddeEkle" class="riskMaddeEkle" method="post">        
+@grid.GetHtml(
+
+            tableStyle : "table",
+            alternatingRowStyle : "alternate",
+            selectedRowStyle: "selected",
+            headerStyle : "header", 
+            columns : grid.Columns(
+                grid.Column(format: @<a id="riskMaddeSil" href="~/Member/riskMaddeSil?id=@item.RiskID&firmaID=@id"><img src="~/images/delete.png" id="deleteicon" alt="Sil" title="Sil" width="10px"/></a>),
+                grid.Column("",format: @<text>
+                                        <img src="~/images/edit.png" class="edit-icon edit-book display-mode edit-icon-@item.RiskID" id="@item.RiskID" alt="Düzenle" width="10"/>
+                                        <img src="~/images/saveicon.png" class="save-icon save-book edit-mode save-icon-@item.RiskID" id="@item.RiskID" alt="Kaydet" width="10" />
+                                    </text>),
+                grid.Column("No",format: @<text>
+                                        <span id="maddeno-@item.RiskID" class="display-mode">@item.MaddeNo</span>
+                                        </text>),
+                
+                grid.Column("Bölüm",format: @<text>
+                                        <span id="bolum-@item.RiskID" class="display-mode">@item.Bolum</span>
+                                        </text>),
+                
+                grid.Column("Faaliyet",format: @<text>
+                                        <span id="faaliyet-@item.RiskID" class="display-mode">@item.Faaliyet</span>
+                                        </text>),
+                
+                grid.Column("Tehlike",format: @<text>
+                                        <span id="tehlike-@item.RiskID" class="display-mode">@item.Tehlike</span>
+                                        </text>),
+                
+                grid.Column("Risk",format: @<text>
+                                        <span id="risk-@item.RiskID" class="display-mode">@item.Risk</span>
+                                        </text>),
+                
+                grid.Column("Sonuç",format: @<text>
+                                        <span id="sonuc-@item.RiskID" class="display-mode">@item.Sonuc</span>
+                                        </text>),
+                
+                grid.Column("Mevcut Durum",format: @<text>
+                                        <span id="mevcutdurum-@item.RiskID" class="display-mode">@item.MevcutDurum</span>
+                                        </text>),
+                
+                grid.Column("Olasılık",format: @<text>
+                                        <span id="olasilik-@item.RiskID" class="display-mode">@item.Olasilik</span>
+                                        </text>),
+                
+                grid.Column("Şiddet",format: @<text>
+                                        <span id="siddet-@item.RiskID" class="display-mode">@item.Siddet</span>
+                                        </text>),
+                
+                grid.Column("RDS",format: @<text>
+                                        <span id="rds-@item.RiskID" class="display-mode">@item.RDS</span>
+                                        </text>),
+                
+                grid.Column("Öncelik",format: @<text>
+                                        <span id="oncelik-@item.RiskID" class="display-mode">@item.OncelikSirasi</span>
+                                        </text>),
+                
+                grid.Column("Açıklama",format: @<text>
+                                        <span id="aciklama-@item.RiskID" class="display-mode">@item.Aciklama</span>
+                                        </text>),
+                
+                grid.Column("Alınacak Önlem",format: @<text>
+                                        <span id="onlem-@item.RiskID" class="display-mode">@item.AlinacakOnlem</span>
+                                        </text>),
+                
+                grid.Column("Sorumlu",format: @<text>
+                                        <span id="sorumlu-@item.RiskID" class="display-mode">@item.Sorumlu</span>
+                                        </text>),
+                
+                grid.Column("Termin",format: @<text>
+                                        <span id="termin-@item.RiskID" class="display-mode">@item.Termin</span>
+                                        </text>),
+                
+                grid.Column("Önlem Alındımı",format: @<text>
+                                        @if(item.OnlemAlindimi==true){
+                                        <span id="duzeltme-@item.RiskID" class="display-mode">Evet</span>
+                                        }else{
+                                            <span id="duzeltme-@item.RiskID" class="display-mode">Hayır</span>
+                                        }
+                                        </text>),
+                
+                grid.Column("Olasılık",format: @<text>
+                                        <span id="olasilik2-@item.RiskID" class="display-mode">@item.OnlemSonrasiOlasilik</span>
+                                        </text>),
+                
+                grid.Column("Şiddet",format: @<text>
+                                        <span id="siddet2-@item.RiskID" class="display-mode">@item.OnlemSonrasiSiddet</span>
+                                        </text>),
+                
+                grid.Column("RDS",format: @<text>
+                                        <span id="rds2-@item.RiskID" class="display-mode">@item.OnlemSonrasiRDS</span>
+                                        </text>),
+                
+                grid.Column("Öncelik",format: @<text>
+                                        <span id="oncelik2-@item.RiskID" class="display-mode">@item.OnlemSonrasiOncelik</span>
+                                        </text>),
+                
+                grid.Column("Açıklama",format: @<text>
+                                        <span id="aciklama2-@item.RiskID" class="display-mode">@item.OnlemSonrasiAciklama</span>
+                                        </text>)
+               
+             )    
+        )
+        </form>
+
+    
+        <img src="~/images/excel.png" class="float-right" id="excel" alt="Excel Olarak İndir" title="Excel Olarak İndir" width="30px"/>
+        <img src="~/images/word.ico" class="float-right" id="word" alt="Word Olarak İndir" title="Word Olarak İndir" width="30px"/>
+        <img src="~/images/plus.png" id="plus" alt="Madde Ekle" title="Madde Ekle" width="30px"/>
+

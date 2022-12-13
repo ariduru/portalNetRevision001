@@ -1,0 +1,127 @@
+﻿@* Paketleme kullanıyorsanız bu bölümü kaldırın *@
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Oturum aç";
+
+    // Genel sayfa değişkenlerini başlat
+    var email = "";
+    var password = "";
+    var rememberMe = false;
+
+    var returnUrl = Request.QueryString["ReturnUrl"];
+    if (returnUrl.IsEmpty()) {
+        // Bazı dışarıdan oturum açma sağlayıcıları her zaman bir dönüş URL değeri gerektirir
+        returnUrl = Href("~/");
+    }
+
+    // Setup validation
+    Validation.RequireField("email", "E-posta adresi belirtmeniz gerekir.");
+    Validation.RequireField("password", "Parola belirtmeniz gerekir.");
+    Validation.Add("password",
+        Validator.StringLength(
+            maxLength: Int32.MaxValue,
+            minLength: 6,
+            errorMessage: "Parola en az 6 karakter olmalıdır"));
+
+    // Bu bir POST isteğiyse, verileri doğrulayın ve işleyin
+     if (IsPost) {
+        
+        // bu bir dışarıdan oturum açma isteği mi?
+       
+        if (Validation.IsValid()) {
+            email = Request.Form["email"];
+            password = Request.Form["password"];
+            rememberMe = Request.Form["rememberMe"].AsBool();
+
+            if (WebSecurity.UserExists(email) && WebSecurity.GetPasswordFailuresSinceLastSuccess(email) > 4 && WebSecurity.GetLastPasswordFailureDate(email).AddSeconds(60) > DateTime.UtcNow) {
+                Response.Redirect("~/Account/AccountLockedOut");
+                return;
+            }
+
+            // Sağlanan kimlik bilgileri kullanılarak oturum açmayı deneyin
+            if (WebSecurity.Login(email, password, rememberMe)) {
+                    Context.RedirectLocal(returnUrl);
+                    return;
+              } else {
+                ModelState.AddFormError("Kullanıcı adı veya Parolanız hatalı.");
+            }
+        }
+    }
+}
+<script type="text/javascript">
+$(document).ready(function() {
+$(".username").focus(function() {
+$(".user-icon").css("left","200px");
+});
+$(".username").blur(function() {
+$(".user-icon").css("left","247px");
+});
+ 
+$(".password").focus(function() {
+$(".pass-icon").css("left","200px");
+});
+$(".password").blur(function() {
+$(".pass-icon").css("left","247px");
+});
+});
+</script>
+
+
+<div class="main-wrapper">
+     
+    
+    <div id="baslik">
+        <ul>
+            <li class="active"><span data-icon="&#xe07f;">&nbsp;&nbsp;Oturum Aç</span></li>
+        <li><a href="~/Account/Register" id="regg"><span data-icon="&#xe094;">&nbsp;&nbsp;Kayıt Ol</span></a></li>
+        </ul>
+    </div>
+
+
+<div id="loginSection">
+    
+        @AntiForgery.GetHtml()
+        @* Bir veya daha çok doğrulama hatası varsa, hata göster *@
+        @Html.ValidationSummary("Oturum açma başarısız oldu. Lütfen hataları düzeltin ve yeniden deneyin.", excludeFieldErrors: true, htmlAttributes: null)
+<section id="contents">
+<form name="login-form" class="login-form" method="post">
+        <fieldset id="contents">
+            <div class="login-wrapper register-wrapper" >
+            <ul>
+                <li class="email">
+                    <div id="label"><label for="email" @if (!ModelState.IsValidField("email"))
+                                       {<text>class="error-label"</text>}>E-posta adresi</label></div>
+                    @* Kullanıcı adı doğrulama hatalarını sayfaya yaz *@
+                    @Html.ValidationMessage("email")
+                    <div class="content">
+                       <div class="user-icon"></div>
+                        <input type="text" id="textbox1" class="input username" name="email" value="@email" placeholder="ornek@hotmail.com" @Validation.For("email")/>
+                   </div>
+                </li>
+                <li class="password">
+                    <div id="label"><label for="password" @if (!ModelState.IsValidField("password")) {<text>class="error-label"</text>}>Parola</label></div>
+                    @* Parola doğrulama hatalarını sayfaya yaz *@
+                    @Html.ValidationMessage("password")
+                    <div class="content">
+                        <div class="pass-icon"></div>
+                    <input type="password" id="textbox2" class="input password" name="password" placeholder="Parola" @Validation.For("password")/>
+                    </div>
+                </li>
+                <li class="remember-me">
+                    <input type="checkbox" id="rememberMe" name="rememberMe" value="true" checked="@rememberMe" />
+                    <label class="checkbox" for="rememberMe">Beni Hatırla</label>
+                </li>
+            </ul>
+            <input type="submit" class="button" name="submit" value="Giriş" /><div id="label">&nbsp;</div><br />
+            <div id="label"><a href="~/Account/ForgotPassword"> <span data-icon="&#xe079;">&nbsp;Parolamı Unuttum!</span></a></div><br /><br />
+            </div>
+        </fieldset>
+    </form>
+</section>
+   </div> 
+</div>

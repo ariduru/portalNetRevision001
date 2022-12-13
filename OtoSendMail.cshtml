@@ -1,0 +1,43 @@
+﻿@using Quartz;
+@using System;
+@using System.Net;
+@using System.Net.Mail;
+@{
+NameValueCollection properties = new NameValueCollection();
+properties["quartz.scheduler.instanceName"] = "RemoteServer";
+
+// set thread pool info
+properties["quartz.threadPool.type"] = "Quartz.Simpl.SimpleThreadPool, Quartz";
+properties["quartz.threadPool.threadCount"] = "5";
+properties["quartz.threadPool.threadPriority"] = "Normal";
+
+ISchedulerFactory sf = new StdSchedulerFactory(properties);
+IScheduler sched = sf.GetScheduler();
+sched.Start();
+
+NameValueCollection properties = new NameValueCollection();
+properties["quartz.scheduler.instanceName"] = "RemoteClient";
+
+// set thread pool info
+properties["quartz.threadPool.type"] = "Quartz.Simpl.SimpleThreadPool, Quartz";
+properties["quartz.threadPool.threadCount"] = "5";
+properties["quartz.threadPool.threadPriority"] = "Normal";
+
+// set remoting expoter
+properties["quartz.scheduler.proxy"] = "true";
+properties["quartz.scheduler.proxy.address"] = "tcp://localhost:555/QuartzScheduler";
+// First we must get a reference to a scheduler
+ISchedulerFactory sf = new StdSchedulerFactory(properties);
+IScheduler sched = sf.GetScheduler();
+
+// define the job and ask it to run
+JobDetail job = new JobDetail("remotelyAddedJob", "default", typeof(SimpleJob));
+JobDataMap map = new JobDataMap();
+map.Put("msg", "Your remotely added job has executed!");
+job.JobDataMap = map;
+CronTrigger trigger = new CronTrigger("remotelyAddedTrigger", "default", "remotelyAddedJob", "default", DateTime.UtcNow, null, "/5 * * ? * *");
+// schedule the job
+sched.ScheduleJob(job, trigger);
+
+
+}

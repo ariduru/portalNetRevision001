@@ -1,0 +1,71 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Kayıt Onay Sayfası";
+
+    string[] userNames = new string[1];
+   var onay="false";
+   var selectTrueUser="";
+    var db = Database.Open("OsgbPortal");
+  var queryString = "SELECT UserId, email,name,surname FROM UserProfiles WHERE onay=@0";
+ var kullanicilar= db.Query(queryString,onay);
+     string message = "";
+    var confirmationToken = Request["confirmationCode"];
+    var selectUser="SELECT * FROM webpages_Membership WHERE ConfirmationToken=@0";
+   var kullanici = db.QuerySingle(selectUser,confirmationToken);
+  if(IsPost){
+      userNames[0] =Request["selectUserName"];
+      selectTrueUser="SELECT * FROM UserProfiles WHERE email=@0";
+      
+     var trueUser=db.QuerySingle(selectTrueUser,userNames[0]);
+     
+  if (!confirmationToken.IsEmpty()) {
+   if (trueUser.UserId==kullanici.UserId){
+    
+        
+        if (WebSecurity.ConfirmAccount(confirmationToken)) {
+           onay="true";
+            var updateQueryString = "UPDATE UserProfiles SET onay=@0 WHERE UserId=@1";
+            db.Execute(updateQueryString, onay, kullanici.UserId);
+            //db.Execute("UPDATE UserProfiles SET onay=@0 WHERE UserId=@1",onay);
+            message = "Kayıt Onaylandı! Kullanıcıya firma tanımlamaya başlayabilirsiniz.";
+        } else {
+            message = "Kayıt bilgileriniz onaylanamadı.";
+        }
+        }
+            
+        
+    }else{
+        message="Seçtiğiniz kullanıcı ile onay kodu uyuşmuyor.";
+       
+    }
+   }
+  }
+
+
+<hgroup class="title">
+    <h1>@Page.Title.</h1>
+    <h2>Hesapları onaylamak için aşağıdaki formu kullanın.</h2>
+</hgroup>
+
+<form method="post">
+        <label for="selectUserName">Kullanıcılar:</label>
+          <select name="selectUserName">
+            @foreach(var row in kullanicilar) {
+              <option>@row.email</option>
+            }
+          </select>
+          &nbsp;
+          <fieldset>
+            <legend>Onay Kodu</legend>
+            <ol>
+                <li>
+                    <label for="confirmationCode">Onay kodu</label>
+                    <input type="text" id="confirmationCode" name="confirmationCode" />
+                </li>
+            </ol>
+            <input type="submit" value="Onayla" />
+        </fieldset>
+    </form>
+@if (!message.IsEmpty()) {
+    <h3>@message</h3>
+}

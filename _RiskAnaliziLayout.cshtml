@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta charset="utf-8" />
+        <title>@Page.Title - Yaşam Yıldızı Portal</title>
+
+        <link href="~/Content/RiskAnalizi.css" rel="stylesheet" type="text/css" />
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link type="text/css" href="~/Content/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
+        <link type="text/css" href="~/Content/StyleSheet.css" rel="stylesheet" />
+        <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+        <script src="~/Scripts/jquery-ui-1.8.24.js"></script>
+        <script src="~/Scripts/modernizr-2.6.2.js"></script>
+        <script src="~/Scripts/jquery.table2excel.js"></script>
+        <script src="~/Scripts/jquery.table2word.js"></script>
+        <script type="text/javascript" src="~/Scripts/tableExport.js"></script>
+	    <script type="text/javascript" src="~/Scripts/jquery.base64.js"></script>
+	    <script type="text/javascript" src="~/Scripts/jspdf/libs/sprintf.js"></script>
+	    <script type="text/javascript" src="~/Scripts/jspdf/jspdf.js"></script>
+	    <script type="text/javascript" src="~/Scripts/jspdf/libs/base64.js"></script>
+        <script src="~/Scripts/js/highcharts.js"></script>
+        <script src="~/Scripts/js/modules/exporting.js"></script>
+        <meta name="viewport" content="width=device-width" />
+     @RenderSection("script", required: false)
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title"><a href="~/"><img height="120px" src="~/images/logo.png" alt="Yaşam Yıldızı OSGB" /></a></p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @if (WebSecurity.IsAuthenticated) {
+                            var db=Database.Open("OsgbPortal");
+                            var userName=db.QuerySingle("SELECT name,surname FROM UserProfiles WHERE UserId=@0",WebSecurity.CurrentUserId);
+                            <text>
+                                Merhaba, @userName.name @userName.surname
+                                <form id="logoutForm" action="~/Account/Logout" method="post">
+                                    @AntiForgery.GetHtml()
+                                    <a href="javascript:document.getElementById('logoutForm').submit()">Oturumu kapat</a>
+                                </form>
+                            </text>
+                        } else {
+                            <ul>
+                                <li><a href="~/Account/Register">Kaydol</a></li>
+                                <li><a href="~/Account/Login">Oturum aç</a></li>
+                                
+                            </ul>
+                        }
+                    </section>
+                    <nav>
+                        <ul id="menu">
+                            <li><a href="~/">Giriş Sayfası</a></li>
+                            <li><a href="~/About">Hakkında</a></li>
+                            <li><a href="~/Contact">İletişim</a></li>
+                           
+    @if (WebSecurity.IsAuthenticated){
+        Response.CacheControl = "no-cache";
+    if (!Roles.IsUserInRole(WebSecurity.CurrentUserName, "Admin")){
+      <li><a href="~/Member/firmalar">Firmalar</a></li>;
+    }else{
+        <li><a href="~/Member/firmalar">Firmalar</a></li>;
+        <li><a href="~/Admin/Yonetim">Yönetim Paneli</a></li>;
+    }}
+                            
+                                    
+                            
+                            
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - Yaşam Yıldızı OSGB</p>
+                </div>
+            </div>
+        </footer>
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>

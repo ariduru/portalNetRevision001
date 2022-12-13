@@ -1,0 +1,3135 @@
+﻿@{
+     Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Aylık Çalışma Planı";
+           
+    var id=Request["id"];
+    var ay=Request["ay"];
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var planSec="SELECT * FROM yillikFaaliyetPlani WHERE firmaId=@0";
+    var aylikPlanSec="SELECT * FROM aylikPlan WHERE firmaId=@0";
+    var aylikPlan="SELECT firmaId FROM aylikPlan WHERE firmaId=@0";
+    var db=Database.Open("OsgbPortal");
+    var firmam=db.QuerySingle(sec,id);
+    var secilenPlan=db.QuerySingle(planSec,id);
+    var aylikPlanVarmi=db.QuerySingle(aylikPlan,id);
+    var secilenAylikPlan=db.QuerySingle(aylikPlanSec,id);
+    var firmaAdi=firmam.name;
+    var isgUzman=firmam.isgUzman;
+    var hekim=firmam.hekim;
+
+    var ocakaylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih11,tarih21,tarih31,tarih41,tarih51,tarih61,tarih71,tarih81,tarih91,tarih101,tarihonbir1,tarihoniki1,tarih131,tarih141,tarih151,tarih161,tarih171,tarih181,tarih191,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    var subataylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih12,tarih22,tarih32,tarih42,tarih52,tarih62,tarih72,tarih82,tarih92,tarih102,tarihonbir2,tarihoniki2,tarih132,tarih142,tarih152,tarih162,tarih172,tarih182,tarih192,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    var martaylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih13,tarih23,tarih33,tarih43,tarih53,tarih63,tarih73,tarih83,tarih93,tarih103,tarihonbir3,tarihoniki3,tarih133,tarih143,tarih153,tarih163,tarih173,tarih183,tarih193,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    var nisanaylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih14,tarih24,tarih34,tarih44,tarih54,tarih64,tarih74,tarih84,tarih94,tarih104,tarihonbir4,tarihoniki4,tarih134,tarih144,tarih154,tarih164,tarih174,tarih184,tarih194,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    var mayisaylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih15,tarih25,tarih35,tarih45,tarih55,tarih65,tarih75,tarih85,tarih95,tarih105,tarihonbir5,tarihoniki5,tarih135,tarih145,tarih155,tarih165,tarih175,tarih185,tarih195,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    var haziranaylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih16,tarih26,tarih36,tarih46,tarih56,tarih66,tarih76,tarih86,tarih96,tarih106,tarihonbir6,tarihoniki6,tarih136,tarih146,tarih156,tarih166,tarih176,tarih186,tarih196,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    var temmuzaylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih17,tarih27,tarih37,tarih47,tarih57,tarih67,tarih77,tarih87,tarih97,tarih107,tarihonbir7,tarihoniki7,tarih137,tarih147,tarih157,tarih167,tarih177,tarih187,tarih197,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    var agustosaylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih18,tarih28,tarih38,tarih48,tarih58,tarih68,tarih78,tarih88,tarih98,tarih108,tarihonbir8,tarihoniki8,tarih138,tarih148,tarih158,tarih168,tarih178,tarih188,tarih198,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    var eylulaylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih19,tarih29,tarih39,tarih49,tarih59,tarih69,tarih79,tarih89,tarih99,tarih109,tarihonbir9,tarihoniki9,tarih139,tarih149,tarih159,tarih169,tarih179,tarih189,tarih199,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    var ekimaylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih110,tarih210,tarih310,tarih410,tarih510,tarih610,tarih710,tarih810,tarih910,tarih1010,tarihonbir10,tarihoniki10,tarih1310,tarih1410,tarih1510,tarih1610,tarih1710,tarih1810,tarih1910,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    var kasimaylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih111,tarih211,tarih311,tarih411,tarih511,tarih611,tarih711,tarih811,tarih911,tarih1011,tarihonbir11,tarihoniki11,tarih1311,tarih1411,tarih1511,tarih1611,tarih1711,tarih1811,tarih1911,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    var aralikaylikPlanEkle="INSERT INTO aylikPlan (firmaId,isgUzman,hekim,tarih112,tarih212,tarih312,tarih412,tarih512,tarih612,tarih712,tarih812,tarih912,tarih1012,tarihonbir12,tarihoniki12,tarih1312,tarih1412,tarih1512,tarih1612,tarih1712,tarih1812,tarih1912,firmaAdi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+
+    var ocakaylikPlanGuncelle="UPDATE aylikPlan SET tarih11=@0,tarih21=@1,tarih31=@2,tarih41=@3,tarih51=@4,tarih61=@5,tarih71=@6,tarih81=@7,tarih91=@8,tarih101=@9,tarihonbir1=@10,tarihoniki1=@11,tarih131=@12,tarih141=@13,tarih151=@14,tarih161=@15,tarih171=@16,tarih181=@17,tarih191=@18,firmaAdi=@19 WHERE firmaId=@20";
+    var subataylikPlanGuncelle="UPDATE aylikPlan SET tarih12=@0,tarih22=@1,tarih32=@2,tarih42=@3,tarih52=@4,tarih62=@5,tarih72=@6,tarih82=@7,tarih92=@8,tarih102=@9,tarihonbir2=@10,tarihoniki2=@11,tarih132=@12,tarih142=@13,tarih152=@14,tarih162=@15,tarih172=@16,tarih182=@17,tarih192=@18,firmaAdi=@19 WHERE firmaId=@20";
+    var martaylikPlanGuncelle="UPDATE aylikPlan SET tarih13=@0,tarih23=@1,tarih33=@2,tarih43=@3,tarih53=@4,tarih63=@5,tarih73=@6,tarih83=@7,tarih93=@8,tarih103=@9,tarihonbir3=@10,tarihoniki3=@11,tarih133=@12,tarih143=@13,tarih153=@14,tarih163=@15,tarih173=@16,tarih183=@17,tarih193=@18,firmaAdi=@19 WHERE firmaId=@20";
+    var nisanaylikPlanGuncelle="UPDATE aylikPlan SET tarih14=@0,tarih24=@1,tarih34=@2,tarih44=@3,tarih54=@4,tarih64=@5,tarih74=@6,tarih84=@7,tarih94=@8,tarih104=@9,tarihonbir4=@10,tarihoniki4=@11,tarih134=@12,tarih144=@13,tarih154=@14,tarih164=@15,tarih174=@16,tarih184=@17,tarih194=@18,firmaAdi=@19 WHERE firmaId=@20";
+    var mayisaylikPlanGuncelle="UPDATE aylikPlan SET tarih15=@0,tarih25=@1,tarih35=@2,tarih45=@3,tarih55=@4,tarih65=@5,tarih75=@6,tarih85=@7,tarih95=@8,tarih105=@9,tarihonbir5=@10,tarihoniki5=@11,tarih135=@12,tarih145=@13,tarih155=@14,tarih165=@15,tarih175=@16,tarih185=@17,tarih195=@18,firmaAdi=@19 WHERE firmaId=@20";
+    var haziranaylikPlanGuncelle="UPDATE aylikPlan SET tarih16=@0,tarih26=@1,tarih36=@2,tarih46=@3,tarih56=@4,tarih66=@5,tarih76=@6,tarih86=@7,tarih96=@8,tarih106=@9,tarihonbir6=@10,tarihoniki6=@11,tarih136=@12,tarih146=@13,tarih156=@14,tarih166=@15,tarih176=@16,tarih186=@17,tarih196=@18,firmaAdi=@19 WHERE firmaId=@20";
+    var temmuzaylikPlanGuncelle="UPDATE aylikPlan SET tarih17=@0,tarih27=@1,tarih37=@2,tarih47=@3,tarih57=@4,tarih67=@5,tarih77=@6,tarih87=@7,tarih97=@8,tarih107=@9,tarihonbir7=@10,tarihoniki7=@11,tarih137=@12,tarih147=@13,tarih157=@14,tarih167=@15,tarih177=@16,tarih187=@17,tarih197=@18,firmaAdi=@19 WHERE firmaId=@20";
+    var agustosaylikPlanGuncelle="UPDATE aylikPlan SET tarih18=@0,tarih28=@1,tarih38=@2,tarih48=@3,tarih58=@4,tarih68=@5,tarih78=@6,tarih88=@7,tarih98=@8,tarih108=@9,tarihonbir8=@10,tarihoniki8=@11,tarih138=@12,tarih148=@13,tarih158=@14,tarih168=@15,tarih178=@16,tarih188=@17,tarih198=@18,firmaAdi=@19 WHERE firmaId=@20";
+    var eylulaylikPlanGuncelle="UPDATE aylikPlan SET tarih19=@0,tarih29=@1,tarih39=@2,tarih49=@3,tarih59=@4,tarih69=@5,tarih79=@6,tarih89=@7,tarih99=@8,tarih109=@9,tarihonbir9=@10,tarihoniki9=@11,tarih139=@12,tarih149=@13,tarih159=@14,tarih169=@15,tarih179=@16,tarih189=@17,tarih199=@18,firmaAdi=@19 WHERE firmaId=@20";
+    var ekimaylikPlanGuncelle="UPDATE aylikPlan SET tarih110=@0,tarih210=@1,tarih310=@2,tarih410=@3,tarih510=@4,tarih610=@5,tarih710=@6,tarih810=@7,tarih910=@8,tarih1010=@9,tarihonbir10=@10,tarihoniki10=@11,tarih1310=@12,tarih1410=@13,tarih1510=@14,tarih1610=@15,tarih1710=@16,tarih1810=@17,tarih1910=@18,firmaAdi=@19 WHERE firmaId=@20";
+    var kasimaylikPlanGuncelle="UPDATE aylikPlan SET tarih111=@0,tarih211=@1,tarih311=@2,tarih411=@3,tarih511=@4,tarih611=@5,tarih711=@6,tarih811=@7,tarih911=@8,tarih1011=@9,tarihonbir11=@10,tarihoniki11=@11,tarih1311=@12,tarih1411=@13,tarih1511=@14,tarih1611=@15,tarih1711=@16,tarih1811=@17,tarih1911=@18,firmaAdi=@19 WHERE firmaId=@20";
+    var aralikaylikPlanGuncelle="UPDATE aylikPlan SET tarih112=@0,tarih212=@1,tarih312=@2,tarih412=@3,tarih512=@4,tarih612=@5,tarih712=@6,tarih812=@7,tarih912=@8,tarih1012=@9,tarihonbir12=@10,tarihoniki12=@11,tarih1312=@12,tarih1412=@13,tarih1512=@14,tarih1612=@15,tarih1712=@16,tarih1812=@17,tarih1912=@18,firmaAdi=@19 WHERE firmaId=@20";
+
+    
+
+    var buttonName="Kaydet";
+
+    var tarih11="";
+    var tarih12="";
+    var tarih13="";
+    var tarih14="";
+    var tarih15="";
+    var tarih16="";
+    var tarih17="";
+    var tarih18="";
+    var tarih19="";
+    var tarih110="";
+    var tarih111="";
+    var tarih112="";
+
+    var tarih21="";
+    var tarih22="";
+    var tarih23="";
+    var tarih24="";
+    var tarih25="";
+    var tarih26="";
+    var tarih27="";
+    var tarih28="";
+    var tarih29="";
+    var tarih210="";
+    var tarih211="";
+    var tarih212="";
+    
+    var tarih31="";
+    var tarih32="";
+    var tarih33="";
+    var tarih34="";
+    var tarih35="";
+    var tarih36="";
+    var tarih37="";
+    var tarih38="";
+    var tarih39="";
+    var tarih310="";
+    var tarih311="";
+    var tarih312="";
+    
+    var tarih41="";
+    var tarih42="";
+    var tarih43="";
+    var tarih44="";
+    var tarih45="";
+    var tarih46="";
+    var tarih47="";
+    var tarih48="";
+    var tarih49="";
+    var tarih410="";
+    var tarih411="";
+    var tarih412="";
+    
+    var tarih51="";
+    var tarih52="";
+    var tarih53="";
+    var tarih54="";
+    var tarih55="";
+    var tarih56="";
+    var tarih57="";
+    var tarih58="";
+    var tarih59="";
+    var tarih510="";
+    var tarih511="";
+    var tarih512="";
+    
+    var tarih61="";
+    var tarih62="";
+    var tarih63="";
+    var tarih64="";
+    var tarih65="";
+    var tarih66="";
+    var tarih67="";
+    var tarih68="";
+    var tarih69="";
+    var tarih610="";
+    var tarih611="";
+    var tarih612="";
+    
+    var tarih71="";
+    var tarih72="";
+    var tarih73="";
+    var tarih74="";
+    var tarih75="";
+    var tarih76="";
+    var tarih77="";
+    var tarih78="";
+    var tarih79="";
+    var tarih710="";
+    var tarih711="";
+    var tarih712="";
+    
+    var tarih81="";
+    var tarih82="";
+    var tarih83="";
+    var tarih84="";
+    var tarih85="";
+    var tarih86="";
+    var tarih87="";
+    var tarih88="";
+    var tarih89="";
+    var tarih810="";
+    var tarih811="";
+    var tarih812="";
+    
+    var tarih91="";
+    var tarih92="";
+    var tarih93="";
+    var tarih94="";
+    var tarih95="";
+    var tarih96="";
+    var tarih97="";
+    var tarih98="";
+    var tarih99="";
+    var tarih910="";
+    var tarih911="";
+    var tarih912="";
+    
+    var tarih101="";
+    var tarih102="";
+    var tarih103="";
+    var tarih104="";
+    var tarih105="";
+    var tarih106="";
+    var tarih107="";
+    var tarih108="";
+    var tarih109="";
+    var tarih1010="";
+    var tarih1011="";
+    var tarih1012="";
+    
+    var tarihonbir1="";
+    var tarihonbir2="";
+    var tarihonbir3="";
+    var tarihonbir4="";
+    var tarihonbir5="";
+    var tarihonbir6="";
+    var tarihonbir7="";
+    var tarihonbir8="";
+    var tarihonbir9="";
+    var tarihonbir10="";
+    var tarihonbir11="";
+    var tarihonbir12="";
+    
+    var tarihoniki1="";
+    var tarihoniki2="";
+    var tarihoniki3="";
+    var tarihoniki4="";
+    var tarihoniki5="";
+    var tarihoniki6="";
+    var tarihoniki7="";
+    var tarihoniki8="";
+    var tarihoniki9="";
+    var tarihoniki10="";
+    var tarihoniki11="";
+    var tarihoniki12="";
+    
+    var tarih131="";
+    var tarih132="";
+    var tarih133="";
+    var tarih134="";
+    var tarih135="";
+    var tarih136="";
+    var tarih137="";
+    var tarih138="";
+    var tarih139="";
+    var tarih1310="";
+    var tarih1311="";
+    var tarih1312="";
+    
+    var tarih141="";
+    var tarih142="";
+    var tarih143="";
+    var tarih144="";
+    var tarih145="";
+    var tarih146="";
+    var tarih147="";
+    var tarih148="";
+    var tarih149="";
+    var tarih1410="";
+    var tarih1411="";
+    var tarih1412="";
+    
+    
+    var tarih151="";
+    var tarih152="";
+    var tarih153="";
+    var tarih154="";
+    var tarih155="";
+    var tarih156="";
+    var tarih157="";
+    var tarih158="";
+    var tarih159="";
+    var tarih1510="";
+    var tarih1511="";
+    var tarih1512="";
+    
+    var tarih161="";
+    var tarih162="";
+    var tarih163="";
+    var tarih164="";
+    var tarih165="";
+    var tarih166="";
+    var tarih167="";
+    var tarih168="";
+    var tarih169="";
+    var tarih1610="";
+    var tarih1611="";
+    var tarih1612="";
+    
+    var tarih171="";
+    var tarih172="";
+    var tarih173="";
+    var tarih174="";
+    var tarih175="";
+    var tarih176="";
+    var tarih177="";
+    var tarih178="";
+    var tarih179="";
+    var tarih1710="";
+    var tarih1711="";
+    var tarih1712="";
+    
+    var tarih181="";
+    var tarih182="";
+    var tarih183="";
+    var tarih184="";
+    var tarih185="";
+    var tarih186="";
+    var tarih187="";
+    var tarih188="";
+    var tarih189="";
+    var tarih1810="";
+    var tarih1811="";
+    var tarih1812="";
+    
+    var tarih191="";
+    var tarih192="";
+    var tarih193="";
+    var tarih194="";
+    var tarih195="";
+    var tarih196="";
+    var tarih197="";
+    var tarih198="";
+    var tarih199="";
+    var tarih1910="";
+    var tarih1911="";
+    var tarih1912="";
+
+    var periyot1="";
+    var periyot2="";
+    var periyot3="";
+    var periyot4="";
+    var periyot5="";
+    var periyot6="";
+    var periyot7="";
+    var periyot8="";
+    var periyot9="";
+    var periyot10="";
+    var periyot11="";
+    var periyot12="";
+    var periyot13="";
+    var periyot14="";
+    var periyot15="";
+    var periyot16="";
+    var periyot17="";
+    var periyot18="";
+    var periyot19="";
+
+    if(aylikPlanVarmi!=null){
+
+       
+
+        tarih11=secilenAylikPlan.tarih11;
+        tarih12=secilenAylikPlan.tarih12;
+        tarih13=secilenAylikPlan.tarih13;
+        tarih14=secilenAylikPlan.tarih14;
+        tarih15=secilenAylikPlan.tarih15;
+        tarih16=secilenAylikPlan.tarih16;
+        tarih17=secilenAylikPlan.tarih17;
+        tarih18=secilenAylikPlan.tarih18;
+        tarih19=secilenAylikPlan.tarih19;
+        tarih110=secilenAylikPlan.tarih110;
+        tarih111=secilenAylikPlan.tarih111;
+        tarih112=secilenAylikPlan.tarih112;
+
+        
+        tarih21=secilenAylikPlan.tarih21;
+        tarih22=secilenAylikPlan.tarih22;
+        tarih23=secilenAylikPlan.tarih23;
+        tarih24=secilenAylikPlan.tarih24;
+        tarih25=secilenAylikPlan.tarih25;
+        tarih26=secilenAylikPlan.tarih26;
+        tarih27=secilenAylikPlan.tarih27;
+        tarih28=secilenAylikPlan.tarih28;
+        tarih29=secilenAylikPlan.tarih29;
+        tarih210=secilenAylikPlan.tarih210;
+        tarih211=secilenAylikPlan.tarih211;
+        tarih212=secilenAylikPlan.tarih212;
+
+        
+        tarih31=secilenAylikPlan.tarih31;
+        tarih32=secilenAylikPlan.tarih32;
+        tarih33=secilenAylikPlan.tarih33;
+        tarih34=secilenAylikPlan.tarih34;
+        tarih35=secilenAylikPlan.tarih35;
+        tarih36=secilenAylikPlan.tarih36;
+        tarih37=secilenAylikPlan.tarih37;
+        tarih38=secilenAylikPlan.tarih38;
+        tarih39=secilenAylikPlan.tarih39;
+        tarih310=secilenAylikPlan.tarih310;
+        tarih311=secilenAylikPlan.tarih311;
+        tarih312=secilenAylikPlan.tarih312;
+
+        
+        tarih41=secilenAylikPlan.tarih41;
+        tarih42=secilenAylikPlan.tarih42;
+        tarih43=secilenAylikPlan.tarih43;
+        tarih44=secilenAylikPlan.tarih44;
+        tarih45=secilenAylikPlan.tarih45;
+        tarih46=secilenAylikPlan.tarih46;
+        tarih47=secilenAylikPlan.tarih47;
+        tarih48=secilenAylikPlan.tarih48;
+        tarih49=secilenAylikPlan.tarih49;
+        tarih410=secilenAylikPlan.tarih410;
+        tarih411=secilenAylikPlan.tarih411;
+        tarih412=secilenAylikPlan.tarih412;
+
+        
+        tarih51=secilenAylikPlan.tarih51;
+        tarih52=secilenAylikPlan.tarih52;
+        tarih53=secilenAylikPlan.tarih53;
+        tarih54=secilenAylikPlan.tarih54;
+        tarih55=secilenAylikPlan.tarih55;
+        tarih56=secilenAylikPlan.tarih56;
+        tarih57=secilenAylikPlan.tarih57;
+        tarih58=secilenAylikPlan.tarih58;
+        tarih59=secilenAylikPlan.tarih59;
+        tarih510=secilenAylikPlan.tarih510;
+        tarih511=secilenAylikPlan.tarih511;
+        tarih512=secilenAylikPlan.tarih512;
+
+        
+        tarih61=secilenAylikPlan.tarih61;
+        tarih62=secilenAylikPlan.tarih62;
+        tarih63=secilenAylikPlan.tarih63;
+        tarih64=secilenAylikPlan.tarih64;
+        tarih65=secilenAylikPlan.tarih65;
+        tarih66=secilenAylikPlan.tarih66;
+        tarih67=secilenAylikPlan.tarih67;
+        tarih68=secilenAylikPlan.tarih68;
+        tarih69=secilenAylikPlan.tarih69;
+        tarih610=secilenAylikPlan.tarih610;
+        tarih611=secilenAylikPlan.tarih611;
+        tarih612=secilenAylikPlan.tarih612;
+
+        
+        tarih71=secilenAylikPlan.tarih71;
+        tarih72=secilenAylikPlan.tarih72;
+        tarih73=secilenAylikPlan.tarih73;
+        tarih74=secilenAylikPlan.tarih74;
+        tarih75=secilenAylikPlan.tarih75;
+        tarih76=secilenAylikPlan.tarih76;
+        tarih77=secilenAylikPlan.tarih77;
+        tarih78=secilenAylikPlan.tarih78;
+        tarih79=secilenAylikPlan.tarih79;
+        tarih710=secilenAylikPlan.tarih710;
+        tarih711=secilenAylikPlan.tarih711;
+        tarih712=secilenAylikPlan.tarih712;
+
+        
+        tarih81=secilenAylikPlan.tarih81;
+        tarih82=secilenAylikPlan.tarih82;
+        tarih83=secilenAylikPlan.tarih83;
+        tarih84=secilenAylikPlan.tarih84;
+        tarih85=secilenAylikPlan.tarih85;
+        tarih86=secilenAylikPlan.tarih86;
+        tarih87=secilenAylikPlan.tarih87;
+        tarih88=secilenAylikPlan.tarih88;
+        tarih89=secilenAylikPlan.tarih89;
+        tarih810=secilenAylikPlan.tarih810;
+        tarih811=secilenAylikPlan.tarih811;
+        tarih812=secilenAylikPlan.tarih812;
+
+        
+        tarih91=secilenAylikPlan.tarih91;
+        tarih92=secilenAylikPlan.tarih92;
+        tarih93=secilenAylikPlan.tarih93;
+        tarih94=secilenAylikPlan.tarih94;
+        tarih95=secilenAylikPlan.tarih95;
+        tarih96=secilenAylikPlan.tarih96;
+        tarih97=secilenAylikPlan.tarih97;
+        tarih98=secilenAylikPlan.tarih98;
+        tarih99=secilenAylikPlan.tarih99;
+        tarih910=secilenAylikPlan.tarih910;
+        tarih911=secilenAylikPlan.tarih911;
+        tarih912=secilenAylikPlan.tarih912;
+
+        
+        tarih101=secilenAylikPlan.tarih101;
+        tarih102=secilenAylikPlan.tarih102;
+        tarih103=secilenAylikPlan.tarih103;
+        tarih104=secilenAylikPlan.tarih104;
+        tarih105=secilenAylikPlan.tarih105;
+        tarih106=secilenAylikPlan.tarih106;
+        tarih107=secilenAylikPlan.tarih107;
+        tarih108=secilenAylikPlan.tarih108;
+        tarih109=secilenAylikPlan.tarih109;
+        tarih1010=secilenAylikPlan.tarih1010;
+        tarih1011=secilenAylikPlan.tarih1011;
+        tarih1012=secilenAylikPlan.tarih1012;
+
+        
+        tarihonbir1=secilenAylikPlan.tarihonbir1;
+        tarihonbir2=secilenAylikPlan.tarihonbir2;
+        tarihonbir3=secilenAylikPlan.tarihonbir3;
+        tarihonbir4=secilenAylikPlan.tarihonbir4;
+        tarihonbir5=secilenAylikPlan.tarihonbir5;
+        tarihonbir6=secilenAylikPlan.tarihonbir6;
+        tarihonbir7=secilenAylikPlan.tarihonbir7;
+        tarihonbir8=secilenAylikPlan.tarihonbir8;
+        tarihonbir9=secilenAylikPlan.tarihonbir9;
+        tarihonbir10=secilenAylikPlan.tarihonbir10;
+        tarihonbir11=secilenAylikPlan.tarihonbir11;
+        tarihonbir12=secilenAylikPlan.tarihonbir12;
+
+        
+        tarihoniki1=secilenAylikPlan.tarihoniki1;
+        tarihoniki2=secilenAylikPlan.tarihoniki2;
+        tarihoniki3=secilenAylikPlan.tarihoniki3;
+        tarihoniki4=secilenAylikPlan.tarihoniki4;
+        tarihoniki5=secilenAylikPlan.tarihoniki5;
+        tarihoniki6=secilenAylikPlan.tarihoniki6;
+        tarihoniki7=secilenAylikPlan.tarihoniki7;
+        tarihoniki8=secilenAylikPlan.tarihoniki8;
+        tarihoniki9=secilenAylikPlan.tarihoniki9;
+        tarihoniki10=secilenAylikPlan.tarihoniki10;
+        tarihoniki11=secilenAylikPlan.tarihoniki11;
+        tarihoniki12=secilenAylikPlan.tarihoniki12;
+
+        
+        tarih131=secilenAylikPlan.tarih131;
+        tarih132=secilenAylikPlan.tarih132;
+        tarih133=secilenAylikPlan.tarih133;
+        tarih134=secilenAylikPlan.tarih134;
+        tarih135=secilenAylikPlan.tarih135;
+        tarih136=secilenAylikPlan.tarih136;
+        tarih137=secilenAylikPlan.tarih137;
+        tarih138=secilenAylikPlan.tarih138;
+        tarih139=secilenAylikPlan.tarih139;
+        tarih1310=secilenAylikPlan.tarih1310;
+        tarih1311=secilenAylikPlan.tarih1311;
+        tarih1312=secilenAylikPlan.tarih1312;
+
+        
+        tarih141=secilenAylikPlan.tarih141;
+        tarih142=secilenAylikPlan.tarih142;
+        tarih143=secilenAylikPlan.tarih143;
+        tarih144=secilenAylikPlan.tarih144;
+        tarih145=secilenAylikPlan.tarih145;
+        tarih146=secilenAylikPlan.tarih146;
+        tarih147=secilenAylikPlan.tarih147;
+        tarih148=secilenAylikPlan.tarih148;
+        tarih149=secilenAylikPlan.tarih149;
+        tarih1410=secilenAylikPlan.tarih1410;
+        tarih1411=secilenAylikPlan.tarih1411;
+        tarih1412=secilenAylikPlan.tarih1412;
+
+        
+        tarih151=secilenAylikPlan.tarih151;
+        tarih152=secilenAylikPlan.tarih152;
+        tarih153=secilenAylikPlan.tarih153;
+        tarih154=secilenAylikPlan.tarih154;
+        tarih155=secilenAylikPlan.tarih155;
+        tarih156=secilenAylikPlan.tarih156;
+        tarih157=secilenAylikPlan.tarih157;
+        tarih158=secilenAylikPlan.tarih158;
+        tarih159=secilenAylikPlan.tarih159;
+        tarih1510=secilenAylikPlan.tarih1510;
+        tarih1511=secilenAylikPlan.tarih1511;
+        tarih1512=secilenAylikPlan.tarih1512;
+
+        
+        tarih161=secilenAylikPlan.tarih161;
+        tarih162=secilenAylikPlan.tarih162;
+        tarih163=secilenAylikPlan.tarih163;
+        tarih164=secilenAylikPlan.tarih164;
+        tarih165=secilenAylikPlan.tarih165;
+        tarih166=secilenAylikPlan.tarih166;
+        tarih167=secilenAylikPlan.tarih167;
+        tarih168=secilenAylikPlan.tarih168;
+        tarih169=secilenAylikPlan.tarih169;
+        tarih1610=secilenAylikPlan.tarih1610;
+        tarih1611=secilenAylikPlan.tarih1611;
+        tarih1612=secilenAylikPlan.tarih1612;
+
+        
+        tarih171=secilenAylikPlan.tarih171;
+        tarih172=secilenAylikPlan.tarih172;
+        tarih173=secilenAylikPlan.tarih173;
+        tarih174=secilenAylikPlan.tarih174;
+        tarih175=secilenAylikPlan.tarih175;
+        tarih176=secilenAylikPlan.tarih176;
+        tarih177=secilenAylikPlan.tarih177;
+        tarih178=secilenAylikPlan.tarih178;
+        tarih179=secilenAylikPlan.tarih179;
+        tarih1710=secilenAylikPlan.tarih1710;
+        tarih1711=secilenAylikPlan.tarih1711;
+        tarih1712=secilenAylikPlan.tarih1712;
+
+        
+        tarih181=secilenAylikPlan.tarih181;
+        tarih182=secilenAylikPlan.tarih182;
+        tarih183=secilenAylikPlan.tarih183;
+        tarih184=secilenAylikPlan.tarih184;
+        tarih185=secilenAylikPlan.tarih185;
+        tarih186=secilenAylikPlan.tarih186;
+        tarih187=secilenAylikPlan.tarih187;
+        tarih188=secilenAylikPlan.tarih188;
+        tarih189=secilenAylikPlan.tarih189;
+        tarih1810=secilenAylikPlan.tarih1810;
+        tarih1811=secilenAylikPlan.tarih1811;
+        tarih1812=secilenAylikPlan.tarih1812;
+
+        
+        tarih191=secilenAylikPlan.tarih191;
+        tarih192=secilenAylikPlan.tarih192;
+        tarih193=secilenAylikPlan.tarih193;
+        tarih194=secilenAylikPlan.tarih194;
+        tarih195=secilenAylikPlan.tarih195;
+        tarih196=secilenAylikPlan.tarih196;
+        tarih197=secilenAylikPlan.tarih197;
+        tarih198=secilenAylikPlan.tarih198;
+        tarih199=secilenAylikPlan.tarih199;
+        tarih1910=secilenAylikPlan.tarih1910;
+        tarih1911=secilenAylikPlan.tarih1911;
+        tarih1912=secilenAylikPlan.tarih1912;
+
+    }
+
+
+
+
+
+
+
+
+    var mount="";
+
+if(ay=="OCAK"){
+    mount="1";
+}else 
+if(ay=="ŞUBAT"){
+    mount="2";
+}else 
+if(ay=="MART"){
+    mount="3";
+}else 
+if(ay=="NİSAN"){
+    mount="4";
+}else 
+if(ay=="MAYIS"){
+    mount="5";
+}else 
+if(ay=="HAZİRAN"){
+    mount="6";
+}else 
+if(ay=="TEMMUZ"){
+    mount="7";
+}else 
+if(ay=="AĞUSTOS"){
+    mount="8";
+}else 
+if(ay=="EYLÜL"){
+    mount="9";
+}else 
+if(ay=="EKİM"){
+    mount="10";
+}else 
+if(ay=="KASIM"){
+    mount="11";
+}else 
+if(ay=="ARALIK"){
+    mount="12";
+}
+    
+
+    //YILLIK PLAN MADDELERİ BAŞLANGIC//       
+    var madde1="Çalışanların Özlük Dosyalarının Oluşturulması ve Kontrolü";
+    var madde2="İşçi Sağlığı ve Güvenliği Eğitimleri Düzenlenmes";
+    var madde3="İçme Suyunun Analizi ve Raporlanması";
+    var madde4="Seyyar Yangın Söndürme Cihazlarının Periyodik Kontrolü ";
+    var madde5="Alarm ve Tahliye Denemeleri Yapılması ve Raporlanması";
+    var madde6="Yıllık Çalışma Planı Hazırlanması ve Revize Edilmesi";
+    var madde7="Yıllık Değerlendirme Raporu Hazırlanması";
+    var madde8="Kaldırma Araçlarının Periyodik Kontrollerinin Yapılması ve Raporlanması";
+    var madde9="Basınçlı Kapların Periyodik Kontrollerinin Yapılması ve Raporlanması";
+    var madde10="Elektrik Tesisatı ve Aydınlatma Devresinin Periyodik Kontrolünün Yapılması ";
+    var madde11="Ağır ve Tehlikeli İşlerde Çalışacaklara Ait İşe Giriş / Periyodik Muayenenin Yapılması";
+    var madde12="Mutfak ve Çay Ocağı Çalışanlarına Portör Muayenesi Yaptırılması";
+    var madde13="Laboratuar Tetkiklerinin Yapılması ";
+    var madde14="Ortam Toz Seviyesinin Ölçülmesi ve Raporlanması";
+    var madde15="Ortam Termal Konfor Şartlarının (Sıcaklık-Nem) Ölçülmesi ve Raporlanması";
+    var madde16="Ortam Gürültü Seviyesinin Ölçülmesi ve Raporlanması";
+    var madde17="İş Sağlığı ve Güvenliği Kurul Toplantısının Yapılması";
+    var madde18="Acil Durum Ekiplerinin Oluşturulması /Güncellenmesi";
+    var madde19="İş Sağlığı ve Güvenliği talimatlarının hazırlanması/güncellenmesi ";
+//YILLIK PLAN MADDELERİ SONU//
+
+
+if(IsPost){
+    
+    tarih11=Request["tarih11"];
+       tarih12=Request["tarih12"];
+       tarih13=Request["tarih13"];
+       tarih14=Request["tarih14"];
+       tarih15=Request["tarih15"];
+       tarih16=Request["tarih16"];
+       tarih17=Request["tarih17"];
+       tarih18=Request["tarih18"];
+       tarih19=Request["tarih19"];
+       tarih110=Request["tarih110"];
+       tarih111=Request["tarih111"];
+       tarih112=Request["tarih112"];
+      periyot1="periyot1";
+    
+      tarih21=Request["tarih21"];
+       tarih22=Request["tarih22"];
+       tarih23=Request["tarih23"];
+       tarih24=Request["tarih24"];
+       tarih25=Request["tarih25"];
+       tarih26=Request["tarih26"];
+       tarih27=Request["tarih27"];
+       tarih28=Request["tarih28"];
+       tarih29=Request["tarih29"];
+       tarih210=Request["tarih210"];
+       tarih211=Request["tarih211"];
+       tarih212=Request["tarih212"];
+      periyot2="periyot2";
+
+
+      tarih31=Request["tarih31"];
+       tarih32=Request["tarih32"];
+       tarih33=Request["tarih33"];
+       tarih34=Request["tarih34"];
+       tarih35=Request["tarih35"];
+       tarih36=Request["tarih36"];
+       tarih37=Request["tarih37"];
+       tarih38=Request["tarih38"];
+       tarih39=Request["tarih39"];
+       tarih310=Request["tarih310"];
+       tarih311=Request["tarih311"];
+       tarih312=Request["tarih312"];
+      periyot3="periyot3";
+
+      tarih41=Request["tarih41"];
+       tarih42=Request["tarih42"];
+       tarih43=Request["tarih43"];
+       tarih44=Request["tarih44"];
+       tarih45=Request["tarih45"];
+       tarih46=Request["tarih46"];
+       tarih47=Request["tarih47"];
+       tarih48=Request["tarih48"];
+       tarih49=Request["tarih49"];
+       tarih410=Request["tarih410"];
+       tarih411=Request["tarih411"];
+       tarih412=Request["tarih412"];
+      periyot4="periyot4";
+
+      tarih51=Request["tarih51"];
+       tarih52=Request["tarih52"];
+       tarih53=Request["tarih53"];
+       tarih54=Request["tarih54"];
+       tarih55=Request["tarih55"];
+       tarih56=Request["tarih56"];
+       tarih57=Request["tarih57"];
+       tarih58=Request["tarih58"];
+       tarih59=Request["tarih59"];
+       tarih510=Request["tarih510"];
+       tarih511=Request["tarih511"];
+       tarih512=Request["tarih512"];
+      periyot5="periyot5";
+
+
+      tarih61=Request["tarih61"];
+       tarih62=Request["tarih62"];
+       tarih63=Request["tarih63"];
+       tarih64=Request["tarih64"];
+       tarih65=Request["tarih65"];
+       tarih66=Request["tarih66"];
+       tarih67=Request["tarih67"];
+       tarih68=Request["tarih68"];
+       tarih69=Request["tarih69"];
+       tarih610=Request["tarih610"];
+       tarih611=Request["tarih611"];
+       tarih612=Request["tarih612"];
+      periyot6="periyot6";
+	   
+	   tarih71=Request["tarih71"];
+       tarih72=Request["tarih72"];
+       tarih73=Request["tarih73"];
+       tarih74=Request["tarih74"];
+       tarih75=Request["tarih75"];
+       tarih76=Request["tarih76"];
+       tarih77=Request["tarih77"];
+       tarih78=Request["tarih78"];
+       tarih79=Request["tarih79"];
+       tarih710=Request["tarih710"];
+       tarih711=Request["tarih711"];
+       tarih712=Request["tarih712"];
+      periyot7="periyot7";
+	   
+	   tarih81=Request["tarih81"];
+       tarih82=Request["tarih82"];
+       tarih83=Request["tarih83"];
+       tarih84=Request["tarih84"];
+       tarih85=Request["tarih85"];
+       tarih86=Request["tarih86"];
+       tarih87=Request["tarih87"];
+       tarih88=Request["tarih88"];
+       tarih89=Request["tarih89"];
+       tarih810=Request["tarih810"];
+       tarih811=Request["tarih811"];
+       tarih812=Request["tarih812"];
+      periyot8="periyot8";
+	   
+	   tarih91=Request["tarih91"];
+       tarih92=Request["tarih92"];
+       tarih93=Request["tarih93"];
+       tarih94=Request["tarih94"];
+       tarih95=Request["tarih95"];
+       tarih96=Request["tarih96"];
+       tarih97=Request["tarih97"];
+       tarih98=Request["tarih98"];
+       tarih99=Request["tarih99"];
+       tarih910=Request["tarih910"];
+       tarih911=Request["tarih911"];
+       tarih912=Request["tarih912"];
+      periyot9="periyot9";
+      
+      
+       tarih101=Request["tarih101"];
+       tarih102=Request["tarih102"];
+       tarih103=Request["tarih103"];
+       tarih104=Request["tarih104"];
+       tarih105=Request["tarih105"];
+       tarih106=Request["tarih106"];
+       tarih107=Request["tarih107"];
+       tarih108=Request["tarih108"];
+       tarih109=Request["tarih109"];
+       tarih1010=Request["tarih1010"];
+       tarih1011=Request["tarih1011"];
+       tarih1012=Request["tarih1012"];
+      periyot10="periyot10";
+
+      tarihonbir1=Request["tarihonbir1"];
+       tarihonbir2=Request["tarihonbir2"];
+       tarihonbir3=Request["tarihonbir3"];
+       tarihonbir4=Request["tarihonbir4"];
+       tarihonbir5=Request["tarihonbir5"];
+       tarihonbir6=Request["tarihonbir6"];
+       tarihonbir7=Request["tarihonbir7"];
+       tarihonbir8=Request["tarihonbir8"];
+       tarihonbir9=Request["tarihonbir9"];
+       tarihonbir10=Request["tarihonbir10"];
+       tarihonbir11=Request["tarihonbir11"];
+       tarihonbir12=Request["tarihonbir12"];
+      periyot11="periyot11";
+
+      tarihoniki1=Request["tarihoniki1"];
+       tarihoniki2=Request["tarihoniki2"];
+       tarihoniki3=Request["tarihoniki3"];
+       tarihoniki4=Request["tarihoniki4"];
+       tarihoniki5=Request["tarihoniki5"];
+       tarihoniki6=Request["tarihoniki6"];
+       tarihoniki7=Request["tarihoniki7"];
+       tarihoniki8=Request["tarihoniki8"];
+       tarihoniki9=Request["tarihoniki9"];
+       tarihoniki10=Request["tarihoniki10"];
+       tarihoniki11=Request["tarihoniki11"];
+       tarihoniki12=Request["tarihoniki12"];
+      periyot12="periyot12";
+
+      
+	   
+	   tarih131=Request["tarih131"];
+       tarih132=Request["tarih132"];
+       tarih133=Request["tarih133"];
+       tarih134=Request["tarih134"];
+       tarih135=Request["tarih135"];
+       tarih136=Request["tarih136"];
+       tarih137=Request["tarih137"];
+       tarih138=Request["tarih138"];
+       tarih139=Request["tarih139"];
+       tarih1310=Request["tarih1310"];
+       tarih1311=Request["tarih1311"];
+       tarih1312=Request["tarih1312"];
+      periyot13="periyot13";
+	   
+	   tarih141=Request["tarih141"];
+       tarih142=Request["tarih142"];
+       tarih143=Request["tarih143"];
+       tarih144=Request["tarih144"];
+       tarih145=Request["tarih145"];
+       tarih146=Request["tarih146"];
+       tarih147=Request["tarih147"];
+       tarih148=Request["tarih148"];
+       tarih149=Request["tarih149"];
+       tarih1410=Request["tarih1410"];
+       tarih1411=Request["tarih1411"];
+       tarih1412=Request["tarih1412"];
+      periyot14="periyot14";   
+	   
+	   tarih151=Request["tarih151"];
+       tarih152=Request["tarih152"];
+       tarih153=Request["tarih153"];
+       tarih154=Request["tarih154"];
+       tarih155=Request["tarih155"];
+       tarih156=Request["tarih156"];
+       tarih157=Request["tarih157"];
+       tarih158=Request["tarih158"];
+       tarih159=Request["tarih159"];
+       tarih1510=Request["tarih1510"];
+       tarih1511=Request["tarih1511"];
+       tarih1512=Request["tarih1512"];
+      periyot15="periyot15";	   
+	   
+	   tarih161=Request["tarih161"];
+       tarih162=Request["tarih162"];
+       tarih163=Request["tarih163"];
+       tarih164=Request["tarih164"];
+       tarih165=Request["tarih165"];
+       tarih166=Request["tarih166"];
+       tarih167=Request["tarih167"];
+       tarih168=Request["tarih168"];
+       tarih169=Request["tarih169"];
+       tarih1610=Request["tarih1610"];
+       tarih1611=Request["tarih1611"];
+       tarih1612=Request["tarih1612"];
+      periyot16="periyot16";
+	   
+	   tarih171=Request["tarih171"];
+       tarih172=Request["tarih172"];
+       tarih173=Request["tarih173"];
+       tarih174=Request["tarih174"];
+       tarih175=Request["tarih175"];
+       tarih176=Request["tarih176"];
+       tarih177=Request["tarih177"];
+       tarih178=Request["tarih178"];
+       tarih179=Request["tarih179"];
+       tarih1710=Request["tarih1710"];
+       tarih1711=Request["tarih1711"];
+       tarih1712=Request["tarih1712"];
+      periyot17="periyot17";
+	   
+	   tarih181=Request["tarih181"];
+       tarih182=Request["tarih182"];
+       tarih183=Request["tarih183"];
+       tarih184=Request["tarih184"];
+       tarih185=Request["tarih185"];
+       tarih186=Request["tarih186"];
+       tarih187=Request["tarih187"];
+       tarih188=Request["tarih188"];
+       tarih189=Request["tarih189"];
+       tarih1810=Request["tarih1810"];
+       tarih1811=Request["tarih1811"];
+       tarih1812=Request["tarih1812"];
+      periyot18="periyot18";
+	   
+	   tarih191=Request["tarih191"];
+       tarih192=Request["tarih192"];
+       tarih193=Request["tarih193"];
+       tarih194=Request["tarih194"];
+       tarih195=Request["tarih195"];
+       tarih196=Request["tarih196"];
+       tarih197=Request["tarih197"];
+       tarih198=Request["tarih198"];
+       tarih199=Request["tarih199"];
+       tarih1910=Request["tarih1910"];
+       tarih1911=Request["tarih1911"];
+       tarih1912=Request["tarih1912"];
+      periyot19="periyot19";
+
+      if(aylikPlanVarmi==null){
+          if(mount=="1"){
+            db.Execute(ocakaylikPlanEkle,id,isgUzman,hekim,tarih11,tarih21,tarih31,tarih41,tarih51,tarih61,tarih71,tarih81,tarih91,tarih101,tarihonbir1,tarihoniki1,tarih131,tarih141,tarih151,tarih161,tarih171,tarih181,tarih191,firmaAdi);
+        }
+ if(mount=="2"){
+            db.Execute(subataylikPlanEkle,id,isgUzman,hekim,tarih12,tarih22,tarih32,tarih42,tarih52,tarih62,tarih72,tarih82,tarih92,tarih102,tarihonbir2,tarihoniki2,tarih132,tarih142,tarih152,tarih162,tarih172,tarih182,tarih192,firmaAdi);
+        } 
+ if(mount=="3"){
+            db.Execute(martaylikPlanEkle,id,isgUzman,hekim,tarih13,tarih23,tarih33,tarih43,tarih53,tarih63,tarih73,tarih83,tarih93,tarih103,tarihonbir3,tarihoniki3,tarih133,tarih143,tarih153,tarih163,tarih173,tarih183,tarih193,firmaAdi);
+        }
+ if(mount=="4"){
+            db.Execute(nisanaylikPlanEkle,id,isgUzman,hekim,tarih14,tarih24,tarih34,tarih44,tarih54,tarih64,tarih74,tarih84,tarih94,tarih104,tarihonbir4,tarihoniki4,tarih134,tarih144,tarih154,tarih164,tarih174,tarih184,tarih194,firmaAdi);
+        }
+ if(mount=="5"){
+            db.Execute(mayisaylikPlanEkle,id,isgUzman,hekim,tarih15,tarih25,tarih35,tarih45,tarih55,tarih65,tarih75,tarih85,tarih95,tarih105,tarihonbir5,tarihoniki5,tarih135,tarih145,tarih155,tarih165,tarih175,tarih185,tarih195,firmaAdi);
+        }
+ if(mount=="6"){
+            db.Execute(haziranaylikPlanEkle,id,isgUzman,hekim,tarih16,tarih26,tarih36,tarih46,tarih56,tarih66,tarih76,tarih86,tarih96,tarih106,tarihonbir6,tarihoniki6,tarih136,tarih146,tarih156,tarih166,tarih176,tarih186,tarih196,firmaAdi);
+        }
+ if(mount=="7"){
+            db.Execute(temmuzaylikPlanEkle,id,isgUzman,hekim,tarih17,tarih27,tarih37,tarih47,tarih57,tarih67,tarih77,tarih87,tarih97,tarih107,tarihonbir7,tarihoniki7,tarih137,tarih147,tarih157,tarih167,tarih177,tarih187,tarih197,firmaAdi);
+        }
+ if(mount=="8"){
+            db.Execute(agustosaylikPlanEkle,id,isgUzman,hekim,tarih18,tarih28,tarih38,tarih48,tarih58,tarih68,tarih78,tarih88,tarih98,tarih108,tarihonbir8,tarihoniki8,tarih138,tarih148,tarih158,tarih168,tarih178,tarih188,tarih198,firmaAdi);
+        }
+ if(mount=="9"){
+            db.Execute(eylulaylikPlanEkle,id,isgUzman,hekim,tarih19,tarih29,tarih39,tarih49,tarih59,tarih69,tarih79,tarih89,tarih99,tarih109,tarihonbir9,tarihoniki9,tarih139,tarih149,tarih159,tarih169,tarih179,tarih189,tarih199,firmaAdi);
+        }
+ if(mount=="10"){
+            db.Execute(ekimaylikPlanEkle,id,isgUzman,hekim,tarih110,tarih210,tarih310,tarih410,tarih510,tarih610,tarih710,tarih810,tarih910,tarih1010,tarihonbir10,tarihoniki10,tarih1310,tarih1410,tarih1510,tarih1610,tarih1710,tarih1810,tarih1910,firmaAdi);
+        }
+ if(mount=="11"){
+            db.Execute(kasimaylikPlanEkle,id,isgUzman,hekim,tarih111,tarih211,tarih311,tarih411,tarih511,tarih611,tarih711,tarih811,tarih911,tarih1011,tarihonbir11,tarihoniki11,tarih1311,tarih1411,tarih1511,tarih1611,tarih1711,tarih1811,tarih1911,firmaAdi);
+        }
+ if(mount=="12"){
+            db.Execute(aralikaylikPlanEkle,id,isgUzman,hekim,tarih112,tarih212,tarih312,tarih412,tarih512,tarih612,tarih712,tarih812,tarih912,tarih1012,tarihonbir12,tarihoniki12,tarih1312,tarih1412,tarih1512,tarih1612,tarih1712,tarih1812,tarih1912,firmaAdi);
+        }
+   }
+   else{
+        if(mount=="1"){
+            db.Execute(ocakaylikPlanGuncelle,tarih11,tarih21,tarih31,tarih41,tarih51,tarih61,tarih71,tarih81,tarih91,tarih101,tarihonbir1,tarihoniki1,tarih131,tarih141,tarih151,tarih161,tarih171,tarih181,tarih191,firmaAdi,id);
+        }
+ if(mount=="2"){
+            db.Execute(subataylikPlanGuncelle,tarih12,tarih22,tarih32,tarih42,tarih52,tarih62,tarih72,tarih82,tarih92,tarih102,tarihonbir2,tarihoniki2,tarih132,tarih142,tarih152,tarih162,tarih172,tarih182,tarih192,firmaAdi,id);
+        } 
+ if(mount=="3"){
+            db.Execute(martaylikPlanGuncelle,tarih13,tarih23,tarih33,tarih43,tarih53,tarih63,tarih73,tarih83,tarih93,tarih103,tarihonbir3,tarihoniki3,tarih133,tarih143,tarih153,tarih163,tarih173,tarih183,tarih193,firmaAdi,id);
+        }
+ if(mount=="4"){
+            db.Execute(nisanaylikPlanGuncelle,tarih14,tarih24,tarih34,tarih44,tarih54,tarih64,tarih74,tarih84,tarih94,tarih104,tarihonbir4,tarihoniki4,tarih134,tarih144,tarih154,tarih164,tarih174,tarih184,tarih194,firmaAdi,id);
+        }
+ if(mount=="5"){
+            db.Execute(mayisaylikPlanGuncelle,tarih15,tarih25,tarih35,tarih45,tarih55,tarih65,tarih75,tarih85,tarih95,tarih105,tarihonbir5,tarihoniki5,tarih135,tarih145,tarih155,tarih165,tarih175,tarih185,tarih195,firmaAdi,id);
+        }
+ if(mount=="6"){
+            db.Execute(haziranaylikPlanGuncelle,tarih16,tarih26,tarih36,tarih46,tarih56,tarih66,tarih76,tarih86,tarih96,tarih106,tarihonbir6,tarihoniki6,tarih136,tarih146,tarih156,tarih166,tarih176,tarih186,tarih196,firmaAdi,id);
+        }
+ if(mount=="7"){
+            db.Execute(temmuzaylikPlanGuncelle,tarih17,tarih27,tarih37,tarih47,tarih57,tarih67,tarih77,tarih87,tarih97,tarih107,tarihonbir7,tarihoniki7,tarih137,tarih147,tarih157,tarih167,tarih177,tarih187,tarih197,firmaAdi,id);
+        }
+ if(mount=="8"){
+            db.Execute(agustosaylikPlanGuncelle,tarih18,tarih28,tarih38,tarih48,tarih58,tarih68,tarih78,tarih88,tarih98,tarih108,tarihonbir8,tarihoniki8,tarih138,tarih148,tarih158,tarih168,tarih178,tarih188,tarih198,firmaAdi,id);
+        }
+ if(mount=="9"){
+            db.Execute(eylulaylikPlanGuncelle,tarih19,tarih29,tarih39,tarih49,tarih59,tarih69,tarih79,tarih89,tarih99,tarih109,tarihonbir9,tarihoniki9,tarih139,tarih149,tarih159,tarih169,tarih179,tarih189,tarih199,firmaAdi,id);
+        }
+ if(mount=="10"){
+            db.Execute(ekimaylikPlanGuncelle,tarih110,tarih210,tarih310,tarih410,tarih510,tarih610,tarih710,tarih810,tarih910,tarih1010,tarihonbir10,tarihoniki10,tarih1310,tarih1410,tarih1510,tarih1610,tarih1710,tarih1810,tarih1910,firmaAdi,id);
+        }
+ if(mount=="11"){
+            db.Execute(kasimaylikPlanGuncelle,tarih111,tarih211,tarih311,tarih411,tarih511,tarih611,tarih711,tarih811,tarih911,tarih1011,tarihonbir11,tarihoniki11,tarih1311,tarih1411,tarih1511,tarih1611,tarih1711,tarih1811,tarih1911,firmaAdi,id);
+        }
+ if(mount=="12"){
+            db.Execute(aralikaylikPlanGuncelle,tarih112,tarih212,tarih312,tarih412,tarih512,tarih612,tarih712,tarih812,tarih912,tarih1012,tarihonbir12,tarihoniki12,tarih1312,tarih1412,tarih1512,tarih1612,tarih1712,tarih1812,tarih1912,firmaAdi,id);
+        }
+        }
+
+
+
+}   
+
+
+
+}
+<form name="aylikPlanFormu" action="" method="post">
+    <table><tr><td><a class="link" href="~/Member/YillikFaaliyetPlani?id=@id">Yıllık Plan</a></td><td><a class="link" href="~/Member/edit?id=@id">Firma Sayfası</a></td></tr></table>
+<table style="width: 960px;text-align: center;background-color: #fff" border="1" cellpadding="0" cellspacing="0" >
+    <tr>
+    <th colspan="4" class="baslik" align="center" height="50" scope="col">
+        <h1>@firmaAdi<br/>   <br/>@ay AYI ÇALIŞMA PLANI</h1>
+           <br/>   <br/>
+    </th>
+  </tr>
+     <tr style="height: 30px;">
+        <td style="width: 20px;background-color: #0094ff;color: #fff;">No</td>
+        <td style="width: 100px;background-color: #0094ff;color: #fff;">Tarih</td>
+        <td style="width: 500px;background-color: #0094ff;color: #fff;">Yapılacak Çalışma</td>
+        <td style="width: 340px;background-color: #0094ff;color: #fff;">Açıklama</td>
+    </tr>
+    @if(mount=="1"){
+    if(secilenPlan.ay11=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih11" value="@tarih11"/></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay21=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih21" value="@tarih21" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay31=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih31" value="@tarih31"  /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay41=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih41" value="@tarih41" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay51=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih51" value="@tarih51" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay61=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih61" value="@tarih61" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay71=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih71" value="@tarih71" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay81=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih81" value="@tarih81" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay91=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih91" value="@tarih91" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay101=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih101" value="@tarih101" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir1=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir1" value="@tarihonbir1" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki1=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki1" value="@tarihoniki1" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay131=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih131" value="@tarih131" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay141=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih141" value="@tarih141" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay151=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih151" value="@tarih151" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay161=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih161" value="@tarih161" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay171=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih171" value="@tarih171" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay181=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih181" value="@tarih181" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay191=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih91" value="@tarih191" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+    
+    @if(mount=="2"){
+    if(secilenPlan.ay12=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih12" value="@tarih12" /></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay22=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih22" value="@tarih22" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay32=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih32" value="@tarih32" /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay42=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih42" value="@tarih42" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay52=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih52" value="@tarih52" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay62=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih62" value="@tarih62" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay72=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih72" value="@tarih72" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay82=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih82" value="@tarih82" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay92=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih92" value="@tarih92" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay102=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih102" value="@tarih102" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir2=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir2" value="@tarihonbir2" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki2=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki2" value="@tarihoniki2" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay132=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih132" value="@tarih132" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay142=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih142" value="@tarih142" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay152=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih152" value="@tarih152" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay162=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih162" value="@tarih162" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay172=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih172" value="@tarih172" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay182=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih182" value="@tarih182" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay192=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih192" value="@tarih192" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+    
+    
+    @if(mount=="3"){
+    if(secilenPlan.ay13=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih13" value="@tarih13" /></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay23=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih23" value="@tarih23" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay33=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih33" value="@tarih33" /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay43=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih43" value="@tarih43" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay53=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih53" value="@tarih53" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay63=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih63" value="@tarih63" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay73=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih73" value="@tarih73" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay83=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih83" value="@tarih83" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay93=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih93" value="@tarih93" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay103=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih103" value="@tarih103" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir3=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir3" value="@tarihonbir3" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki3=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki3" value="@tarihoniki3" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay133=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih133" value="@tarih133" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay143=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih143" value="@tarih143" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay153=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih153" value="@tarih153" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay163=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih163" value="@tarih163" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay173=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih173" value="@tarih173" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay183=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih183" value="@tarih183" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay193=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih193" value="@tarih193" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+     
+    
+    @if(mount=="4"){
+    if(secilenPlan.ay14=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih14" value="@tarih14" /></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay24=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih24" value="@tarih24" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay34=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih34" value="@tarih34" /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay44=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih44" value="@tarih44" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay54=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih54" value="@tarih54" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay64=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih64" value="@tarih64" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay74=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih74" value="@tarih74" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay84=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih84" value="@tarih84" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay94=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih94" value="@tarih94" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay104=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih104" value="@tarih104" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir4=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir4" value="@tarihonbir4" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki4=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki4" value="@tarihoniki4" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay134=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih134" value="@tarih134" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay144=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih144" value="@tarih144" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay154=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih154" value="@tarih154" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay164=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih164" value="@tarih164" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay174=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih174" value="@tarih174" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay184=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih184" value="@tarih184" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay194=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih194" value="@tarih194" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+    
+    @if(mount=="5"){
+    if(secilenPlan.ay15=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih15" value="@tarih15" /></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay25=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih25" value="@tarih25" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay35=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih35" value="@tarih35" /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay45=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih45" value="@tarih45" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay55=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih55" value="@tarih55" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay65=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih65" value="@tarih65" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay75=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih75" value="@tarih75" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay85=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih85" value="@tarih85" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay95=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih95" value="@tarih95" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay105=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih105" value="@tarih105" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir5=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir5" value="@tarihonbir5" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki5=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki5" value="@tarihoniki5" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay135=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih135" value="@tarih135" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay145=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih145" value="@tarih145" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay155=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih155" value="@tarih155" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay165=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih165" value="@tarih165" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay175=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih175" value="@tarih175" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay185=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih185" value="@tarih185" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay195=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih195" value="@tarih195" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+    
+    @if(mount=="6"){
+    if(secilenPlan.ay16=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih16" value="@tarih16" /></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay26=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih26" value="@tarih26" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay36=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih36" value="@tarih36" /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay46=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih46" value="@tarih46" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay56=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih56" value="@tarih56" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay66=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih66" value="@tarih66" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay76=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih76" value="@tarih76" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay86=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih86" value="@tarih86" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay96=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih96" value="@tarih96" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay106=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih106" value="@tarih106" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir6=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir6" value="@tarihonbir6" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki6=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki6" value="@tarihoniki6" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay136=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih136" value="@tarih136" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay146=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih146" value="@tarih146" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay156=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih156" value="@tarih156" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay166=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih166" value="@tarih166" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay176=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih176" value="@tarih176" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay186=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih186" value="@tarih186" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay196=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih196" value="@tarih196" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+    
+    @if(mount=="7"){
+    if(secilenPlan.ay17=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih17" value="@tarih17" /></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay27=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih27" value="@tarih27" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay37=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih37" value="@tarih37" /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay47=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih47" value="@tarih47" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay57=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih57" value="@tarih57" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay67=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih67" value="@tarih67" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay77=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih77" value="@tarih77" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay87=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih87" value="@tarih87" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay97=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih97" value="@tarih97" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay107=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih107" value="@tarih107" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir7=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir7" value="@tarihonbir7" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki7=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki7" value="@tarihoniki7" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay137=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih137" value="@tarih137" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay147=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih147" value="@tarih147" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay157=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih157" value="@tarih157" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay167=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih167" value="@tarih167" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay177=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih177" value="@tarih177" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay187=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih187" value="@tarih187" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay197=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih197" value="@tarih197" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+    
+    @if(mount=="8"){
+    if(secilenPlan.ay18=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih18" value="@tarih18" /></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay28=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih28" value="@tarih28" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay38=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih38" value="@tarih38" /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay48=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih48" value="@tarih48" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay58=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih58" value="@tarih58" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay68=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih68" value="@tarih68" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay78=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih78" value="@tarih78" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay88=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih88" value="@tarih88" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay98=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih98" value="@tarih98" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay108=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih108" value="@tarih108" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir8=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir8" value="@tarihonbir8" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki8=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki8" value="@tarihoniki8" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay138=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih138" value="@tarih138" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay148=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih148" value="@tarih148" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay158=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih158" value="@tarih158" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay168=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih168" value="@tarih168" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay178=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih178" value="@tarih178" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay188=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih188" value="@tarih188" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay198=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih198" value="@tarih198" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+    
+    @if(mount=="9"){
+    if(secilenPlan.ay19=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih19" value="@tarih19" /></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay29=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih29" value="@tarih29" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay39=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih39" value="@tarih39" /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay49=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih49" value="@tarih49" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay59=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih59" value="@tarih59" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay69=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih69" value="@tarih69" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay79=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih79" value="@tarih79" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay89=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih89" value="@tarih89" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay99=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih99" value="@tarih99" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay109=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih109" value="@tarih109" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir9=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir9" value="@tarihonbir9" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki9=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki9" value="@tarihoniki9" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay139=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih139" value="@tarih139" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay149=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih149" value="@tarih149" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay159=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih159" value="@tarih159" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay169=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih169" value="@tarih169" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay179=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih179" value="@tarih179" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay189=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih189" value="@tarih189" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay199=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih199" value="@tarih199" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+    
+    @if(mount=="10"){
+    if(secilenPlan.ay110=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih110" value="@tarih110" /></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay210=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih210" value="@tarih210" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay310=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih310" value="@tarih310" /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay410=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih410" value="@tarih410" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay510=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih510" value="@tarih510" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay610=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih610" value="@tarih610" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay710=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih710" value="@tarih710" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay810=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih810" value="@tarih810" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay910=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih910" value="@tarih910" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1010=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1010" value="@tarih1010" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir10=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir10" value="@tarihonbir10" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki10=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki10" value="@tarihoniki10" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1310=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1310" value="@tarih1310" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1410=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1410" value="@tarih1410" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1510=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1510" value="@tarih1510" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1610=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1610" value="@tarih1610" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1710=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1710" value="@tarih1710" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1810=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1810" value="@tarih1810" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1910=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1910" value="@tarih1910" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+    
+    @if(mount=="11"){
+    if(secilenPlan.ay111=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih111" value="@tarih111" /></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay211=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih211" value="@tarih211" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay311=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih311" value="@tarih311" /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay411=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih411" value="@tarih411" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay511=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih511" value="@tarih511" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay611=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih611" value="@tarih611" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay711=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih711" value="@tarih711" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay811=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih811" value="@tarih811" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay911=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih911" value="@tarih911" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1011=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1011" value="@tarih1011" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir11=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir11" value="@tarihonbir11" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki11=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki11" value="@tarihoniki11" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1311=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1311" value="@tarih1311" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1411=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1411" value="@tarih1411" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1511=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1511" value="@tarih1511" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1611=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1611" value="@tarih1611" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1711=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1711" value="@tarih1711" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1811=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1811" value="@tarih1811" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1911=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1911" value="@tarih1911" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+    
+    @if(mount=="12"){
+    if(secilenPlan.ay112=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih112" value="@tarih112" /></td>
+                <td>@madde1</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay212=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih212" value="@tarih212" /></td>
+                <td>@madde2</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay312=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih312" value="@tarih312" /></td>
+                <td>@madde3</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay412=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih412" value="@tarih412" /></td>
+                <td>@madde4</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay512=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih512" value="@tarih512" /></td>
+                <td>@madde5</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay612=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih612" value="@tarih612" /></td>
+                <td>@madde6</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay712=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih712" value="@tarih712" /></td>
+                <td>@madde7</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay812=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih812" value="@tarih812" /></td>
+                <td>@madde8</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay912=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih912" value="@tarih912" /></td>
+                <td>@madde9</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1012=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1012" value="@tarih1012" /></td>
+                <td>@madde10</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayonbir12=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihonbir12" value="@tarihonbir12" /></td>
+                <td>@madde11</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ayoniki12=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarihoniki12" value="@tarihoniki12" /></td>
+                <td>@madde12</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1312=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1312" value="@tarih1312" /></td>
+                <td>@madde13</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1412=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1412" value="@tarih1412" /></td>
+                <td>@madde14</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1512=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1512" value="@tarih1512" /></td>
+                <td>@madde15</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1612=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1612" value="@tarih1612" /></td>
+                <td>@madde16</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1712=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1712" value="@tarih1712" /></td>
+                <td>@madde17</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1812=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1812" value="@tarih1812" /></td>
+                <td>@madde18</td>
+                <td></td>
+
+            </tr>
+    }
+    if(secilenPlan.ay1912=="on"){
+        <tr style="height: 50px;">
+                <td></td>
+                <td><input type="date" name="tarih1912" value="@tarih1912" /></td>
+                <td>@madde19</td>
+                <td></td>
+
+            </tr>
+    }
+
+    }
+    
+</table> 
+<input type="submit" value="@buttonName" />
+</form>

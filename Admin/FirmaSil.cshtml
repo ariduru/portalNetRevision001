@@ -1,0 +1,130 @@
+﻿@{
+    
+ var id=Request["id"];
+   
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var plansec="SELECT firmaId FROM yillikCalismaPlani WHERE firmaId=@0";
+    var db=Database.Open("OsgbPortal");
+    var firmam=db.QuerySingle(sec,id);
+    var planVarmi=db.QuerySingle(plansec,id);
+    var firmaAdi=firmam.name;
+    var sgk=firmam.sgkNo;
+    var calisanSayisi=firmam.calisanSayi;
+    var vergiDairesi=firmam.vergiDairesi;
+    var vergiNo=firmam.vergiNo;
+    var tel=firmam.telefon;
+    var fax=firmam.fax;
+    var web=firmam.web;
+    var adress=firmam.adres;
+    var muhasebeName=firmam.muhasebeci;
+    var muhasebeTel=firmam.muhasebeTel;
+    var muhasebeEmail=firmam.muhasebeMail;
+    var yetkili=firmam.yetkili;
+    var isgUzman=firmam.isgUzman;
+    var hekim=firmam.hekim;
+    var dsp=firmam.dsp;
+    var box=""; 
+    var message="";
+    
+        if (IsPost){
+            box=Request["kabul"];
+            if (box=="on"){
+               var firmasil="DELETE FROM firmalar WHERE id=@0";
+               var calisansil="DELETE FROM calisanlar WHERE firmaID=@0";
+
+               db.Execute(firmasil,id);
+               db.Execute(calisansil,firmam.id);
+               if(planVarmi==null){
+                   
+               }else{
+                   var plansil="DELETE FROM yillikCalismaPlani WHERE firmaId=@0";
+                   db.Execute(plansil,firmam.id);
+               }
+               Response.Redirect("~/Admin/Firmalar");
+            }else{
+                message="Onaylama kutusunu işaretlemediniz. İşleminiz gerçekleştirilemiyor.";
+            }
+  
+    }
+    
+}
+
+<form action="" method="post">
+<table width="100%" border="1">
+  <tr>
+    <th width="50%" scope="col"><table>
+      <tbody>
+  
+        <tr></tr>
+        <tr>
+          <td>Firma Adı :</td>
+          <td>@firmaAdi</td>
+        </tr>
+        <tr>
+          <td>SGk Sicil No :</td>
+          <td>@sgk</td>
+        </tr>
+        <tr>
+          <td>Çalışan Sayısı :</td>
+          <td>@calisanSayisi</td>
+        </tr>
+        <tr>
+          <td>Vergi Dairesi :</td>
+          <td>@vergiDairesi</td>
+        </tr>
+        <tr>
+          <td>Vergi No :</td>
+          <td>@vergiNo</td>
+        </tr>
+        <tr>
+          <td>Telefon :</td>
+          <td>@tel</td>
+        </tr>
+        <tr>
+          <td>Fax :</td>
+          <td>@fax</td>
+        </tr>
+        <tr>
+          <td>Web Sitesi :</td>
+          <td>@web</td>
+        </tr>
+        <tr>
+          <td>Adres :</td>
+          <td>@adress</td>
+        </tr>
+        <tr>
+          <td>Muhasebeci :</td>
+          <td>@muhasebeName</td>
+        </tr>
+        <tr>
+          <td>Muhasebe Telefon :</td>
+          <td>@muhasebeTel</td>
+        </tr>
+        <tr>
+          <td>Muhasebe E-mail :</td>
+          <td>@muhasebeEmail</td>
+        </tr>
+        <tr>
+          <td>Firma Yetkilisi :</td>
+          <td>@yetkili</td>
+        </tr>
+        <tr>
+          <td>İSG Uzmanı :</td>
+          <td>@isgUzman</td>
+        </tr>
+        <tr>
+          <td>İşyeri Hekimi :</td>
+          <td>@hekim</td>
+        </tr>
+        <tr>
+          <td>Sağlık Personeli :</td>
+            <td>@dsp</td>
+        </tr>
+      </tbody></th>
+    </table>
+    <p>Firmayı Silmeyi Onaylayın : <input name="kabul" type="checkbox" /></p>
+    <input type="submit" name="sil" value="Firmayı Sil" />
+    <a class="link" href="~/Admin/Firmalar">Firmalar</a>
+    <h2>@message</h2>
+        </form>
+   

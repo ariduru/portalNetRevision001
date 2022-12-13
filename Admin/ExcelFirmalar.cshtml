@@ -1,0 +1,55 @@
+﻿@{
+    Layout = null;
+
+    var appData = Server.MapPath("~/App_Data");
+    var originalFileName = "Firmalar.xls";
+    var newFileName = string.Format("{0}.xls", Guid.NewGuid().ToString());
+    var originalFile = Path.Combine(appData, originalFileName);
+    var newFile = Path.Combine(appData, newFileName);
+    File.Copy(originalFile, newFile);
+    
+    var northwind = Database.Open("OsgbPortal");
+    var sql = "SELECT name, sgkNo, calisanSayi, telefon, adres FROM firmalar";
+    var customers = northwind.Query(sql);
+    
+    var connString = string.Format(@"Provider=Microsoft.Jet.OleDb.4.0;
+                                    Data Source={0}/{1};Extended Properties='Excel 8.0;HDR=Yes;'", 
+                                    appData, newFileName);
+    var provider = "System.Data.OleDb";
+
+    using (var excel = Database.OpenConnectionString(connString, provider)){
+        
+        sql = @"INSERT INTO [Firmalarim$] (Firma, SgkSicilNo, CalisanSayisi, Telefon, Adres) 
+            VALUES (@0,@1,@2,@3,@4)";
+        foreach(var customer in customers){
+            excel.Execute(sql,  
+                customer.name, 
+                customer.sgkNo, 
+                customer.calisanSayi, 
+                customer.telefon, 
+                customer.adres);
+        }
+    }
+
+    Response.AddHeader("Content-disposition", "attachment; filename=Yaşam Yıldızı Firmalar.xls");
+    Response.ContentType = "application/octet-stream";
+    Response.TransmitFile(newFile);
+    Response.Flush();
+    File.Delete(newFile);
+    Response.End();
+}
+
+<!--<table style="border: 1px solid #a59f9f;">
+    <tr style="font-weight: bold">
+    @@foreach(var column in columns){
+        <td style="border: 1px solid #a59f9f;">@@column</td>
+    }
+    </tr>
+    @@foreach(var row in data){
+        <tr>
+        @@foreach(var column in columns){
+            <td style="border: 1px solid #a59f9f;">@@row[column]</td>
+        }
+        </tr>
+    }
+</table>-->

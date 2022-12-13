@@ -1,0 +1,84 @@
+﻿@{
+    var id=Request["id"];
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var db=Database.Open("OsgbPortal");
+    var firmam=db.QuerySingle(sec,id);
+    var firmaAdi=firmam.name;
+}
+<script type="text/javascript">
+   function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+     window.print();
+     document.body.innerHTML = originalContents;
+}
+
+</script>
+<div id="printableArea">
+<table border="1" cellspacing="0" cellpadding="0" align="left" width="715" style="background-color: #fff;">
+  <tr>
+    <td colspan="6" valign="top">
+      <p align="center"><strong>ÇALIŞMA    TUTANAĞI</strong></p></td>
+  </tr>
+  <tr>
+    <td width="149"><p>Firma Adı</p></td>
+    <td width="19"><p align="center">:</p></td>
+    <td width="319"><p>@firmaAdi</p></td>
+    <td width="94"><p>Çalışma Tarihi</p></td>
+    <td width="19"><p align="center">:</p></td>
+    <td width="103"><p align="center">&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="149"><p>Proje/ Şube Adı</p></td>
+    <td width="19"><p align="center">:</p></td>
+    <td width="319"><p>&nbsp;</p></td>
+    <td width="94"><p>Tutanak Tarihi</p></td>
+    <td width="19"><p align="center">:</p></td>
+    <td width="103"><p align="center">&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="149"><p>Şehir/Bölge</p></td>
+    <td width="19"><p align="center">:</p></td>
+    <td width="319"><p>&nbsp;</p></td>
+    <td width="94"><p>Sayfa Sayısı</p></td>
+    <td width="19"><p align="center">:</p></td>
+    <td width="103"><p align="center">&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="149"><p>İşyeri SGK No</p></td>
+    <td width="19"><p align="center">:</p></td>
+    <td width="319"><p align="center">&nbsp;</p></td>
+    <td width="94"><p>Çalışan Sayısı</p></td>
+    <td width="19"><p align="center">:</p></td>
+    <td width="103"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td height="600" colspan="6" align="left" valign="top">&nbsp;</td>
+  </tr>
+</table>
+<table border="1" cellspacing="0" cellpadding="0" align="left" width="716" style="background-color: #fff;">
+  <tr>
+    <td width="136"><p align="center"><strong>&nbsp;</strong></p></td>
+    <td width="282"><p align="center"><strong>Firma Yetkilisi</strong></p></td>
+    <td width="298"><p align="center"><strong>Yaşam Yıldızı Yetkilisi</strong></p></td>
+  </tr>
+  <tr>
+    <td width="136"><p align="center"><strong>Tarih/İmza</strong></p></td>
+    <td width="282"><p align="center">&nbsp;</p></td>
+    <td width="298"><p align="center">&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="136"><p align="center"><strong>Ad-Soyad</strong></p></td>
+    <td width="282"><p align="center">&nbsp;</p></td>
+    <td width="298"><p align="center">&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="136"><p align="center"><strong>Unvan</strong></p></td>
+    <td width="282"><p align="center"><strong>&nbsp;</strong></p></td>
+    <td width="298"><p align="center">&nbsp;</p></td>
+  </tr>
+  </table>
+</div>
+<input type="button" onclick="printDiv('printableArea')" value="Yazdır" />

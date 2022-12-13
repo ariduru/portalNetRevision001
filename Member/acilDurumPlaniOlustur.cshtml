@@ -1,0 +1,102 @@
+﻿@{
+     var id=Request["id"];
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    
+    var db=Database.Open("OsgbPortal");
+    var firmam=db.QuerySingle(sec,id);
+    var firmaAdi=firmam.name;
+}
+<style type="text/css">
+.baslik {
+	font-size: 18px;
+	font-weight: bold;
+}
+</style>
+
+<form action="acilDurumPlan?id=@id" method="post">
+<table width="100%" height="345" border="1" cellpadding="1" cellspacing="0">
+  <tr>
+    <td height="74" colspan="5" align="center" class="baslik">@firmaAdi<br/> ACİL DURUM PLANI İÇİN GEREKEN BİLGİLER</td>
+  </tr>
+  <tr>
+    <td height="40" colspan="4" align="center" class="baslik">Acil Durum Ekipleri</td>
+    <th width="368" align="center" class="baslik">İşletme Bölümleri Yangın Sınıfı İhtimali</th>
+  </tr>
+  <tr>
+    <th colspan="2" align="center">Söndürme Ekibi (En az 3 Kişi)</th>
+    <th colspan="2" align="center">Koruma Ekibi (En az 2 Kişi)</th>
+    <th> A Sınıfı Yangın Çıkabilicek Bölümler</th>
+  </tr>
+  <tr>
+    <td width="64">Başkan</td>
+    <td width="174">
+      <label for="textfield"></label>
+    <input type="text" name="sondurmeBaskan" id="textfield" /></td>
+    <td width="68">Başkan</td>
+    <td width="178">
+    <input type="text" name="korumaBaskan" id="textfield7" /></td>
+    <th><input type="text" name="AsinifiYangin" id="textfield13" /></th>
+  </tr>
+  <tr>
+    <td>Ekip Üye</td>
+    <td> 
+    <input type="text" name="sondurmeUye1" id="textfield2" /></td>
+    <td>Ekip Üye</td>
+    <td> 
+    <input type="text" name="korumaUye1" id="textfield8" /></td>
+    <th>B Sınıfı Yangın Çıkabilecek Bölümler</th>
+  </tr>
+  <tr>
+    <td>Ekip Üye</td>
+    <td> 
+    <input type="text" name="sondurmeUye2" id="textfield3" /></td>
+    <td>Ekip Üye</td>
+    <td> 
+    <input type="text" name="korumaUye2" id="textfield9" /></td>
+    <th><input type="text" name="BsinifiYangin" id="textfield14" /></th>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+    <td colspan="2">&nbsp;</td>
+    <th>C Sınıfı Yangın Çıkabilecek Bölümler</th>
+  </tr>
+  <tr>
+    <th colspan="2" align="center">Kurtarma Ekibi (En az 3 Kişi)</th>
+    <th colspan="2" align="center">İlk Yardım Ekibi (En az 2 kişi)</th>
+    <th><input type="text" name="CsinifiYangin" id="textfield15" /></th>
+  </tr>
+  <tr>
+    <td>Başkan</td>
+    <td> 
+      <input type="text" name="kurtarmaBaskan" id="textfield4" /></td>
+    <td>Başkan</td>
+    <td>
+    <input type="text" name="ilkyardimBaskan" id="textfield10" /></td>
+    <th>D Sınıfı Yangın Çıkabilcek Yerler</th>
+  </tr>
+  <tr>
+    <td>Ekip Üye</td>
+    <td>
+      <input type="text" name="kurtarmaUye1" id="textfield5" /></td>
+    <td>Ekip Üye</td>
+    <td> 
+    <input type="text" name="ilkyardimUye1" id="textfield11" /></td>
+    <th><input type="text" name="DsinifiYangin" id="textfield16" /></th>
+  </tr>
+  <tr>
+    <td>Ekip Üye</td>
+    <td> 
+      <input type="text" name="kurtarmaUye2" id="textfield6" /></td>
+    <td>Ekip Üye</td>
+    <td> 
+    <input type="text" name="ilkyardimUye2" id="textfield12" /></td>
+    <th>&nbsp;</th>
+  </tr>
+  <tr>
+    <td colspan="2">Doküman No: <input type="text" name="dokumanNo" placeHolder="Döküman No"/></td>
+    <td colspan="2">Güncelleme Tarihi: <input type="date" name="guncellemeTarihi" placeHolder="Güncelleme Tarihi"/></td>
+    <th>Revizyon No: <input type="text" name="revNo" placeHolder="Revizyon No"/></th>
+  </tr>
+</table>
+    <input type="submit" value="Oluştur" />
+</form>

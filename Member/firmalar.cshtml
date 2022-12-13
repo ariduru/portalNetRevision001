@@ -1,0 +1,35 @@
+﻿@{
+    var db=Database.Open("OsgbPortal");
+    var firmalar=db.Query("SELECT * FROM firmalar WHERE UserId=@0",WebSecurity.CurrentUserId);
+    var userName=db.QuerySingle("SELECT name,surname FROM UserProfiles WHERE UserId=@0",WebSecurity.CurrentUserId);
+                            
+    var grid= new WebGrid(firmalar,ajaxUpdateContainerId:"grid");
+}
+ 
+<h3>Hoşgeldiniz @userName.name @userName.surname</h3>        
+<div class="gridContainer">
+    <div class="grid">
+        @grid.GetHtml(    
+            tableStyle : "table",
+            alternatingRowStyle : "alternate",
+            headerStyle : "header",
+            columns: grid.Columns(
+                grid.Column(format: @<a href="~/Member/edit?id=@item.id"><img src="~/images/edit.png" id="editicon" alt="Çalışmaya Başla" title="Çalışmaya Başla" width="10px"/></a>),
+                grid.Column("name", "Firma Adı"),
+                grid.Column("sgkNo", "Sicil No"),
+                grid.Column("calisanSayi","Çalışan Sayısı"),
+                grid.Column("telefon","Telefon"),
+                grid.Column("adres","Adres")
+           )
+        )
+
+        
+           <!-- <ol>
+                foreach (var firma in firmalar){
+                 <li><a href="~/Member/edit?id=firma.id">firma.name</a></li>   
+                }
+            </ol>    -->
+        </div>  
+        </div>
+        
+     

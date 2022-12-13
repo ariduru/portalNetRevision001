@@ -1,0 +1,1469 @@
+﻿
+@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Yıllık Çalışma Planı";
+
+    
+    var id=Request["id"];
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var planSec="SELECT * FROM yillikFaaliyetPlani WHERE firmaId=@0";
+    var tarihSec="SELECT tarih,revNo,revTarih FROM yillikCalismaPlani WHERE firmaId=@0";
+    var db=Database.Open("OsgbPortal");
+    var secilenPlan=db.QuerySingle(planSec,id);
+    var secilenTarih=db.QuerySingle(tarihSec,id);
+    var firmam=db.QuerySingle(sec,id);
+    var firmaAdi=firmam.name;
+        
+
+
+    //MADDE NUMARALARI BAŞLANGIÇ//
+    var no1="1";
+    var no2="2";
+    var no3="3";
+    var no4="4";
+    var no5="5";
+    var no6="6";
+    var no7="7";
+    var no8="8";
+    var no9="9";
+    var no10="10";
+    var no11="11";
+    var no12="12";
+    var no13="13";
+    var no14="14";
+    var no15="15";
+    var no16="16";
+    var no17="17";
+    var no18="18";
+    var no19="19";
+//MADDE NUMARALARI SONU//
+
+//YILLIK PLAN MADDELERİ BAŞLANGIC//       
+    var madde1="Çalışanların Özlük Dosyalarının Oluşturulması ve Kontrolü";
+    var madde2="İşçi Sağlığı ve Güvenliği Eğitimleri Düzenlenmes";
+    var madde3="İçme Suyunun Analizi ve Raporlanması";
+    var madde4="Seyyar Yangın Söndürme Cihazlarının Periyodik Kontrolü ";
+    var madde5="Alarm ve Tahliye Denemeleri Yapılması ve Raporlanması";
+    var madde6="Yıllık Çalışma Planı Hazırlanması ve Revize Edilmesi";
+    var madde7="Yıllık Değerlendirme Raporu Hazırlanması";
+    var madde8="Kaldırma Araçlarının Periyodik Kontrollerinin Yapılması ve Raporlanması";
+    var madde9="Basınçlı Kapların Periyodik Kontrollerinin Yapılması ve Raporlanması";
+    var madde10="Elektrik Tesisatı ve Aydınlatma Devresinin Periyodik Kontrolünün Yapılması ";
+    var madde11="Ağır ve Tehlikeli İşlerde Çalışacaklara Ait İşe Giriş / Periyodik Muayenenin Yapılması";
+    var madde12="Mutfak ve Çay Ocağı Çalışanlarına Portör Muayenesi Yaptırılması";
+    var madde13="Laboratuar Tetkiklerinin Yapılması ";
+    var madde14="Ortam Toz Seviyesinin Ölçülmesi ve Raporlanması";
+    var madde15="Ortam Termal Konfor Şartlarının (Sıcaklık-Nem) Ölçülmesi ve Raporlanması";
+    var madde16="Ortam Gürültü Seviyesinin Ölçülmesi ve Raporlanması";
+    var madde17="İş Sağlığı ve Güvenliği Kurul Toplantısının Yapılması";
+    var madde18="Acil Durum Ekiplerinin Oluşturulması /Güncellenmesi";
+    var madde19="İş Sağlığı ve Güvenliği talimatlarının hazırlanması/güncellenmesi ";
+//YILLIK PLAN MADDELERİ SONU//
+
+//YILLIK PLAN MEVZUAT BAŞLANGIC//
+    var mevzuat1="4857 Sayılı İş kanunu Md.75";
+    var mevzuat2="6331 Sayılı İş Sağlığı ve Güvenliği Kanunu Md. 17 ile Eğitim Usulleri Yönetmeliği Md.4";
+    var mevzuat3="İnsani Tüketim Amaçlı Sular Hakkında Yönetmelik";
+    var mevzuat4="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.128";
+    var mevzuat5="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.131";
+    var mevzuat6="İş Sağlığı ve Güvenliği Hizmetleri Yönetmeliği Md.15";
+    var mevzuat7="İş Sağlığı ve Güvenliği Hizmetleri Yönetmeliği Md.16";
+    var mevzuat8="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.378";
+    var mevzuat9="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.223";
+    var mevzuat10="Parlayıcı, Patlayıcı Tehlikeli ve Zararlı Maddelerle Çalışılan İşyerlerinde ve İşlerde Alınacak Tedbirler Hak. Tüzük  Md.40";
+    var mevzuat11="6331 Sayılı İş Sağlığı ve Güvenliği Kanunu Md. 15";
+    var mevzuat12="Umumi Hıfzıssıhha Kanunu Md.127";
+    var mevzuat13="6331 Sayılı İş Sağlığı ve Güvenliği Kanunu Md. 15";
+    var mevzuat14="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.76 / Kanserojen ve Mutajen Maddelerle Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik";
+    var mevzuat15="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.20-21 / İşyeri Bina ve Eklentilerinde Alınacak Sağlık ve Güvenlik Önlemlerine İlişkin Yönetmelik";
+    var mevzuat16="İşçi Sağlığı ve İş Güvenliği Tüzüğü 22-75 Gürültü Yönetmeliği";
+    var mevzuat17="İş Sağlığı ve Güvenliği Kurulları Hakkında Yönetmelik Md.8";
+    var mevzuat18="Binaların Yangından Korunması Hakkında Yönetmelik Md.127";
+    var mevzuat19="İş Sağlığı ve Güvenliği Yönetmeliği Md.6";
+
+  }
+<form action="yillikPlanOlustur?id=@id" method="post">
+    <table><tr><td><a class="link" href="~/Member/yillikplan?id=@id">Planı Güncelle</a></td><td><a class="link" href="~/Member/edit?id=@id">Firma Sayfası</a></td></tr></table>
+<table style="width: 960px;text-align: center;background-color: #fff" border="1" cellpadding="0" cellspacing="0" >
+    <tr>
+    <th colspan="12" class="baslik" align="center" height="50" scope="col">
+        <h1>@firmaAdi<br/>   <br/>YILLIK ÇALIŞMA PLANI</h1>
+           <br/>   <br/>
+        <td colspan="4" style="text-align: left;">Tarih :@secilenTarih.tarih<br/>
+     Revize No: @secilenTarih.revNo<br/>
+    Revize Tarihi :@secilenTarih.revTarih<br/></td>
+    </th>
+  </tr>
+     <tr style="background-color: #0094ff;color: #fff;">
+      <td rowspan="2" style="width: 20px;">No</td>
+         <td rowspan="2" style="width: 100px">Periyodik Faaliyetler</td>
+         <td rowspan="2" style="width: 60px">Periyod</td>
+         <td rowspan="2" style="width: 200px">İlgili Mevzuat</td>
+         <td colspan="12">Aylar</td>
+         <tr>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=OCAK" class="linkplan">OCAK</a></td>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=ŞUBAT" class="linkplan">ŞUBAT</a></td>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=MART" class="linkplan">MART</a></td>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=NİSAN" class="linkplan">NİSAN</a></td>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=MAYIS" class="linkplan">MAYIS</a></td>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=HAZİRAN" class="linkplan">HAZİRAN</a></td>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=TEMMUZ" class="linkplan">TEMMUZ</a></td>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=AĞUSTOS" class="linkplan">AĞUSTOS</a></td>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=EYLÜL" class="linkplan">EYLÜL</a></td>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=EKİM" class="linkplan">EKİM</a></td>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=KASIM" class="linkplan">KASIM</a></td>
+             <td style="width: 44px;"><a href="~/Member/aylikPlan?id=@id&ay=ARALIK" class="linkplan">ARALIK</a></td>
+         </tr>
+  </tr>
+       <tr>
+               <td style="height: 120px;">@no1</td>
+                   <td>@madde1</td>
+                   <td>@secilenPlan.periyod1</td>
+                   <td>@mevzuat1</td>
+                @if(secilenPlan.ay11=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay12=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay13=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay14=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay15=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay16=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay17=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay18=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay19=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay110=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay111=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay112=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+
+
+
+
+       <tr>
+               <td style="height: 120px;">@no2</td>
+                   <td>@madde2</td>
+                   <td>@secilenPlan.periyod2</td>
+                   <td>@mevzuat2</td>
+                @if(secilenPlan.ay21=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay22=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay23=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay24=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay25=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay26=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay27=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay28=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay29=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay210=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay211=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay212=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+
+
+
+
+       <tr>
+               <td style="height: 120px;">@no3</td>
+                   <td>@madde3</td>
+                   <td>@secilenPlan.periyod3</td>
+                   <td>@mevzuat3</td>
+                @if(secilenPlan.ay31=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay32=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay33=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay34=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay35=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay36=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay37=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay38=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay39=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay310=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay311=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay312=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+        
+
+
+
+
+
+       <tr>
+               <td style="height: 120px;">@no4</td>
+                   <td>@madde4</td>
+                   <td>@secilenPlan.periyod4</td>
+                   <td>@mevzuat4</td>
+                @if(secilenPlan.ay41=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay42=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay43=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay44=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay45=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay46=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay47=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay48=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay49=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay410=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay411=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay412=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+
+
+
+
+       <tr>
+               <td style="height: 120px;">@no5</td>
+                   <td>@madde5</td>
+                   <td>@secilenPlan.periyod5</td>
+                   <td>@mevzuat5</td>
+                @if(secilenPlan.ay51=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay52=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay53=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay54=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay55=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay56=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay57=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay58=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay59=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay510=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay511=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay512=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+
+
+
+
+       <tr>
+               <td style="height: 120px;">@no6</td>
+                   <td>@madde6</td>
+                   <td>@secilenPlan.periyod6</td>
+                   <td>@mevzuat6</td>
+                @if(secilenPlan.ay61=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay62=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay63=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay64=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay65=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay66=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay67=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay68=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay69=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay610=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay611=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay612=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+
+
+
+
+       <tr>
+               <td style="height: 120px;">@no7</td>
+                   <td>@madde7</td>
+                   <td>@secilenPlan.periyod7</td>
+                   <td>@mevzuat7</td>
+                @if(secilenPlan.ay71=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay72=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay73=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay74=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay75=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay76=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay77=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay78=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay79=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay710=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay711=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay712=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+
+
+
+
+       <tr>
+               <td style="height: 120px;">@no8</td>
+                   <td>@madde8</td>
+                   <td>@secilenPlan.periyod8</td>
+                   <td>@mevzuat8</td>
+                @if(secilenPlan.ay81=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay82=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay83=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay84=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay85=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay86=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay87=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay88=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay89=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay810=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay811=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay812=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+
+
+
+
+       <tr>
+               <td style="height: 120px;">@no9</td>
+                   <td>@madde9</td>
+                   <td>@secilenPlan.periyod9</td>
+                   <td>@mevzuat9</td>
+                @if(secilenPlan.ay91=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay92=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay93=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay94=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay95=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay96=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay97=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay28=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay99=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay910=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay911=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay912=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+
+
+
+
+       <tr>
+               <td style="height: 120px;">@no10</td>
+                   <td>@madde10</td>
+                   <td>@secilenPlan.periyod10</td>
+                   <td>@mevzuat10</td>
+                @if(secilenPlan.ay101=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay102=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay103=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay104=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay105=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay106=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay107=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay108=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay109=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1010=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1011=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1012=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+
+
+
+
+       <tr>
+               <td style="height: 120px;">@no11</td>
+                   <td>@madde11</td>
+                   <td>@secilenPlan.periyod11</td>
+                   <td>@mevzuat11</td>
+                @if(secilenPlan.ayonbir1=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayonbir2=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayonbir3=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayonbir4=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayonbir5=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayonbir6=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayonbir7=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayonbir8=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayonbir9=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayonbir10=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayonbir11=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayonbir12=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+        
+
+
+
+       <tr>
+               <td style="height: 120px;">@no12</td>
+                   <td>@madde12</td>
+                   <td>@secilenPlan.periyod12</td>
+                   <td>@mevzuat12</td>
+                @if(secilenPlan.ayoniki1=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayoniki2=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayoniki3=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayoniki4=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayoniki5=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayoniki6=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayoniki7=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayoniki8=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayoniki9=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayoniki10=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayoniki11=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ayoniki12=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+        
+
+
+
+       <tr>
+               <td style="height: 120px;">@no13</td>
+                   <td>@madde13</td>
+                   <td>@secilenPlan.periyod13</td>
+                   <td>@mevzuat13</td>
+                @if(secilenPlan.ay131=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay132=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay133=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay134=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay135=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay136=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay137=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay138=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay139=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1310=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1311=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1312=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+        
+
+
+
+       <tr>
+               <td style="height: 120px;">@no14</td>
+                   <td>@madde14</td>
+                   <td>@secilenPlan.periyod14</td>
+                   <td>@mevzuat14</td>
+                @if(secilenPlan.ay141=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay142=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay143=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay144=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay145=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay146=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay147=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay148=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay149=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1410=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1411=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1412=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+        
+
+
+
+       <tr>
+               <td style="height: 120px;">@no15</td>
+                   <td>@madde15</td>
+                   <td>@secilenPlan.periyod15</td>
+                   <td>@mevzuat15</td>
+                @if(secilenPlan.ay151=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay152=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay153=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay154=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay155=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay156=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay157=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay158=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay159=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1510=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1511=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1512=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+        
+
+
+
+       <tr>
+               <td style="height: 120px;">@no16</td>
+                   <td>@madde16</td>
+                   <td>@secilenPlan.periyod16</td>
+                   <td>@mevzuat16</td>
+                @if(secilenPlan.ay161=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay162=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay163=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay164=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay165=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay166=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay167=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay168=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay169=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1610=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1611=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1612=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+        
+
+
+
+       <tr>
+               <td style="height: 120px;">@no17</td>
+                   <td>@madde17</td>
+                   <td>@secilenPlan.periyod17</td>
+                   <td>@mevzuat17</td>
+                @if(secilenPlan.ay171=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay172=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay173=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay174=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay175=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay176=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay177=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay178=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay179=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1710=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1711=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1712=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+        
+
+
+
+       <tr>
+               <td style="height: 120px;">@no18</td>
+                   <td>@madde18</td>
+                   <td>@secilenPlan.periyod18</td>
+                   <td>@mevzuat18</td>
+                @if(secilenPlan.ay181=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay182=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay183=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay184=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay185=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay186=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay187=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay188=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay189=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1810=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1811=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1812=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+        
+
+
+
+       <tr>
+               <td style="height: 120px;">@no19</td>
+                   <td>@madde19</td>
+                   <td>@secilenPlan.periyod19</td>
+                   <td>@mevzuat19</td>
+                @if(secilenPlan.ay191=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay192=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay193=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay194=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay195=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay196=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay197=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay198=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay199=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1910=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1911=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+                @if(secilenPlan.ay1912=="on"){
+                   <td>P</td>
+}else{
+    <td>&nbsp</td>
+}
+               
+            </tr>
+        
+        
+</table>
+    <input type="submit" value="Oluştur" />
+</form>

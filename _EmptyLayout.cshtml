@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+   
+    <body>
+        
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+       
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>

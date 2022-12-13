@@ -1,0 +1,29 @@
+﻿@{
+    var id=Request["id"];
+     var db=Database.Open("OsgbPortal");
+      var yazilarisec="SELECT * FROM yazismalar WHERE firmaID=@0";
+      var yazismalar=db.Query(yazilarisec,id);
+       var firma=db.QuerySingle("SELECT * FROM firmalar WHERE id=@0",id);
+}
+<script type="text/javascript">
+ $(document).ready(function () {
+   $("tr:even").css("background-color", "#BCF1ED");
+   $("tr:odd").css("background-color", "#FFFFFF");
+  
+  });
+
+</script>
+<h1><a href="~/Member/edit?id=@id">@firma.name</a></h1>
+<h2>Yazışmalar</h2><br/>
+<div>
+    <table style="width: 100%;" >
+        <tr><td><h2>Sayı</h2></td><td><h2>Konu</h2></td><td><h2>Tarih</h2></td></tr>
+@foreach (var yazi in yazismalar){
+              <tr>
+                <td> @yazi.yazi</td><td>@yazi.konu</td><td>@yazi.tarih</td> 
+              
+              </tr> 
+                      }
+
+    </table>
+</div>

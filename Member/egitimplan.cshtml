@@ -1,0 +1,307 @@
+﻿@{
+    var id=Request["id"];
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var db=Database.Open("OsgbPortal");
+    var firmam=db.QuerySingle(sec,id);
+    var firmaAdi=firmam.name;
+    
+}
+<a href="~/Member/edit?id=@id"><input type="submit" value="@firmaAdi"/></a>
+<a href="~/Member/edit?id=@id"><input type="submit" value="Excel Çıktısı Al"/></a>
+<table border="1" cellspacing="0" cellpadding="0" width="1074">
+  <tr>
+    <td width="870" colspan="7" valign="top"><p><strong><h1 align="center">@firmaAdi</strong><br />
+      <strong>2014 Yılı Eğitim Planı</h1></strong></p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="106" colspan="3"><p><strong>Tarih :    06.05.2014</strong><br />
+      <strong>Revize No : 000</strong></p></td>
+  </tr>
+  <tr>
+    <td width="17" rowspan="2"><p><strong>No </strong></p></td>
+    <td width="317" rowspan="2"><p align="center"><strong>EĞİTİM KONULARI</strong></p></td>
+    <td width="89"><p align="center"><strong>Eğitimi Verecek</strong></p></td>
+    <td width="67" rowspan="2"><p><strong>Katılımcı Profili</strong></p></td>
+    <td width="99" rowspan="2"><p><strong>Planlanan Eğitim Tarihi</strong></p></td>
+    <td width="59" rowspan="2"><p><strong>Eğitim Süresi</strong></p></td>
+    <td width="223" rowspan="2"><p align="center"><strong>Eğitimin Hedefi ve Amacı</strong></p></td>
+    <td width="98" rowspan="2"><p><strong>Gerçekleşen Eğitim Tarihi</strong></p></td>
+    <td width="40" colspan="2"><p><strong>Sertifika</strong></p></td>
+    <td width="67" rowspan="2"><p><strong>Katılımcı Sayısı</strong></p></td>
+  </tr>
+  <tr>
+    <td width="89"><p align="center"><strong>KİŞİ / Kuruluş</strong></p></td>
+    <td width="19"><p><strong>Var</strong></p></td>
+    <td width="20"><p><strong>Yok</strong></p></td>
+  </tr>
+  <tr>
+    <td width="870" colspan="7" valign="top"><p>&nbsp;</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="106" colspan="3" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p>&nbsp;</p></td>
+    <td width="854" colspan="6" valign="top"><p><strong>1 .GENEL KONULAR</strong></p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="106" colspan="3" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17"><p><strong>1</strong></p></td>
+    <td width="317"><p>a) ÇALIŞMA MEVZUATI İLE İLGİLİ BİLGİLER</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99"><p align="right">16.05.2014</p></td>
+    <td width="59"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Halen    yürürlükte olan kanunlar ve Türkiyede İSG konularında yapılan çalışmalar    konusunda bilgilendirme ve bilinçlendirme</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17"><p><strong>2</strong></p></td>
+    <td width="317"><p>b) ÇALIŞANLARIN YASAL HAK VE SORUMLULUKLARI</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99"><p align="right">16.05.2014</p></td>
+    <td width="59"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Çalışanların    yasal hak ve sorumlulukları hakkında bilgilendirilmesi, İSG kültürü    oluşturulması</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>3</strong></p></td>
+    <td width="317" valign="top"><p>c) İŞYERİ TEMİZLİĞİ VE DÜZENİ</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p align="right">16.05.2014</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Çalışma    ortamının temiz ve düzenli tutulmasının önemi</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17"><p><strong>4</strong></p></td>
+    <td width="317"><p>ç) İŞ KAZASI VE MESLEK HASTALIKLARINDAN DOĞAN    HUKUKİ SONUÇLAR</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99"><p align="right">16.05.2014</p></td>
+    <td width="59"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>İş kazası ve meslek hastalığı sonucu    tarafların yasal sorumlulukları ve hukiki sonuçları hakkında    bilgilendirilmesi</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p>&nbsp;</p></td>
+    <td width="854" colspan="6" valign="top"><p><strong>2 . SAĞLIK KONULARI</strong></p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="106" colspan="3" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>5</strong></p></td>
+    <td width="317" valign="top"><p>a) MESLEK HASTALIKLARININ SEBEPLERİ</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Meslek    hastalıklarının sebepleri ve korunma yolları konusunda bilinçlendirme</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17"><p><strong>6</strong></p></td>
+    <td width="317"><p>b) HASTALIKTAN KORUNMA PRENSİPLERİ VE KORUNMA TEKNİKLERİNİN    UYGULANMASI</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Meslek    hastalıklarının önlenebilirliğinin anlaşılması ve alınması gereken önlemler    hk. Bilgilendirme</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>7</strong></p></td>
+    <td width="317" valign="top"><p>c) BİYOLOJİK VE PSİKOSOSYAL RİSK ETMENLERİ</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Biyolojik ve    psikososyal risk etmenlerine karşı önlemlerin aşılanması</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>8</strong></p></td>
+    <td width="317" valign="top"><p>ç) İLKYARDIM</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>İlkyardım kültürünün oluşturulması ve    prensipleri hk.  <br />
+      Bilinçlendirme</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p>&nbsp;</p></td>
+    <td width="854" colspan="6" valign="top"><p><strong>3 . TEKNİK KONULAR</strong></p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="106" colspan="3" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>9</strong></p></td>
+    <td width="317" valign="top"><p>a) KİMYASAL, FİZİKSEL VE ERGONOMİK RİSK    ETMENLERİ</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Bazı özel ve tehlikeli risklere karşı    alınması gereken önlemler hk. Teknik bilgilerin aşılanması</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>10</strong></p></td>
+    <td width="317" valign="top"><p>b) ELLE KALDIRMA VE TAŞIMA</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Elle kaldırma    ve taşıma işlerinden doğabilecek rahatsızlıklar ve korunma yollarının    aşılanması</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17"><p><strong>11</strong></p></td>
+    <td width="317"><p>c) PARLAMA, PATLAMA, YANGIN VE YANGINDAN    KORUNMA</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Acil durumlarda    çalışanların yapması gerekenler ve bu acil durumların oluşmasının    engellenmesinin aşılanması</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>12</strong></p></td>
+    <td width="317" valign="top"><p>ç) İŞ EKİPMANLARININ GÜVENLİ KULLANIMI</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Kullanılan    ekipmanlar hk. Personelin bilinç kazanmasının sağlanması</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>13</strong></p></td>
+    <td width="317" valign="top"><p>d) EKRANLI ARAÇLARLA ÇALIŞMA</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Ekranlı    araçlarla çalışmalardan doğabilecek sağlık problemleri ve bunların önlenmesi</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>14</strong></p></td>
+    <td width="317" valign="top"><p>e) ELEKTRİK, TEHLİKELERİ, RİSKLERİ VE    ÖNLEMLERİ</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Elektrik tehlikesi hk. Çalışma, korunma    ve önleme yöntemleri hk. Bilgilendirme</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>15</strong></p></td>
+    <td width="317" valign="top"><p>f) İŞ KAZALARININ SEBEBLERİ VE KORUNMA    PRENSİPLERİ İLE TEKNİKLERİNİN UYGULANMASI</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>İş kazalarının    önlenmesi ve sıfıra indirilmesi</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>16</strong></p></td>
+    <td width="317" valign="top"><p>g) GÜVENLİK VE SAĞLIK İŞARETLERİ</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Güvenlik ve    sağlık işaretlerinin anlamları ve uygulamasının önemi</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>17</strong></p></td>
+    <td width="317" valign="top"><p>ğ) KİŞİSEL KORUYUCU DONANIM KULLANIMI</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Kişisel    koruyucu donanımların önemi ve kullanma şekilleri, bilinçlendirme</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>18</strong></p></td>
+    <td width="317" valign="top"><p>h) İŞ SAĞLIĞI VE GÜVENLİĞİ GENEL KURALLARI VE    GÜVENLİK KÜLTÜRÜ</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>İSG    çalışmalarının neden yapıldığı ve çalışanların bu kuralları uygulamasının    önemi</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td width="17" valign="top"><p><strong>19</strong></p></td>
+    <td width="317" valign="top"><p>ı) TAHLİYE VE KURTARMA</p></td>
+    <td width="89"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="67" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="99" valign="top"><p>&nbsp;</p></td>
+    <td width="59" valign="top"><p><input class="egitplan" type="text" name="" /></p></td>
+    <td width="223" valign="top"><p>Acil durumlarda tahliye prosedürleri ve    kurtarma prosedürleri hk. Bilinç kazandırma</p></td>
+    <td width="98" valign="top"><p>&nbsp;</p></td>
+    <td width="19" valign="top"><p>&nbsp;</p></td>
+    <td width="20" valign="top"><p>&nbsp;</p></td>
+    <td width="67" valign="top"><p>&nbsp;</p></td>
+  </tr>
+</table>

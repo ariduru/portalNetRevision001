@@ -1,0 +1,37 @@
+﻿@{
+    var id=Request["id"];
+    var db=Database.Open("OsgbPortal");
+    var riskAnalizi=db.Query("SELECT * FROM riskAnalizi WHERE firmaID=@0",id);
+    var grid= new WebGrid(riskAnalizi,ajaxUpdateContainerId:"grid");
+}
+
+ @grid.GetHtml(    
+            tableStyle : "table",
+            alternatingRowStyle : "alternate",
+            headerStyle : "ui-widget-header",
+            columns: grid.Columns(
+                grid.Column(format: @<a id="riskMaddeSil" href="~/Member/riskMaddeSil?id=@item.RiskID&firmaID=@id"><img src="~/images/delete.png" id="deleteicon" alt="Sil" title="Sil" width="10px"/></a>),
+                grid.Column(format: @<a id="riskMaddeDuzenle" href="~/Member/edit?id=@item.RiskID"><img src="~/images/edit.png" id="editicon" alt="Düzenle" title="Düzenle" width="10px"/></a>),
+                grid.Column("MaddeNo", "No"),
+                grid.Column("Bolum", "Bölum"),
+                grid.Column("Faaliyet","Faaliyet"),
+                grid.Column("Tehlike","Tehlike"),
+                grid.Column("Risk","Risk"),
+                grid.Column("Sonuc","Sonuc"),
+                grid.Column("MevcutDurum","Mevcut Durum"),
+                grid.Column("Olasilik","Olasılık"),
+                grid.Column("Siddet","Şiddet"),
+                grid.Column("RDS","RDS"),
+                grid.Column("OncelikSirasi","Öncelik Sırası"),
+                grid.Column("Aciklama","Açıklama"),
+                grid.Column("AlinacakOnlem","Alınacak Önlem"),
+                grid.Column("Sorumlu","Sorumlu"),
+                grid.Column("Termin","Termin"),
+                grid.Column("OnlemAlindimi","Önlem Alındımı"),
+                grid.Column("OnlemSonrasiOlasilik","Olasılık"),
+                grid.Column("OnlemSonrasiSiddet","Şiddet"),
+                grid.Column("OnlemSonrasiRDS","RDS"),
+                grid.Column("OnlemSonrasiOncelik","Öncelik Sırası"),
+                grid.Column("OnlemSonrasiAciklama","Açıklama")
+           )
+           )

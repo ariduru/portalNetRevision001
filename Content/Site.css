@@ -1,0 +1,571 @@
+﻿
+/* tables
+----------------------------------------------------------*/
+
+th a
+{
+    text-decoration: none;
+}
+
+.table td
+{
+	border-bottom: 1px solid #ccc;
+	padding: 6px 8px;
+}
+
+.alternate{
+    background: #e6f4ff;
+}
+
+.selected{
+    background: #ffff99;
+}
+
+.highlight{
+    background: #ffff99;
+}
+
+.clickable{
+    cursor: pointer;
+    background: #fff960;
+}
+
+#excel, #pdf{
+    float: right;
+    margin-top: 3px;
+    margin-left: 20px;
+}
+/********************
+*   Mobile Styles   *
+********************/
+@media only screen and (max-width: 850px) {
+
+    /* header
+    ----------------------------------------------------------*/
+    header .float-left,
+    header .float-right {
+        float: none;
+    }
+
+    /* logo */
+    header .site-title {
+        margin: 10px;
+        text-align: center;
+    }
+
+    /* login 
+    #login {
+        font-size: .85em;
+        margin: 0 0 12px;
+        text-align: center;
+    }
+
+        #login ul {
+            margin: 5px 0;
+            padding: 0;
+        }
+
+        #login li {
+            display: inline;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #login a {
+            background: none;
+            color: #999;
+            font-weight: 600;
+            margin: 2px;
+            padding: 0;
+        }
+
+        #login a:hover {
+            color: #333;
+        }
+*/
+    /* menu */
+    nav {
+        margin-bottom: 5px;
+    }
+
+    ul#menu {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+        ul#menu li {
+            margin: 0;
+            padding: 0;
+        }
+
+
+    /* main layout
+    ----------------------------------------------------------*/
+    .main-content,
+    .featured + .main-content {
+        background-position: 10px 0;
+    }
+
+    .content-wrapper {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .featured .content-wrapper {
+        padding: 10px;
+    }
+
+    /* page content */
+    article, aside {
+        float: none;
+        width: 100%;
+    }
+
+    /* ordered list */
+    ol.round {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+        ol.round li {
+            padding-left: 10px;
+            margin: 25px 0;
+        }
+
+            ol.round li.zero,
+            ol.round li.one,
+            ol.round li.two,
+            ol.round li.three,
+            ol.round li.four,
+            ol.round li.five,
+            ol.round li.six,
+            ol.round li.seven,
+            ol.round li.eight,
+            ol.round li.nine {
+                background: none;
+            }
+
+     /* features */
+     section.feature {
+        float: none;
+        padding: 10px;
+        width: auto;
+     }
+
+        section.feature img {
+            color: #999;
+            content: attr(alt);
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+    /* forms */
+    input {
+        width: 90%;
+    }
+
+
+    #socialLoginForm {
+        margin-left: 0;
+        float: none;
+        width: auto;
+    }
+
+
+    /* footer
+    ----------------------------------------------------------*/
+    footer .float-left,
+    footer .float-right {
+        float: none;
+    }
+
+    footer {
+        text-align: center;
+        height: auto;
+        padding: 10px 0;
+    }
+
+        footer p {
+            margin: 0;
+        }
+}
+
+
+/*####################################################
+             SONRADAN EKLENEN CSS KODLARI 
+#######################################################*/
+.border{
+    border: 1px solid rgba(65,72,72,0.75);
+}
+
+
+
+.link{
+    display: block;
+    height: 100%;
+    width: 180px;
+    line-height: 100%;
+    padding: 3px;
+    margin: 3px;
+    background-color: #7ac0da;
+    text-align: center;
+}
+.link:hover{
+    
+    color: #fff;
+}
+.linkplan:hover{
+    background-color: #7ac0da;
+}
+.baslik{
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+/* LOGIN VE REGISTER CSS KODU */
+.main-wrapper{
+    display: block;
+    -webkit-box-shadow: 0px 0px 1px 1px #9d9e9e;
+    box-shadow: 0px 0px 1px 1px #9d9e9e;
+}
+.main-wrapper #baslik{
+    width: 100%;
+    height:100px;
+}
+.main-wrapper #baslik ul{
+    display: block;
+    float: left;
+    width: 100%;
+    height: 100px;
+}
+.main-wrapper #baslik ul li{
+    display: block;
+    list-style-type: none;
+    float: left;
+    height: 100%;
+    width: 47%;
+    background-color: #4fb084;
+    text-align: center;
+    line-height: 100px;
+    font-size: 2em;
+}
+.main-wrapper #baslik ul li:first-child{
+    border-right:1px solid #000; 
+}
+.main-wrapper #baslik a{
+    display: block;
+    height: 100%;
+    width: 100%;
+    color: #2c493c;
+    text-decoration: none;
+}
+.main-wrapper #baslik a:hover, .main-wrapper #baslik a:active{
+    color: #2c493c;
+    background-color: #229d8e;
+    
+}
+.main-wrapper #baslik ul li.active{
+    color: #2c493c;
+    background-color: #229d8e;
+}
+
+#loginSection{
+    display: block;
+    background: #fff;
+    width: 100%; 
+}
+#registerSection{
+    display: block;
+    background: #fff;
+    width: 100%;   
+}
+section #contents{
+    padding: 20px;
+}
+
+
+
+
+
+
+
+/*******************
+LOGIN FORM
+*******************/
+
+.login-form {
+    width: 100%;
+	margin: 0 auto;
+	position: relative;
+	z-index:5;
+		
+}
+/* Input field */
+.login-form .input {
+	width:200px;
+	padding: 15px 25px;
+	
+	font-weight: 400;
+	font-size: 14px;
+	color: #9d9e9e;
+	text-shadow: 1px 1px 0 rgba(256,256,256,1.0);
+	
+	background: #fff;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,0.50);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,0.50);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.50);
+}
+
+/* Second input field */
+.login-form .input:hover {
+	background: #dfe9ec;
+	color: #414848;
+}
+
+.login-form .input:focus {
+	background: #dfe9ec;
+	color: #414848;
+	
+	box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+	-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+}
+
+.user-icon, .pass-icon {
+	width: 46px;
+	height: 47px;
+	display: block;
+	position: absolute;
+	left: 247px;
+	padding-right: 2px;
+	z-index:-3;
+	
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+}
+
+.user-icon {
+	top:38px; /* Positioning fix for slide-in, got lazy to think up of simpler method. */
+	background: rgba(65,72,72,0.75) url(../images/user-icon.png) no-repeat center;	
+}
+
+.pass-icon {
+	background: rgba(65,72,72,0.75) url(../images/pass-icon.png) no-repeat center;
+}
+
+/* Animation */
+.input, .user-icon, .pass-icon, .button{
+	transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-o-transition: all 0.5s;
+	-ms-transition: all 0.5s;
+}
+
+
+/****************************
+    LOGIN FORM SONU
+*****************************/
+.login-wrapper ul{
+    list-style-type: none;
+}
+.login-wrapper ul li{
+    display: block;
+    width: 100%;
+    margin: 15px 0 0 0;
+}
+register-wrapper ul{
+    list-style-type: none;
+}
+.register-wrapper ul li{
+    display: block;
+    width: 100%;
+    margin: 15px 0 0 0;
+}
+#label{
+    display: block;
+    float: left;
+    width: 200px;
+}
+#label a{
+    text-decoration: none;
+    color: #000;
+}
+#label a:hover{
+    color: #f55000;
+}
+.button{
+    margin: 15px 0 15px 0;
+    padding: 5px 15px 5px 15px;
+    font-size: 1.2em;
+}
+/*******************
+REGISTER FORM
+*******************/
+
+.register-form {
+    width: 100%;
+	margin: 0 auto;
+	position: relative;
+	z-index:5;
+		
+}
+/* Input field */
+.register-form .input {
+	width:200px;
+	padding: 15px 25px;
+	
+	font-weight: 400;
+	font-size: 14px;
+	color: #9d9e9e;
+	text-shadow: 1px 1px 0 rgba(256,256,256,1.0);
+	
+	background: #fff;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,0.50);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,0.50);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.50);
+}
+
+/* Second input field */
+.register-form .input:hover {
+	background: #dfe9ec;
+	color: #414848;
+}
+
+.register-form .input:focus {
+	background: #dfe9ec;
+	color: #414848;
+	
+	box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+	-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+}
+
+.username-icon, .email-icon, .regpass-icon, .telefon-icon, .adres-icon {
+	width: 46px;
+	height: 47px;
+	display: block;
+	position: absolute;
+	left: 247px;
+	padding-right: 2px;
+	z-index:-3;
+	
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+}
+
+.username-icon {
+	top:41px; /* Positioning fix for slide-in, got lazy to think up of simpler method. */
+	background: rgba(65,72,72,0.75) url(../images/username-icon.png) no-repeat center;	
+}
+
+.email-icon {
+	background: rgba(65,72,72,0.75) url(../images/email-icon.png) no-repeat center;
+}
+.regpass-icon {
+	background: rgba(65,72,72,0.75) url(../images/regpass-icon.png) no-repeat center;
+}
+
+.telefon-icon{
+    background: rgba(65,72,72,0.75) url(../images/regpass-icon.png) no-repeat center;
+}
+.adres-icon{
+    background: rgba(65,72,72,0.75) url(../images/regpass-icon.png) no-repeat center;
+}
+/* Animation */
+.input, .username-icon, .email-icon,.regpass-icon, .telefon-icon, .adres-icon, .button{
+	transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-o-transition: all 0.5s;
+	-ms-transition: all 0.5s;
+}
+
+
+/****************************
+    REGISTER FORM SONU
+*****************************/
+
+.content{
+    display: block;
+    width: 66.5%;
+}
+.validation-summary-errors{
+    border: 2px solid #229d8e;
+    display: block;
+    color: #229d8e;
+    width: 66.5%;
+    margin: 0 auto;
+    padding: 15px;
+}
+.validation-summary-errors ul{
+    display: block;
+    width: 100%;
+    padding: 15px 0 5px 15px;
+    font-weight: bolder;
+    font-size: 1.5em;
+    
+}
+.field-validation-error{
+    color: #229d8e;
+    font-weight: bolder;
+    width: 23%;
+    float: right;
+}
+.input-validation-error {
+    color: #f55000;
+    width: 33%;
+}
+.message-info{
+     color: #f55000;
+     padding: 5px;
+     font-weight: bolder;
+}
+#copyrights{
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    width: 960px;
+    margin: 0 auto;
+    background-color: #3b3b3b;
+}
+#copyrights p{
+    padding-left: 15px;
+}
+#copyrights p a{
+    text-decoration: none;
+    color: #000;
+    
+}
+#copyrights p a:hover{
+    text-decoration: none;
+    color: #fff;
+}
+
+.yonetmelikbuton{
+    color: #4cff00;
+    
+}
+.yonetmelikbuton:hover{
+    color: #f55000;
+    background-color: #dfe9ec;
+}

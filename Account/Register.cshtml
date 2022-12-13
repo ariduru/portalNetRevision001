@@ -1,0 +1,265 @@
+﻿@* Paketleme kullanıyorsanız bu bölümü kaldırın *@
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Kayıt";
+
+    // Genel sayfa değişkenlerini başlatın
+    var email = "";
+    var name = "";
+    var surname = "";
+    var telefon = "";
+    var adres = "";
+    var onay = "false";
+    var password = "";
+    var confirmPassword = "";
+    var belgeno="";
+    var unvan="";
+    var adminmail="info@yasamyildizi.com.tr";
+    // Kurulum doğrulaması
+    Validation.RequireField("email", "Bir e-posta adresi belirtmeniz gerekir.");
+    Validation.RequireField("name", "İsminiz boş kalamaz");
+    Validation.RequireField("surname", "Soyisminiz boş kalamaz.");
+    Validation.RequireField("telefon", "Bir telefon belirtmeniz gerekir.");
+    Validation.RequireField("adres", "Bir adres belirtmeniz gerekir.");
+    Validation.RequireField("password", "Parola kısmı boş olamaz.");
+    Validation.Add("confirmPassword",
+        Validator.EqualsTo("password", "Parola ve onay parolası eşleşmiyor."));
+    Validation.Add("password",
+        Validator.StringLength(
+            maxLength: Int32.MaxValue,
+            minLength: 6,
+            errorMessage: "Parola en az 6 karakterden oluşmalıdır"));
+     Validation.RequireField("belgeno", "ÇSGB Belge Numaranızı Giriniz.");
+     Validation.RequireField("unvan", "Örn: C sınıfı İSG Uzmanı");
+    // Bu bir POST isteğiyse, verileri doğrulayın ve işleyin
+    if (IsPost) {
+        email = Request.Form["email"];
+        name = Request.Form["name"];
+        surname = Request.Form["surname"];
+        telefon = Request.Form["telefon"];
+        adres = Request.Form["adres"];
+        password = Request.Form["password"];
+        confirmPassword = Request.Form["confirmPassword"];
+        belgeno=Request.Form["belgeno"];
+        unvan=Request.Form["unvan"];
+        // Kullanıcının captcha yanıtını doğrulayın
+        // if (!ReCaptcha.Validate("6LdwsNoSAAAAAHi0xc4AnaD9bbYAbh3bOfhhCztR")) {
+          //   ModelState.AddError("recaptcha", "Captcha cevabı doğru değil");
+         //}
+
+        // Tüm bilgiler geçerli ise yeni bir hesap oluşturun
+        if (Validation.IsValid()) {
+            // Veritabanına yeni bir kullanıcı girin
+            var db = Database.Open("OsgbPortal");
+
+            // Kullanıcının zaten var olup olmadığını kontrol edin
+            var user = db.QuerySingle("SELECT Email FROM UserProfiles WHERE LOWER(Email) = LOWER(@0)", email);
+            if (user == null) {
+                // Profil tablosuna e-posta ekleyin
+                db.Execute("INSERT INTO UserProfiles (Email,name,surname,telefon,adres,onay,unvan,belgeNo) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", email,name,surname,telefon,adres,onay,unvan,belgeno);
+
+                // Üyelik veritabanında yeni bir giriş oluşturun ve ilişkilendirin.
+                // Başarılıysa isteği işlemeye devam edin
+                try {
+                    bool requireEmailConfirmation = !WebMail.SmtpServer.IsEmpty();
+                    var token = WebSecurity.CreateAccount(email, password, requireEmailConfirmation);
+                   
+                    if (requireEmailConfirmation) {
+                        //var hostUrl = Request.Url.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
+                        //var confirmationUrl = hostUrl + VirtualPathUtility.ToAbsolute("~/Admin/Confirm?confirmationCode=" + HttpUtility.UrlEncode(token));
+
+                        //WebMail.Send(adminmail,"Yeni kayıt","OsgbPortal üzerinden yeni kayıtlar eklenmiştir. Lütfen kontrol edin. Doğrulama kodunuz: "+ token);
+                        WebMail.Send(
+                         to: "info@yasamyildizi.com.tr",
+                           subject: "OsgbPortal Yeni Kayıt",
+                           body:name+" "+surname + " isimli kişi OsgbPortal üzerinden kayıt oldu. Lütfen kontrol edin.<br/> Doğrulama kodunuz: <h2>"+ token+"</h2>");
+                    }
+
+                    if (requireEmailConfirmation) {
+                        // Kullanıcıya kaydolduğu için teşekkür edin ve e-postanın kendisine gönderileceğini söyleyin
+                        Response.Redirect("~/Account/Thanks");
+                    } else {
+                        // Ana sayfaya geri gidin ve çıkış yapın
+                        WebSecurity.Login(email, password);
+
+                        Response.Redirect("~/");
+                    }
+                } catch (System.Web.Security.MembershipCreateUserException e) {
+                    ModelState.AddFormError(e.Message);
+                }
+            } else {
+                // Kullanıcı zaten var
+                ModelState.AddFormError("Bu email adresi ile kayıt zaten mevcut.");
+            }
+        }
+    }
+}
+    
+
+<script type="text/javascript">
+$(document).ready(function() {
+$(".username").focus(function() {
+$(".username-icon").css("left","200px");
+});
+$(".username").blur(function() {
+$(".username-icon").css("left","247px");
+});
+
+$(".telefon").focus(function() {
+$(".telefon-icon").css("left","200px");
+});
+$(".telefon").blur(function() {
+$(".telefon-icon").css("left","247px");
+});
+$(".adres").focus(function() {
+$(".adres-icon").css("left","200px");
+});
+$(".adres").blur(function() {
+$(".adres-icon").css("left","247px");
+});
+$(".email").focus(function() {
+$(".email-icon").css("left","200px");
+});
+$(".email").blur(function() {
+$(".email-icon").css("left","247px");
+});
+ 
+$(".password").focus(function() {
+$(".regpass-icon").css("left","200px");
+});
+$(".password").blur(function() {
+$(".regpass-icon").css("left","247px");
+});
+});
+</script>
+<div class="main-wrapper">
+    <div id="baslik">
+        <ul>
+            <li><a href="~/Account/Login" id="logg" ><span data-icon="&#xe07f;"> Oturum Aç</span></a></li>
+            <li class="active"><span data-icon="&#xe094;"> Kayıt Ol</span></li>
+        </ul>
+    </div>
+    
+    <div id="registerSection">
+    @AntiForgery.GetHtml()
+    @* If at least one validation error exists, notify the user *@
+    @Html.ValidationSummary("Hesap oluşturma başarısız oldu. Hataları düzeltip tekrar deneyin.", excludeFieldErrors: true, htmlAttributes: null)
+
+    <section id="contents">
+
+<form name="register-form" class="register-form" method="post">
+
+    <fieldset id="contents">
+        <div class="login-wrapper register-wrapper" >
+        <ul>
+            <li class="name">
+                <div id="label"><label for="name" @if(!ModelState.IsValidField("name")){<text>class="error-label"</text>}>İsim</label></div>
+                @* E-posta doğrulama hatalarını sayfada göster *@
+                @Html.ValidationMessage("name")
+                <div class="content">
+               <div class="username-icon"></div>
+                <input type="text" id="textbox1" class="input username" name="name" placeholder="İsim" value="@name" @Validation.For("name") />
+               </div>
+              </li>
+            <li class="surname">
+                <div id="label"><label for="surname" @if(!ModelState.IsValidField("surname")){<text>class="error-label"</text>}>Soyisim</label></div>
+                @* E-posta doğrulama hatalarını sayfada göster *@
+                @Html.ValidationMessage("surname")
+                <div class="content">
+               <div class="surname-icon"></div>
+                <input type="text" id="textbox2" class="input username" name="surname" placeholder="Soyisim" value="@surname" @Validation.For("surname") />
+               </div>
+              </li>
+            </li>
+            <li class="belgeno">
+                <div id="label"><label for="belgeno" @if(!ModelState.IsValidField("belgeno")){<text>class="error-label"</text>}>Belge Numaranız</label></div>
+                @* E-posta doğrulama hatalarını sayfada göster *@
+                @Html.ValidationMessage("belgeno")
+                    <div class="content">
+                    <div class="belge-icon"></div>
+                <input type="text" id="textbox3" class="input belgeNo" name="belgeno" placeholder="ÇSGB Belge Numaranız" value="@belgeno" @Validation.For("belgeno") />
+                    </div>
+                    
+            </li>
+            <li class="unvan">
+                <div id="label"><label for="unvan" @if(!ModelState.IsValidField("unvan")){<text>class="error-label"</text>}>Unvan</label></div>
+                @* E-posta doğrulama hatalarını sayfada göster *@
+                @Html.ValidationMessage("unvan")
+                <div class="content">
+                    <div class="unvan-icon"></div>
+                <input type="text" id="textbox4" class="input unvan" name="unvan" placeholder="Unvanınız" value="@unvan" @Validation.For("unvan") />
+                    </div>
+            </li>
+            <li class="telefon">
+                <div id="label"><label for="telefon" @if(!ModelState.IsValidField("telefon")){<text>class="error-label"</text>}>Telefon</label></div>
+                @* E-posta doğrulama hatalarını sayfada göster *@
+                @Html.ValidationMessage("telefon")
+                <div class="content">
+                    <div class="telefon-icon"></div>
+                <input type="text" id="textbox5" class="input telefon" name="telefon" placeholder="5321211212" value="@telefon" @Validation.For("telefon") />
+                    </div>
+            </li>
+            <li class="adres">
+                <div id="label"><label for="adres" @if(!ModelState.IsValidField("adres")){<text>class="error-label"</text>}>Adres</label></div>
+                @* E-posta doğrulama hatalarını sayfada göster *@
+                @Html.ValidationMessage("adres")
+                <div class="content">
+                    <div class="adres-icon"></div>
+                <input type="text" id="textbox6" class="input adres" name="adres" placeholder="İkamet Adresiniz" value="@adres" @Validation.For("adres") />
+                    </div>
+            </li>
+            <li class="email">
+                <div id="label"><label for="email" @if(!ModelState.IsValidField("email")){<text>class="error-label"</text>}>E-posta adresi</label></div>
+                @* E-posta doğrulama hatalarını sayfada göster *@
+                @Html.ValidationMessage("email")
+                <div class="content">
+                    <div class="email-icon"></div>
+                <input type="text" id="textbox1" class="input email" name="email" placeholder="ornek@hotmail.com" value="@email" @Validation.For("email") />
+                    </div>
+            </li>
+            <li class="password">
+                <div id="label"><label for="password" @if(!ModelState.IsValidField("password")) {<text>class="error-label"</text>}>Parola</label></div>
+                @* Parola doğrulama hatalarını sayfada göster *@
+                @Html.ValidationMessage("password")
+                <div class="content">
+                    <div class="regpass-icon"></div>
+                <input type="password" id="textbox2" class="input password" name="password" placeholder="Parola" @Validation.For("password") />
+                    </div>
+            </li>
+            <li class="confirm-password">
+                <div id="label"><label for="confirmPassword" @if(!ModelState.IsValidField("confirmPassword")) {<text>class="error-label"</text>}>Parolayı onayla</label></div>
+                @* Parola doğrulama hatalarını sayfada göster *@
+                @Html.ValidationMessage("confirmPassword")
+                <div class="content">                
+                <input type="password" id="textbox3" class="input password" name="confirmPassword" placeholder="Parola Tekrar" @Validation.For("confirmPassword") />
+                </div>
+            </li>
+
+           <!--captcha <li class="recaptcha">
+                <div class="message-info">
+                    <p>
+                        CAPTCHA doğrulamayı etkinleştirmek için, <a href="http://go.microsoft.com/fwlink/?LinkId=204140"> 
+                        ASP.NET Web Helpers Library’yi yükleyin</a>, ReCaptcha.GetHtml’deki yorumları kaldırın ve 'PUBLIC_KEY'
+                        değerini ortak anahtarınızla değiştirin. Bu sayfanın en üstünde ReCaptcha değerinin yorumlarını kaldırın. Validate işlemini yapın ve 
+                        'PRIVATE_KEY' değerini özel anahtarınızla değiştirin.
+                        reCAPTCHA anahtarlarına şuradan kayıt olun: <a href="http://recaptcha.net">reCAPTCHA.net</a>.
+                    </p>
+                </div>
+                @*
+                @ReCaptcha.GetHtml("PUBLIC_KEY", theme: "white")
+                @Html.ValidationMessage("recaptcha")
+                *@
+            </li>-->
+        </ul>
+        <input type="submit" value="Kaydolun" />
+            </div>
+    </fieldset>
+</form>
+</section>
+</div>
+</div>

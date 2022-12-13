@@ -1,0 +1,17 @@
+﻿@{
+    WebSecurity.RequireAuthenticatedUser();
+
+    if (IsPost) {
+        // Kullanıcı tarafından gönderilen isteği doğrulayın
+        AntiForgery.Validate();
+
+        // Geçerli kullanıcı bağlamından çık
+        WebSecurity.Logout();
+
+        // Dönüş URL'sine veya giriş sayfasına yeniden yönlendir
+        var returnUrl = Request.QueryString["ReturnUrl"];
+        Context.RedirectLocal(returnUrl);
+    } else {
+        Response.Redirect("~/");
+    }
+}

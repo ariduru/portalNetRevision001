@@ -1,0 +1,56 @@
+﻿@{
+    var db=Database.Open("OsgbPortal");
+    var firmalar=db.Query("SELECT * FROM firmalar");
+    var userName=db.QuerySingle("SELECT name,surname FROM UserProfiles WHERE UserId=@0",WebSecurity.CurrentUserId);
+    
+    var grid= new WebGrid(firmalar,ajaxUpdateContainerId:"grid",canPage: false, canSort:false);
+}
+<script type="text/javascript">
+    $(function () {
+        $('#excel').on('hover', function () {
+            $(this).css('cursor', 'pointer');
+        });
+        $("#excel").on('click', function () {
+            $("table:visible").table2excel({
+                exclude: ".noExl",
+                name: "deneme",
+                filename: "Firmalar"
+            });
+        });
+    })
+</script>
+<div>
+        <a class="link" href="~/Admin/AddFirm">Firma Ekle</a>        
+        </div>     
+<div class="gridContainer" id="gridContainer">
+    
+    
+    <div class="grid" id="grid">
+        @grid.GetHtml(    
+            tableStyle : "table",
+            alternatingRowStyle : "alternate",
+            headerStyle : "header",
+            columns: grid.Columns(
+                grid.Column("id", "ID"),
+                grid.Column("name", "Firma Adı"),
+                grid.Column("sgkNo", "Sicil No"),
+                grid.Column("calisanSayi","Çalışan Sayısı"),
+                grid.Column("telefon","Telefon"),
+                grid.Column("adres","Adres"),
+                grid.Column(format: @<a href="~/Admin/FirmaSil?id=@item.id"><img src="~/images/delete.png" id="deleteicon" alt="Sil" title="Sil" width="10px"/></a>)
+           )
+           )
+        <img src="~/images/excel.png" id="excel" alt="İndir" title="İndir" width="30px"/>
+</div>
+    @section script{
+<script type="text/javascript">
+    $(function(){
+        $('tbody tr').hover( function(){
+            $(this).toggleClass('clickable');
+        }).on('click', function(){
+            window.open('../Member/edit?id=' + $(this).find('td:first').text(),'_blank')   
+        }); 
+    });
+</script>       
+}
+</div>

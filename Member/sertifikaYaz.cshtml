@@ -1,0 +1,231 @@
+﻿@{
+   Layout="~/_sertifikaLayout.cshtml";
+
+   var id=Request["id"];
+   var db=Database.Open("OsgbPortal");
+   
+    var calisanSec="SELECT * FROM calisanlar WHERE id=@0";
+    var calisanlar=db.QuerySingle(calisanSec,id);
+    var firmaNo=calisanlar.firmaID;
+    var firma=db.QuerySingle("SELECT * FROM firmalar WHERE id=@0",firmaNo);
+    var sorumlu=db.QuerySingle("SELECT * FROM UserProfiles WHERE UserId=@0",WebSecurity.CurrentUserId);
+}
+@if(calisanlar.puan=="Geçti"){
+ <table width="903" height="1261" class="print" style="background-image:url(/images/sertifika.png) ">
+  <tr>
+    <th height="264" colspan="4" scope="col">&nbsp;</th>
+    <th width="14%" scope="col">&nbsp;</th>
+  </tr>
+  <tr>
+    <td width="16%" height="38">&nbsp;</td>
+    <td width="25%"><em>Eğitimi Alan Kurum</em></td>
+    <td colspan="2">: @firma.name</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="38">&nbsp;</td>
+    <td height="38"><em>Eğitim Süresi</em></td>
+    <td height="38" colspan="2">: 4 saat</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="31">&nbsp;</td>
+    <td height="31"><em>Eğitim Tarihi</em></td>
+    <td height="31" colspan="2">: @calisanlar.isegirisegitimtarihi</td>
+    <td>&nbsp;</td>
+  </tr>
+     <tr>
+    <td height="31" colspan="4"></td>
+     </tr>
+  <tr>
+    <td height="78" rowspan="2">&nbsp;</td>
+    <td height="38" style="font-size: 30px;"><em><strong>Adı-Soyadı</strong></em></td>
+    <td height="38" colspan="2" style="font-size: 30px;">: @calisanlar.isim @calisanlar.soyisim</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="38" style="font-size: 30px;"><em><strong>Görevi/Unvanı</strong></em></td>
+    <td height="38" colspan="2" style="font-size: 30px;">: @calisanlar.gorev</td>
+      <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="87">&nbsp;</td>
+    <td valign="bottom"><h1><em>Eğitim  Konusu:</em></h1></td>
+    <td colspan="2">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="153">&nbsp;</td>
+    <td colspan="3"><ul>
+      <li><em>Çalışma Mevzuatı ile İlgili Bilgiler,  Çalışanların Yasal Hak ve Sorumlulukları</em></li>
+      <li><em>İşyeri Temizliği ve Düzeni, İş Kazası ve Meslek Hastalığından Doğan Hukiki Sonuçlar</em></li>
+      <li><em>Meslek Hastalıklarının Sebepleri, Hastalıktan Korunma Prensipleri,Biyolojik ve Psikososyal Risk Etmenleri, İlkyardım</em></li>
+      <li><em>Kimyasal, Fiziksel ve Ergonomik Risk Etmenleri, Elle Kaldırma ve Taşıma, Parlama,Patlama, Yangın ve Yangından Korunma</em></li>
+      <li><em>İş Ekipmanlarının Güvenli Kullanımı, Ekranlı Araçlarla Çalışma</em></li>
+      <li><em>Elektrik, Tehlikeleri, Riskleri ve Önlemleri</em></li>
+      <li><em>İş Kazalarının Sebepleri ve Korunma Prensipleri ile Tekniklerin Uygulanması</em></li>
+      <li><em>Güvenlik ve Sağlık İşaretleri, KKD Kullanımı</em></li>
+      <li><em>İSG Genel Kuralları ve Güvenlik Kültürü, Tahliye ve Kurtarma</em></li>
+    </ul></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td rowspan="6">&nbsp;</td>
+    <td height="44" colspan="3"><em>Konularındaki eğitim programına katılarak bu belgeyi almaya hak  kazanmıştır.</em></td>
+    <td rowspan="6">&nbsp;</td>
+  </tr>
+  <tr>
+    <td rowspan="5">&nbsp;</td>
+    <td colspan="2" valign="bottom"><em><strong>Eğitim Verenin</strong></em></td>
+  </tr>
+  <tr>
+    <td width="13%" height="29"><em>Adı-Soyadı</em></td>
+    <td width="32%">: @sorumlu.name @sorumlu.surname</td>
+  </tr>
+  <tr>
+    <td height="26"><em>Ünvanı</em></td>
+    <td>: @sorumlu.unvan</td>
+  </tr>
+  <tr>
+    <td height="23"><em>Belge No</em></td>
+    <td>: @sorumlu.belgeNo</td>
+  </tr>
+  <tr>
+    <td height="43"><em>İmza</em></td>
+    <td>: </td>
+  </tr>
+  <tr>
+    <td height="111">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td colspan="2">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+} else if(calisanlar.puan=="Kaldı"){
+    
+    <!DOCTYPE html>
+<html lang="tr">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta charset="utf-8" />
+        <title>@Page.Title - Yaşam Yıldızı Portal</title>
+
+        <link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+        <script src="~/Scripts/jquery-ui-1.8.24.js"></script>
+        <script src="~/Scripts/modernizr-2.6.2.js"></script>
+        <meta name="viewport" content="width=device-width" />
+     </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title"><a href="~/"><img height="120px" src="~/images/logo.png" alt="Yaşam Yıldızı OSGB" /></a></p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @if (WebSecurity.IsAuthenticated) {
+                            <text>
+                                Merhaba, @WebSecurity.CurrentUserName!
+                                <form id="logoutForm" action="~/Account/Logout" method="post">
+                                    @AntiForgery.GetHtml()
+                                    <a href="javascript:document.getElementById('logoutForm').submit()">Oturumu kapat</a>
+                                </form>
+                            </text>
+                        } else {
+                            <ul>
+                                <li><a href="~/Account/Register">Kaydol</a></li>
+                                <li><a href="~/Account/Login">Oturum aç</a></li>
+                                
+                            </ul>
+                        }
+                    </section>
+                    
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            <section class="content-wrapper main-content clear-fix">
+           <h1>Üzgünüz,</h1>
+            <h2> @calisanlar.isim @calisanlar.soyisim eğitim sonunda yapılan sınavda yeterli puanı alamadığı için setifika basılamamaktadır.<br/><br/>
+                ***İlgili yönetmelik gereği eğitim tekrarlanmalı ve eğitim sonunda yapılan sınavdan geçerli not alınması gerekmektedir. </h2>
+                <br/><br/>
+                <a class="link" href="javascript://" onclick="javascript:window.close();">Pencereyi Kapat</a>
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - Yaşam Yıldızı OSGB</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
+}else{
+    <!DOCTYPE html>
+<html lang="tr">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta charset="utf-8" />
+        <title>@Page.Title - Yaşam Yıldızı Portal</title>
+
+        <link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+        <script src="~/Scripts/jquery-ui-1.8.24.js"></script>
+        <script src="~/Scripts/modernizr-2.6.2.js"></script>
+        <meta name="viewport" content="width=device-width" />
+     </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title"><a href="~/"><img height="120px" src="~/images/logo.png" alt="Yaşam Yıldızı OSGB" /></a></p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @if (WebSecurity.IsAuthenticated) {
+                            <text>
+                                Merhaba, @WebSecurity.CurrentUserName!
+                                <form id="logoutForm" action="~/Account/Logout" method="post">
+                                    @AntiForgery.GetHtml()
+                                    <a href="javascript:document.getElementById('logoutForm').submit()">Oturumu kapat</a>
+                                </form>
+                            </text>
+                        } else {
+                            <ul>
+                                <li><a href="~/Account/Register">Kaydol</a></li>
+                                <li><a href="~/Account/Login">Oturum aç</a></li>
+                                
+                            </ul>
+                        }
+                    </section>
+                    
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            <section class="content-wrapper main-content clear-fix">
+           <h1>Üzgünüz,</h1>
+            <h2> @calisanlar.isim @calisanlar.soyisim adlı çalışan herhangi bir eğitim almamıştır. Eğitim almamış personele sertifika düzenlenemez.<br/><br/>
+                *** İlgili yönetmelik gereği çalışanlara eğitim verilmeli ve eğitim sonunda yapılan sınavdan geçerli not alınması gerekmektedir. <br/><br/>
+                *** Eğer eğitim verdiyseniz, çalışanlar modülünden belge düzenlemeye tıklayarak, çalışanın eğitim sonunda aldığı puana göre geçip geçmediği bilgisini sisteme giriniz.
+            </h2><br/><br/>
+                <a class="link" href="javascript://" onclick="javascript:window.close();">Pencereyi Kapat</a>
+        </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - Yaşam Yıldızı OSGB</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
+}

@@ -1,0 +1,318 @@
+﻿@using iTextSharp.text;
+@using iTextSharp.text.pdf;
+@{
+    
+ Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Teklif";
+
+    var firma_adi=Request["firma_adi"];
+    var faaliyet=Request["faaliyet"];
+    var fabrika_sayi=Request["fabrika_sayi"];
+    var nacekodu=Request["nacekodu"];
+    var calisan_sayisi=Request["calisan_sayisi"];
+    var ad_soyad=Request["ad_soyad"];
+    var adres=Request["adres"];
+    var tel_faks=Request["tel_faks"];
+    var email=Request["email"];
+    var web_sitesi=Request["web_sitesi"];
+    var kod1=Request["kod1"];
+    var kod2=Request["kod2"];
+    var kod3=Request["kod3"];
+    var kod4=Request["kod4"];
+    var kod5=Request["kod5"];
+    var kod6=Request["kod6"];
+    var kod7=Request["kod7"];
+    var kod8=Request["kod8"];
+    var kod9=Request["kod9"];
+    var kod10=Request["kod10"];
+    var kod11=Request["kod11"];
+    var kod12=Request["kod12"];
+    var kod13=Request["kod13"];
+    var kod14=Request["kod14"];
+    var kod15=Request["kod15"];
+    var kod16=Request["kod16"];
+    var kod17=Request["kod17"];
+    var kod18=Request["kod18"];
+    var kod19=Request["kod19"];
+    var kod20=Request["kod20"];
+    var kod21=Request["kod21"];
+    var kod22=Request["kod22"];
+    var kod23=Request["kod23"];
+    var kod24=Request["kod24"];
+    var kod25=Request["kod25"];
+    var kod26=Request["kod26"];
+    var kod27=Request["kod27"];
+    var kod28=Request["kod28"];
+    var kod29=Request["kod29"];
+    var kod30=Request["kod30"];
+    var kod31=Request["kod31"];
+    var kod32=Request["kod32"];
+    var kod33=Request["kod33"];
+    var kod34=Request["kod34"];
+    var kod35=Request["kod35"];
+    var kod36=Request["kod36"];
+    var kod37=Request["kod37"];
+    var kod38=Request["kod38"];
+    var kod39=Request["kod39"];
+    var kod40=Request["kod40"];
+    var kod41=Request["kod41"];
+    var kod42=Request["kod42"];
+    var kod43=Request["kod43"];
+    var kod44=Request["kod44"];
+    var kod45=Request["kod45"];
+    var kod46=Request["kod46"];
+    var kod47=Request["kod47"];
+    var kod48=Request["kod48"];
+    var kod49=Request["kod49"];
+    var kod50=Request["kod50"];
+    var kod51=Request["kod51"];
+    var kod52=Request["kod52"];
+    var kod53=Request["kod53"];
+    var kod54=Request["kod54"];
+    var kod55=Request["kod55"];
+    var kod56=Request["kod56"];
+    var kod57=Request["kod57"];
+    var kod58=Request["kod58"];
+    var kod59=Request["kod59"];
+    var kod60=Request["kod60"];
+    var kod61=Request["kod61"];
+    var kod62=Request["kod62"];
+   
+
+/*
+    if(IsPost){
+
+     Response.AddHeader("Content-disposition", "attachment; filename="+firma_adi +" Fiyat Teklifi.pdf");
+    Response.ContentType = "application/octet-stream";
+    var doc = new Document(PageSize.A4);
+    PdfWriter.GetInstance(doc, Response.OutputStream);
+   
+    doc.Open();
+    //Türkçe Karakterler İçin Base Font Oluşturuyoruz. Ayrıca Kullanmak isteyeceğimiz stillerde fontlar oluşturuyoruz
+    iTextSharp.text.pdf.BaseFont STF_Helvetica_Turkish = iTextSharp.text.pdf.BaseFont.CreateFont("Helvetica", "CP1254", iTextSharp.text.pdf.BaseFont.NOT_EMBEDDED);
+    iTextSharp.text.Font Normal     = new iTextSharp.text.Font(STF_Helvetica_Turkish, 8, iTextSharp.text.Font.NORMAL);
+    iTextSharp.text.Font italikFont = new iTextSharp.text.Font(STF_Helvetica_Turkish, 8, iTextSharp.text.Font.ITALIC); 
+    iTextSharp.text.Font baslik     = new iTextSharp.text.Font(STF_Helvetica_Turkish, 24f, iTextSharp.text.Font.NORMAL);
+    iTextSharp.text.Font bodyBaslik = new iTextSharp.text.Font(STF_Helvetica_Turkish, 14, iTextSharp.text.Font.ITALIC);
+    
+PdfPTable teklif = new PdfPTable(12);
+PdfPCell cell1 = new PdfPCell(new Phrase(firma_adi + "\n Fiyat Teklifi",Normal));
+cell1.Colspan = 12;
+cell1.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell1.VerticalAlignment=Element.ALIGN_MIDDLE;
+PdfPCell cell2 = new PdfPCell(new Phrase("fiyat : ",Normal));
+cell2.Colspan = 12;
+cell2.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell2.VerticalAlignment=Element.ALIGN_MIDDLE;
+teklif.AddCell(cell1);
+teklif.AddCell(cell2);
+doc.Add(teklif);
+doc.Close();
+    }
+    */
+}
+<style>
+    #teklif{
+        font-family: 'Lucida Console';
+    }
+    #teklif thead{
+        font-family: 'Lucida Console';
+    }
+    
+</style>
+<form method="post" action="">
+<table id="teklif">
+<thead>@firma_adi Fiyat Teklifi</thead>
+    <tr><td rowspan="20" style="width: 50%;" valign="TOP">fdfdsfdsfdsfdsfsfdsfdsfds</td><td>
+    <tr class="link"><td>İstenen Hizmetler</td></tr>
+    @if(kod1!=null){
+        <tr><td>@kod1</td><td><input type="text" name="kod1Fiyat" /></td></tr>
+}
+    @if(kod2!=null){
+        <tr><td>@kod2</td><td><input type="text" name="kod2Fiyat" /></td></tr>
+}
+    @if(kod3!=null){
+        <tr><td>@kod3</td><td><input type="text" name="kod3Fiyat" /></td></tr>
+}
+    @if(kod4!=null){
+        <tr><td>@kod4</td><td><input type="text" name="kod4Fiyat" /></td></tr>
+}
+    @if(kod5!=null){
+        <tr><td>@kod5</td><td><input type="text" name="kod5Fiyat" /></td></tr>
+}
+    @if(kod6!=null){
+        <tr><td>@kod6</td><td><input type="text" name="kod6Fiyat" /></td></tr>
+}
+    @if(kod7!=null){
+        <tr><td>@kod7</td><td><input type="text" name="kod7Fiyat" /></td></tr>
+}
+    @if(kod8!=null){
+        <tr><td>@kod8</td><td><input type="text" name="kod8Fiyat" /></td></tr>
+}
+    @if(kod9!=null){
+        <tr><td>@kod9</td><td><input type="text" name="kod9Fiyat" /></td></tr>
+}
+    @if(kod10!=null){
+        <tr><td>@kod10</td><td><input type="text" name="kod10Fiyat" /></td></tr>
+}
+    @if(kod11!=null){
+        <tr><td>@kod11</td><td><input type="text" name="kod11Fiyat" /></td></tr>
+}
+    @if(kod12!=null){
+        <tr><td>@kod12</td><td><input type="text" name="kod12Fiyat" /></td></tr>
+}
+    @if(kod13!=null){
+        <tr><td>@kod13</td><td><input type="text" name="kod13Fiyat" /></td></tr>
+}
+    @if(kod14!=null){
+        <tr><td>@kod14</td><td><input type="text" name="kod14Fiyat" /></td></tr>
+}
+    @if(kod15!=null){
+        <tr><td>@kod15</td><td><input type="text" name="kod15Fiyat" /></td></tr>
+}
+    @if(kod16!=null){
+        <tr><td>@kod16</td><td><input type="text" name="kod16Fiyat" /></td></tr>
+}
+    @if(kod17!=null){
+        <tr><td>@kod17</td><td><input type="text" name="kod17Fiyat" /></td></tr>
+}
+    @if(kod18!=null){
+        <tr><td>@kod18</td><td><input type="text" name="kod18Fiyat" /></td></tr>
+}
+    @if(kod19!=null){
+        <tr><td>@kod19</td><td><input type="text" name="kod19Fiyat" /></td></tr>
+}
+    @if(kod20!=null){
+        <tr><td>@kod20</td><td><input type="text" name="kod20Fiyat" /></td></tr>
+}
+    @if(kod21!=null){
+        <tr><td>@kod21</td><td><input type="text" name="kod21Fiyat" /></td></tr>
+}
+    @if(kod22!=null){
+        <tr><td>@kod22</td><td><input type="text" name="kod22Fiyat" /></td></tr>
+}
+    @if(kod23!=null){
+        <tr><td>@kod23</td><td><input type="text" name="kod23Fiyat" /></td></tr>
+}
+    @if(kod24!=null){
+        <tr><td>@kod24</td><td><input type="text" name="kod24Fiyat" /></td></tr>
+}
+    @if(kod25!=null){
+        <tr><td>@kod25</td><td><input type="text" name="kod25Fiyat" /></td></tr>
+}
+    @if(kod26!=null){
+        <tr><td>@kod26</td><td><input type="text" name="kod26Fiyat" /></td></tr>
+}
+    @if(kod27!=null){
+        <tr><td>@kod27</td><td><input type="text" name="kod27Fiyat" /></td></tr>
+}
+    @if(kod28!=null){
+        <tr><td>@kod28</td><td><input type="text" name="kod28Fiyat" /></td></tr>
+}
+    @if(kod29!=null){
+        <tr><td>@kod29</td><td><input type="text" name="kod29Fiyat" /></td></tr>
+}
+    @if(kod30!=null){
+        <tr><td>@kod30</td><td><input type="text" name="kod30Fiyat" /></td></tr>
+}
+    @if(kod31!=null){
+        <tr><td>@kod31</td><td><input type="text" name="kod31Fiyat" /></td></tr>
+}
+    @if(kod32!=null){
+        <tr><td>@kod32</td><td><input type="text" name="kod32Fiyat" /></td></tr>
+}
+@if(kod33!=null){
+        <tr><td>@kod33</td><td><input type="text" name="kod33Fiyat" /></td></tr>
+}
+@if(kod34!=null){
+        <tr><td>@kod34</td><td><input type="text" name="kod34Fiyat" /></td></tr>
+}
+@if(kod35!=null){
+        <tr><td>@kod35</td><td><input type="text" name="kod35Fiyat" /></td></tr>
+}
+@if(kod36!=null){
+        <tr><td>@kod36</td><td><input type="text" name="kod36Fiyat" /></td></tr>
+}
+@if(kod37!=null){
+        <tr><td>@kod37</td><td><input type="text" name="kod37Fiyat" /></td></tr>
+}
+@if(kod38!=null){
+        <tr><td>@kod38</td><td><input type="text" name="kod38Fiyat" /></td></tr>
+}
+@if(kod39!=null){
+        <tr><td>@kod39</td><td><input type="text" name="kod39Fiyat" /></td></tr>
+}
+@if(kod40!=null){
+        <tr><td>@kod40</td><td><input type="text" name="kod40Fiyat" /></td></tr>
+}
+@if(kod41!=null){
+        <tr><td>@kod41</td><td><input type="text" name="kod41Fiyat" /></td></tr>
+}
+@if(kod42!=null){
+        <tr><td>@kod42</td><td><input type="text" name="kod42Fiyat" /></td></tr>
+}
+@if(kod43!=null){
+        <tr><td>@kod43</td><td><input type="text" name="kod43Fiyat" /></td></tr>
+}
+@if(kod44!=null){
+        <tr><td>@kod44</td><td><input type="text" name="kod44Fiyat" /></td></tr>
+}
+@if(kod45!=null){
+        <tr><td>@kod45</td><td><input type="text" name="kod45Fiyat" /></td></tr>
+}
+@if(kod46!=null){
+        <tr><td>@kod46</td><td><input type="text" name="kod46Fiyat" /></td></tr>
+}
+@if(kod47!=null){
+        <tr><td>@kod47</td><td><input type="text" name="kod47Fiyat" /></td></tr>
+}
+@if(kod48!=null){
+        <tr><td>@kod48</td><td><input type="text" name="kod48Fiyat" /></td></tr>
+}
+@if(kod49!=null){
+        <tr><td>@kod49</td><td><input type="text" name="kod49Fiyat" /></td></tr>
+}
+@if(kod50!=null){
+        <tr><td>@kod50</td><td><input type="text" name="kod50Fiyat" /></td></tr>
+}
+@if(kod51!=null){
+        <tr><td>@kod51</td><td><input type="text" name="kod51Fiyat" /></td></tr>
+}
+@if(kod52!=null){
+        <tr><td>@kod52</td><td><input type="text" name="kod52Fiyat" /></td></tr>
+}
+@if(kod53!=null){
+        <tr><td>@kod53</td><td><input type="text" name="kod53Fiyat" /></td></tr>
+}
+    
+@if(kod54!=null){
+        <tr><td>@kod54</td><td><input type="text" name="kod54Fiyat" /></td></tr>
+}
+@if(kod55!=null){
+        <tr><td>@kod55</td><td><input type="text" name="kod55Fiyat" /></td></tr>
+}
+@if(kod56!=null){
+        <tr><td>@kod56</td><td><input type="text" name="kod56Fiyat" /></td></tr>
+}
+@if(kod57!=null){
+        <tr><td>@kod57</td><td><input type="text" name="kod57Fiyat" /></td></tr>
+}
+@if(kod58!=null){
+        <tr><td>@kod58</td><td><input type="text" name="kod58Fiyat" /></td></tr>
+}
+@if(kod59!=null){
+        <tr><td>@kod59</td><td><input type="text" name="kod59Fiyat" /></td></tr>
+}
+@if(kod60!=null){
+        <tr><td>@kod60</td><td><input type="text" name="kod60Fiyat" /></td></tr>
+}
+@if(kod61!=null){
+        <tr><td>@kod61</td><td><input type="text" name="kod61Fiyat" /></td></tr>
+}
+@if(kod62!=null){
+        <tr><td>@kod62</td><td><input type="text" name="kod62Fiyat" /></td></tr>
+}
+    </td></tr>
+</table>
+</table>
+</form>

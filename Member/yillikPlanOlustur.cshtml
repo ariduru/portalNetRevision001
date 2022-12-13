@@ -1,0 +1,4103 @@
+﻿@using iTextSharp.text;
+@using iTextSharp.text.pdf;
+@{
+
+    
+    var id=Request["id"];
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var PlanSec="SELECT * FROM yillikFaaliyetPlani WHERE firmaId=@0";
+    var tarihSec="SELECT tarih,revNo,revTarih FROM yillikCalismaPlani WHERE firmaId=@0";
+    var db=Database.Open("OsgbPortal");
+    var secilenPlan=db.QuerySingle(PlanSec,id);
+    var secilenTarih=db.QuerySingle(tarihSec,id);
+    var firmam=db.QuerySingle(sec,id);
+    var firmaAdi=firmam.name;   
+    //var uzman=firmam.isgUzman;
+    //var guncellemeTarihi=Request["guncellemeTarihi"];
+    //var revNo=Request["revNo"];
+    	
+    //YILLIK Plan1 MADDELERİ BAŞLANGIC//       
+    var madde1="Çalışanların Özlük Dosyalarının Oluşturulması ve Kontrolü";
+    var madde2="İşçi Sağlığı ve Güvenliği Eğitimleri Düzenlenmes";
+    var madde3="İçme Suyunun Analizi ve Raporlanması";
+    var madde4="Seyyar Yangın Söndürme Cihazlarının Periyodik Kontrolü ";
+    var madde5="Alarm ve Tahliye Denemeleri Yapılması ve Raporlanması";
+    var madde6="Yıllık Çalışma Plan1ı Hazırlanması ve Revize Edilmesi";
+    var madde7="Yıllık Değerlendirme Raporu Hazırlanması";
+    var madde8="Kaldırma Araçlarının Periyodik Kontrollerinin Yapılması ve Raporlanması";
+    var madde9="Basınçlı Kapların Periyodik Kontrollerinin Yapılması ve Raporlanması";
+    var madde10="Elektrik Tesisatı ve Aydınlatma Devresinin Periyodik Kontrolünün Yapılması ";
+    var madde11="Ağır ve Tehlikeli İşlerde Çalışacaklara Ait İşe Giriş / Periyodik Muayenenin Yapılması";
+    var madde12="Mutfak ve Çay Ocağı Çalışanlarına Portör Muayenesi Yaptırılması";
+    var madde13="Laboratuar Tetkiklerinin Yapılması ";
+    var madde14="Ortam Toz Seviyesinin Ölçülmesi ve Raporlanması";
+    var madde15="Ortam Termal Konfor Şartlarının (Sıcaklık-Nem) Ölçülmesi ve Raporlanması";
+    var madde16="Ortam Gürültü Seviyesinin Ölçülmesi ve Raporlanması";
+    var madde17="İş Sağlığı ve Güvenliği Kurul ToPlan1tısının Yapılması";
+    var madde18="Acil Durum Ekiplerinin Oluşturulması /Güncellenmesi";
+    var madde19="İş Sağlığı ve Güvenliği talimatlarının hazırlanması/güncellenmesi ";
+//YILLIK Plan1 MADDELERİ SONU//
+
+//YILLIK Plan1 MEVZUAT BAŞLANGIC//
+    var mevzuat1="4857 Sayılı İş kanunu Md.75";
+    var mevzuat2="6331 Sayılı İş Sağlığı ve Güvenliği Kanunu Md. 17 ile Eğitim Usulleri Yönetmeliği Md.4";
+    var mevzuat3="İnsani Tüketim Amaçlı Sular Hakkında Yönetmelik";
+    var mevzuat4="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.128";
+    var mevzuat5="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.131";
+    var mevzuat6="İş Sağlığı ve Güvenliği Hizmetleri Yönetmeliği Md.15";
+    var mevzuat7="İş Sağlığı ve Güvenliği Hizmetleri Yönetmeliği Md.16";
+    var mevzuat8="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.378";
+    var mevzuat9="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.223";
+    var mevzuat10="Parlayıcı, Patlayıcı Tehlikeli ve Zararlı Maddelerle Çalışılan İşyerlerinde ve İşlerde Alınacak Tedbirler Hak. Tüzük  Md.40";
+    var mevzuat11="6331 Sayılı İş Sağlığı ve Güvenliği Kanunu Md. 15";
+    var mevzuat12="Umumi Hıfzıssıhha Kanunu Md.127";
+    var mevzuat13="6331 Sayılı İş Sağlığı ve Güvenliği Kanunu Md. 15";
+    var mevzuat14="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.76 / Kanserojen ve Mutajen Maddelerle Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik";
+    var mevzuat15="İşçi Sağlığı ve İş Güvenliği Tüzüğü Md.20-21 / İşyeri Bina ve Eklentilerinde Alınacak Sağlık ve Güvenlik Önlemlerine İlişkin Yönetmelik";
+    var mevzuat16="İşçi Sağlığı ve İş Güvenliği Tüzüğü 22-75 Gürültü Yönetmeliği";
+    var mevzuat17="İş Sağlığı ve Güvenliği Kurulları Hakkında Yönetmelik Md.8";
+    var mevzuat18="Binaların Yangından Korunması Hakkında Yönetmelik Md.127";
+    var mevzuat19="İş Sağlığı ve Güvenliği Yönetmeliği Md.6";
+  //YILLIK Plan1 MEVZUAT SONU//
+    Response.AddHeader("Content-disposition", "attachment; filename="+firmaAdi +" Yıllık Çalışma Plan1ı.pdf");
+    Response.ContentType = "application/octet-stream";
+    var doc = new Document(PageSize.A4.Rotate());
+    PdfWriter.GetInstance(doc, Response.OutputStream);
+   
+    doc.Open();
+    //Türkçe Karakterler İçin Base Font Oluşturuyoruz. Ayrıca Kullanmak isteyeceğimiz stillerde fontlar oluşturuyoruz
+    iTextSharp.text.pdf.BaseFont STF_Helvetica_Turkish = iTextSharp.text.pdf.BaseFont.CreateFont("Helvetica", "CP1254", iTextSharp.text.pdf.BaseFont.NOT_EMBEDDED);
+    iTextSharp.text.Font Normal     = new iTextSharp.text.Font(STF_Helvetica_Turkish, 8, iTextSharp.text.Font.NORMAL); 
+    iTextSharp.text.Font italikFont = new iTextSharp.text.Font(STF_Helvetica_Turkish, 8, iTextSharp.text.Font.ITALIC); 
+    iTextSharp.text.Font baslik     = new iTextSharp.text.Font(STF_Helvetica_Turkish, 24f, iTextSharp.text.Font.NORMAL);
+    iTextSharp.text.Font bodyBaslik = new iTextSharp.text.Font(STF_Helvetica_Turkish, 14, iTextSharp.text.Font.ITALIC);
+
+//Plan1 Kapak Sayfası
+/*PdfPTable kapak = new PdfPTable(3);
+PdfPCell hucre1 = new PdfPCell(new Phrase("\n\n\n\n\n\nACİL DURUM EYLEM Plan1I\n\n\n" + firmaAdi + " \n\n\n\n\n\n\n\n",baslik));
+hucre1.Colspan = 3;
+hucre1.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+kapak.AddCell(hucre1);
+PdfPCell hucre2 = new PdfPCell(new Phrase("\n\nHazırlayan: "+ uzman + "\n\nYAŞAM YILDIZI OSGB\n\n\n",bodyBaslik));
+hucre2.Colspan = 3;
+hucre2.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
+kapak.AddCell(hucre2);
+PdfPCell hucre3 = new PdfPCell(new Phrase("\n\nDokuman No               : "+ dokumanNo +"\nGüncelleme Tarihi       : " + guncellemeTarihi+ "\nRevizyon No                : "+revNo+" \n\n\n\n\n",bodyBaslik));
+hucre3.Colspan = 3;
+hucre3.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
+kapak.AddCell(hucre3);
+doc.Add(kapak);
+*/
+/*Image kapak = Image.GetInstance("C:/inetpub/vhosts/yasamyildizi.com.tr/portal/images/kapak.png");
+  kapak.ScalePercent(75f);
+ kapak.SetAbsolutePosition(doc.PageSize.Width-500f-72f,doc.PageSize.Height-605f-216f);
+  doc.Add(kapak);
+  Paragraph dateInfo=new Paragraph("Tarih: "+guncellemeTarihi+", Rev.No: "+revNo,Normal);
+dateInfo.Alignment=Element.ALIGN_CENTER;
+
+Paragraph procedure=new Paragraph("\n\n\n"+guncellemeTarihi+ "         ACİL DURUM PROSEDÜRÜ\n\n",baslik);
+procedure.Alignment=Element.ALIGN_CENTER;
+doc.Add(procedure);
+PdfPTable firma = new PdfPTable(1);
+PdfPCell hucre1 = new PdfPCell(new Phrase("\n"+firmaAdi+"\n\n",baslik));
+hucre1.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+firma.AddCell(hucre1);
+doc.Add(firma);
+Paragraph yazar=new Paragraph("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+firmam.isgUzman,bodyBaslik);
+yazar.Alignment=Element.ALIGN_CENTER;
+doc.Add(yazar);
+Paragraph bilgi=new Paragraph("Doküman No: "+dokumanNo,Normal);
+bilgi.Alignment=Element.ALIGN_CENTER;
+doc.Add(bilgi);
+Paragraph rev=new Paragraph("Revizyon No: "+revNo,Normal);
+rev.Alignment=Element.ALIGN_CENTER;
+doc.Add(rev);
+*/
+/*
+doc.NewPage();
+doc.Add(new Paragraph("İçindekiler\n\n", italikFont));
+doc.Add(new Paragraph("1.TANIMLAR.............................................................................................................................................................1\n", italikFont));
+doc.Add(new Paragraph("2.ACİL DURUM EKİPLERİ........................................................................................................................................2\n", italikFont));
+doc.Add(new Paragraph("3.ACİL DURUMLARDA KURULUŞ İÇİ VE DIŞI MAKAMLARLA İLETİŞİM..............................................................3\n", italikFont));
+doc.Add(new Paragraph("4.ACİL DURUM TECHİZATI.....................................................................................................................................3\n", italikFont));
+doc.Add(new Paragraph("5.TATBİKATLAR.......................................................................................................................................................3\n", italikFont));
+doc.Add(new Paragraph("6.EĞİTİM..................................................................................................................................................................3\n", italikFont));
+doc.Add(new Paragraph("7.EKLER...................................................................................................................................................................3", italikFont));
+doc.NewPage();
+Image page1 = Image.GetInstance("C:/inetpub/vhosts/yasamyildizi.com.tr/portal/images/1.png");
+  page1.ScalePercent(40f);
+ page1.SetAbsolutePosition(doc.PageSize.Width-26f-72f,doc.PageSize.Height-600f-216f);
+  doc.Add(page1);
+doc.Add(new Paragraph("1.TANIMLAR",bodyBaslik));
+doc.Add(new Paragraph("\n KAZA: Ölüme, hastaliga, yaralanmaya, hasara veya diger kayiplara sebebiyet veren istenmeyen olay.  \n\n YANGIN: Kati, sivi veya gaz halindeki yanici maddelerin isi alarak kontrol dışı yanmasıdır.\n\nDEPREM: Fay üzerinde biriken biçim değiştirme enerjisinin aniden boşalması sonucu meydana gelen yer değiştirme hareketleridir.\n\nSIZINTI – DÖKÜLME: İnsan sağlığına ve çevreye doğrudan veya dolaylı bir şekilde zarar verebilecek olan zararlı maddelerin bir kaptan sızarak veya dökülerek boşalmasıdır.\n\nİLK YARDIM: Herhangi bir nedenle tehlikeli duruma girmiş olan, hastalanan veya kazaya uğrayan bir kişiye durumunun daha kötüye gitmesini önlemek üzere doktor /ambulans gelinceye kadar olay yerinde yapılan tıbbi olmayan geçici müdahaledir.\n\nSABOTAJ: Harp sanayi dahil, sınai, ticari, zirai, üretim tesislerinin, araçlarının ve ürünlerinin enerji üretim ve ulaştırma tesislerinin, her türlü ulaştırma ve haberleşme sistem ve araçlarının, milli ekonomiye, milli kültüre, sağlık tesislerinin, eğitim tesislerinin, her türlü faaliyeti gerçekleştiren özel sektör fabrika, tesis işyerlerinin geçici bir süre için faaliyet dışı kalmasını sağlamak amacı ile tahribine yönelik saldırgan bir yıkıcı faaliyet şekline denir.\n\n",Normal));
+doc.Add(new Paragraph("2.ACİL DURUM EKİPLERİ",bodyBaslik));
+doc.Add(new Paragraph("     Acil durum ekipleri söndürme, kurtarma, koruma(emniyet) ve ilk yardım ekiplerinden oluşturulmuştur.",Normal));
+doc.Add(new Paragraph("\n     Söndürme ve Kurtarma ekipleri en az 3 (üç),",Normal));
+doc.Add(new Paragraph("     İlk yardım ve Koruma ekipleri en az 2 (iki) kişiden oluşmalıdır.",Normal));
+doc.Add(new Paragraph("\n     İşletmede meydana gelebilecek iş kazası, yangın, deprem, sızıntı - dökülme ve sabotaj olaylarına müdahale edecek ekipler yukarıda belirtilen özellikleri taşımak şartıyla, aşağıdaki tabloda belirtildiği gibi oluşturulacaktır.",Normal));
+doc.Add(new Paragraph("\n2.1.	Acil Durum Ekipleri Listesi",bodyBaslik));
+doc.Add(new Paragraph("     Binaların Yangından Korunması Hakkındaki Yönetmelik (27.11.2007 – 2007/12937) Dokuzuncu Kısım, İkinci Bölüm, Madde 126, 127",Normal));
+doc.Add(new Paragraph("\n                   1)	Söndürme Ekibi (en az üç kişi) \n\n",Normal));
+*/
+
+PdfPTable Plan1 = new PdfPTable(16);
+PdfPCell cell1 = new PdfPCell(new Phrase(firmaAdi + "\nYILLIK ÇALIŞMA PLANI",bodyBaslik));
+cell1.Colspan = 12;
+cell1.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell1.VerticalAlignment=Element.ALIGN_MIDDLE;
+Plan1.AddCell(cell1);
+PdfPCell cell2 = new PdfPCell(new Phrase("Tarih:"+@secilenTarih.tarih+"\n RevizeNo:" + @secilenTarih.revNo+"\n Revize Tarihi:"+@secilenTarih.revTarih,Normal));
+cell2.Colspan = 4;
+cell2.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
+cell2.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell2);
+PdfPCell cell3 = new PdfPCell(new Phrase("No",Normal));
+cell3.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell3.Rowspan=2;
+cell3.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell3.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell3);
+PdfPCell cell4 = new PdfPCell(new Phrase("Periyodik Faaliyetler",Normal));
+cell4.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell4.Rowspan=2;
+cell4.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell4.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell4);
+PdfPCell cell5 = new PdfPCell(new Phrase("Periyot",Normal));
+cell5.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell5.Rowspan=2;
+cell5.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell5.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell5);
+PdfPCell cell6 = new PdfPCell(new Phrase("İlgili Mevzuat",Normal));
+cell6.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell6.Rowspan=2;
+cell6.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell6.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell6);
+PdfPCell cell7 = new PdfPCell(new Phrase("Aylar",Normal));
+cell7.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell7.Colspan=12;
+cell7.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell7.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell7);
+PdfPCell cell8 = new PdfPCell(new Phrase("Ocak",Normal));
+cell8.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell8.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell8);
+PdfPCell cell9 = new PdfPCell(new Phrase("Şubat",Normal));
+cell9.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell9.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell9);
+PdfPCell cell10 = new PdfPCell(new Phrase("Mart",Normal));
+cell10.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell10.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell10);
+PdfPCell cell11 = new PdfPCell(new Phrase("Nisan",Normal));
+cell11.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell11.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell11);
+PdfPCell cell12 = new PdfPCell(new Phrase("Mayıs",Normal));
+cell12.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell12.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell12);
+PdfPCell cell13 = new PdfPCell(new Phrase("Haziran",Normal));
+cell13.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell13.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell13);
+PdfPCell cell14 = new PdfPCell(new Phrase("Temmuz",Normal));
+cell14.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell14.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell14);
+PdfPCell cell15 = new PdfPCell(new Phrase("Ağustos",Normal));
+cell15.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell15.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell15);
+PdfPCell cell16 = new PdfPCell(new Phrase("Eylül",Normal));
+cell16.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell16.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell16);
+PdfPCell cell17 = new PdfPCell(new Phrase("Ekim",Normal));
+cell17.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell17.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell17);
+PdfPCell cell18 = new PdfPCell(new Phrase("Kasım",Normal));
+cell18.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell18.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell18);
+PdfPCell cell19 = new PdfPCell(new Phrase("Aralık",Normal));
+cell19.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell19.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell19);
+
+PdfPCell cell20 = new PdfPCell(new Phrase("1",Normal));
+cell20.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell20.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell20);
+PdfPCell cell21 = new PdfPCell(new Phrase(madde1,Normal));
+cell21.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell21.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell21);
+PdfPCell cell22 = new PdfPCell(new Phrase(secilenPlan.periyod1,Normal));
+cell22.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell22.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell22);
+PdfPCell cell23 = new PdfPCell(new Phrase(mevzuat1,Normal));
+cell23.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell23.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell23);
+
+PdfPCell cell24 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay11=="on"){
+cell24 = new PdfPCell(new Phrase("P",Normal));  
+cell24.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell24.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell24);
+} else{
+    cell24 = new PdfPCell(new Phrase("",Normal));  
+cell24.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell24.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell24);
+}
+
+
+PdfPCell cell25 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay12=="on"){
+cell25 = new PdfPCell(new Phrase("P",Normal));  
+cell25.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell25.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell25);
+} else{
+    cell25 = new PdfPCell(new Phrase("",Normal));  
+cell25.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell25.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell25);
+}
+
+PdfPCell cell26 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay13=="on"){
+cell26 = new PdfPCell(new Phrase("P",Normal)); 
+cell26.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell26.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell26);
+}else{
+    cell26 = new PdfPCell(new Phrase("",Normal));  
+cell26.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell26.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell26);
+}
+
+PdfPCell cell27 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay14=="on"){
+cell27 = new PdfPCell(new Phrase("P",Normal)); 
+cell27.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell27.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell27);
+}else{
+    cell27 = new PdfPCell(new Phrase("",Normal));  
+cell27.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell27.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell27);
+}
+
+
+PdfPCell cell28 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay15=="on"){
+cell28 = new PdfPCell(new Phrase("P",Normal)); 
+cell28.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell28.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell28);
+}else{
+    cell28 = new PdfPCell(new Phrase("",Normal));  
+cell28.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell28.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell28);
+}
+
+
+PdfPCell cell29 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay16=="on"){
+cell29 = new PdfPCell(new Phrase("P",Normal)); 
+cell29.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell29.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell29);
+}else{
+    cell29 = new PdfPCell(new Phrase("",Normal));  
+cell29.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell29.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell29);
+}
+
+
+PdfPCell cell30 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay17=="on"){
+cell30 = new PdfPCell(new Phrase("P",Normal)); 
+cell30.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell30.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell30);
+}else{
+    cell30 = new PdfPCell(new Phrase("",Normal));  
+cell30.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell30.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell30);
+}
+
+
+PdfPCell cell31 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay18=="on"){
+cell31 = new PdfPCell(new Phrase("P",Normal)); 
+cell31.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell31.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell31);
+}else{
+    cell31 = new PdfPCell(new Phrase("",Normal));  
+cell31.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell31.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell31);
+}
+
+
+PdfPCell cell32 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay19=="on"){
+cell32 = new PdfPCell(new Phrase("P",Normal)); 
+cell32.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell32.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell32);
+}else{
+    cell32 = new PdfPCell(new Phrase("",Normal));  
+cell32.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell32.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell32);
+}
+
+
+PdfPCell cell33 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay110=="on"){
+cell33 = new PdfPCell(new Phrase("P",Normal)); 
+cell33.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell33.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell33);
+}else{
+    cell33 = new PdfPCell(new Phrase("",Normal));  
+cell33.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell33.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell33);
+}
+
+
+PdfPCell cell34 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay111=="on"){
+cell34 = new PdfPCell(new Phrase("P",Normal)); 
+cell34.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell34.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell34);
+}else{
+    cell34 = new PdfPCell(new Phrase("",Normal));  
+cell34.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell34.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell34);
+}
+
+
+PdfPCell cell35 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay112=="on"){
+cell35 = new PdfPCell(new Phrase("P",Normal)); 
+cell35.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell35.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell35);
+}else{
+    cell35 = new PdfPCell(new Phrase("",Normal));  
+cell35.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell35.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell35);
+}
+
+
+//222222222222222222222222
+PdfPCell cell36 = new PdfPCell(new Phrase("2",Normal));
+cell36.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell36.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell36);
+PdfPCell cell37 = new PdfPCell(new Phrase(madde2,Normal));
+cell37.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell37.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell37);
+PdfPCell cell38 = new PdfPCell(new Phrase(secilenPlan.periyod2,Normal));
+cell38.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell38.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell38);
+PdfPCell cell39 = new PdfPCell(new Phrase(mevzuat2,Normal));
+cell39.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell39.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell39);
+
+PdfPCell cell40 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay21=="on"){
+cell40 = new PdfPCell(new Phrase("P",Normal));  
+cell40.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell40.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell40);
+} else{
+    cell40 = new PdfPCell(new Phrase("",Normal));  
+cell40.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell40.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell40);
+}
+
+
+PdfPCell cell41 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay22=="on"){
+cell41 = new PdfPCell(new Phrase("P",Normal));  
+cell41.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell41.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell41);
+} else{
+    cell41 = new PdfPCell(new Phrase("",Normal));  
+cell41.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell41.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell41);
+}
+
+PdfPCell cell42 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay23=="on"){
+cell42 = new PdfPCell(new Phrase("P",Normal)); 
+cell42.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell42.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell42);
+}else{
+    cell42 = new PdfPCell(new Phrase("",Normal));  
+cell42.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell42.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell42);
+}
+
+PdfPCell cell43 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay24=="on"){
+cell43 = new PdfPCell(new Phrase("P",Normal)); 
+cell43.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell43.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell43);
+}else{
+    cell43 = new PdfPCell(new Phrase("",Normal));  
+cell43.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell43.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell43);
+}
+
+
+PdfPCell cell44 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay25=="on"){
+cell44 = new PdfPCell(new Phrase("P",Normal)); 
+cell44.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell44.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell44);
+}else{
+    cell44 = new PdfPCell(new Phrase("",Normal));  
+cell44.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell44.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell44);
+}
+
+
+PdfPCell cell45 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay26=="on"){
+cell45 = new PdfPCell(new Phrase("P",Normal)); 
+cell45.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell45.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell45);
+}else{
+    cell45 = new PdfPCell(new Phrase("",Normal));  
+cell45.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell45.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell45);
+}
+
+
+PdfPCell cell46 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay27=="on"){
+cell46 = new PdfPCell(new Phrase("P",Normal)); 
+cell46.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell46.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell46);
+}else{
+    cell46 = new PdfPCell(new Phrase("",Normal));  
+cell46.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell46.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell46);
+}
+
+
+PdfPCell cell47 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay28=="on"){
+cell47 = new PdfPCell(new Phrase("P",Normal)); 
+cell47.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell47.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell47);
+}else{
+    cell47 = new PdfPCell(new Phrase("",Normal));  
+cell47.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell47.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell47);
+}
+
+
+PdfPCell cell48 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay29=="on"){
+cell48 = new PdfPCell(new Phrase("P",Normal)); 
+cell48.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell48.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell48);
+}else{
+    cell48 = new PdfPCell(new Phrase("",Normal));  
+cell48.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell48.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell48);
+}
+
+
+PdfPCell cell49 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay210=="on"){
+cell49 = new PdfPCell(new Phrase("P",Normal)); 
+cell49.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell49.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell49);
+}else{
+    cell49 = new PdfPCell(new Phrase("",Normal));  
+cell49.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell49.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell49);
+}
+
+
+PdfPCell cell50 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay211=="on"){
+cell50 = new PdfPCell(new Phrase("P",Normal)); 
+cell50.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell50.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell50);
+}else{
+    cell50 = new PdfPCell(new Phrase("",Normal));  
+cell50.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell50.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell50);
+}
+
+
+PdfPCell cell51 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay212=="on"){
+cell51 = new PdfPCell(new Phrase("P",Normal)); 
+cell51.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell51.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell51);
+}else{
+    cell51 = new PdfPCell(new Phrase("",Normal));  
+cell51.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell51.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell51);
+}
+
+//3333333333333
+PdfPCell cell52 = new PdfPCell(new Phrase("3",Normal));
+cell52.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell52.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell52);
+PdfPCell cell53 = new PdfPCell(new Phrase(madde3,Normal));
+cell53.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell53.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell53);
+PdfPCell cell54 = new PdfPCell(new Phrase(secilenPlan.periyod3,Normal));
+cell54.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell54.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell54);
+PdfPCell cell55 = new PdfPCell(new Phrase(mevzuat3,Normal));
+cell55.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell55.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell55);
+
+PdfPCell cell56 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay31=="on"){
+cell56 = new PdfPCell(new Phrase("P",Normal));  
+cell56.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell56.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell56);
+} else{
+    cell56 = new PdfPCell(new Phrase("",Normal));  
+cell56.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell56.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell56);
+}
+
+
+PdfPCell cell57 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay32=="on"){
+cell57 = new PdfPCell(new Phrase("P",Normal));  
+cell57.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell57.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell57);
+} else{
+    cell57 = new PdfPCell(new Phrase("",Normal));  
+cell57.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell57.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell57);
+}
+
+PdfPCell cell58 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay33=="on"){
+cell58 = new PdfPCell(new Phrase("P",Normal)); 
+cell58.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell58.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell58);
+}else{
+    cell58 = new PdfPCell(new Phrase("",Normal));  
+cell58.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell58.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell58);
+}
+
+PdfPCell cell59 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay34=="on"){
+cell59 = new PdfPCell(new Phrase("P",Normal)); 
+cell59.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell59.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell59);
+}else{
+    cell59 = new PdfPCell(new Phrase("",Normal));  
+cell59.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell59.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell59);
+}
+
+
+PdfPCell cell60 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay35=="on"){
+cell60 = new PdfPCell(new Phrase("P",Normal)); 
+cell60.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell60.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell60);
+}else{
+    cell60 = new PdfPCell(new Phrase("",Normal));  
+cell60.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell60.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell60);
+}
+
+
+PdfPCell cell61 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay36=="on"){
+cell61 = new PdfPCell(new Phrase("P",Normal)); 
+cell61.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell61.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell61);
+}else{
+    cell61 = new PdfPCell(new Phrase("",Normal));  
+cell61.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell61.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell61);
+}
+
+
+PdfPCell cell62 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay37=="on"){
+cell62 = new PdfPCell(new Phrase("P",Normal)); 
+cell62.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell62.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell62);
+}else{
+    cell62 = new PdfPCell(new Phrase("",Normal));  
+cell62.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell62.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell62);
+}
+
+
+PdfPCell cell63 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay38=="on"){
+cell63 = new PdfPCell(new Phrase("P",Normal)); 
+cell63.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell63.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell63);
+}else{
+    cell63 = new PdfPCell(new Phrase("",Normal));  
+cell63.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell63.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell63);
+}
+
+
+PdfPCell cell64 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay39=="on"){
+cell64 = new PdfPCell(new Phrase("P",Normal)); 
+cell64.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell64.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell64);
+}else{
+    cell64 = new PdfPCell(new Phrase("",Normal));  
+cell64.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell64.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell64);
+}
+
+
+PdfPCell cell65 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay310=="on"){
+cell65 = new PdfPCell(new Phrase("P",Normal)); 
+cell65.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell65.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell65);
+}else{
+    cell65 = new PdfPCell(new Phrase("",Normal));  
+cell65.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell65.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell65);
+}
+
+
+PdfPCell cell66 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay311=="on"){
+cell66 = new PdfPCell(new Phrase("P",Normal)); 
+cell66.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell66.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell66);
+}else{
+    cell66 = new PdfPCell(new Phrase("",Normal));  
+cell66.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell66.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell66);
+}
+
+
+PdfPCell cell67 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay312=="on"){
+cell67 = new PdfPCell(new Phrase("P",Normal)); 
+cell67.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell67.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell67);
+}else{
+    cell67 = new PdfPCell(new Phrase("",Normal));  
+cell67.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell67.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell67);
+}
+
+//44444444444444
+PdfPCell cell68 = new PdfPCell(new Phrase("4",Normal));
+cell68.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell68.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell68);
+PdfPCell cell69 = new PdfPCell(new Phrase(madde4,Normal));
+cell69.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell69.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell69);
+PdfPCell cell70 = new PdfPCell(new Phrase(secilenPlan.periyod4,Normal));
+cell70.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell70.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell70);
+PdfPCell cell71 = new PdfPCell(new Phrase(mevzuat4,Normal));
+cell71.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell71.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell71);
+
+PdfPCell cell72 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay41=="on"){
+cell72 = new PdfPCell(new Phrase("P",Normal));  
+cell72.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell72.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell72);
+} else{
+    cell72 = new PdfPCell(new Phrase("",Normal));  
+cell72.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell72.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell72);
+}
+
+
+PdfPCell cell73 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay42=="on"){
+cell73 = new PdfPCell(new Phrase("P",Normal));  
+cell73.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell73.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell73);
+} else{
+    cell73 = new PdfPCell(new Phrase("",Normal));  
+cell73.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell73.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell73);
+}
+
+PdfPCell cell74 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay43=="on"){
+cell74 = new PdfPCell(new Phrase("P",Normal)); 
+cell74.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell74.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell74);
+}else{
+    cell74 = new PdfPCell(new Phrase("",Normal));  
+cell74.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell74.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell74);
+}
+
+PdfPCell cell75 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay44=="on"){
+cell75 = new PdfPCell(new Phrase("P",Normal)); 
+cell75.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell75.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell75);
+}else{
+    cell75 = new PdfPCell(new Phrase("",Normal));  
+cell75.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell75.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell75);
+}
+
+
+PdfPCell cell76 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay45=="on"){
+cell76 = new PdfPCell(new Phrase("P",Normal)); 
+cell76.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell76.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell76);
+}else{
+    cell76 = new PdfPCell(new Phrase("",Normal));  
+cell76.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell76.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell76);
+}
+
+
+PdfPCell cell77 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay46=="on"){
+cell77 = new PdfPCell(new Phrase("P",Normal)); 
+cell77.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell77.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell77);
+}else{
+    cell77 = new PdfPCell(new Phrase("",Normal));  
+cell77.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell77.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell77);
+}
+
+
+PdfPCell cell78 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay47=="on"){
+cell78 = new PdfPCell(new Phrase("P",Normal)); 
+cell78.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell78.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell78);
+}else{
+    cell78 = new PdfPCell(new Phrase("",Normal));  
+cell78.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell78.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell78);
+}
+
+
+PdfPCell cell79 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay48=="on"){
+cell79 = new PdfPCell(new Phrase("P",Normal)); 
+cell79.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell79.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell79);
+}else{
+    cell79 = new PdfPCell(new Phrase("",Normal));  
+cell79.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell79.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell79);
+}
+
+
+PdfPCell cell80 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay49=="on"){
+cell80 = new PdfPCell(new Phrase("P",Normal)); 
+cell80.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell80.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell80);
+}else{
+    cell80 = new PdfPCell(new Phrase("",Normal));  
+cell80.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell80.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell80);
+}
+
+
+PdfPCell cell81 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay410=="on"){
+cell81 = new PdfPCell(new Phrase("P",Normal)); 
+cell81.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell81.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell81);
+}else{
+    cell81 = new PdfPCell(new Phrase("",Normal));  
+cell81.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell81.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell81);
+}
+
+
+PdfPCell cell82 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay411=="on"){
+cell82 = new PdfPCell(new Phrase("P",Normal)); 
+cell82.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell82.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell82);
+}else{
+    cell82 = new PdfPCell(new Phrase("",Normal));  
+cell82.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell82.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell82);
+}
+
+
+PdfPCell cell83 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay412=="on"){
+cell83 = new PdfPCell(new Phrase("P",Normal)); 
+cell83.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell83.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell83);
+}else{
+    cell83 = new PdfPCell(new Phrase("",Normal));  
+cell83.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell83.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell83);
+}
+//555555555555555
+PdfPCell cell84 = new PdfPCell(new Phrase("5",Normal));
+cell84.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell84.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell84);
+PdfPCell cell85 = new PdfPCell(new Phrase(madde5,Normal));
+cell85.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell85.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell85);
+PdfPCell cell86 = new PdfPCell(new Phrase(secilenPlan.periyod5,Normal));
+cell86.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell86.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell86);
+PdfPCell cell87 = new PdfPCell(new Phrase(mevzuat5,Normal));
+cell87.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell87.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell87);
+
+PdfPCell cell88 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay51=="on"){
+cell88 = new PdfPCell(new Phrase("P",Normal));  
+cell88.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell88.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell88);
+} else{
+    cell88 = new PdfPCell(new Phrase("",Normal));  
+cell88.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell88.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell88);
+}
+
+
+PdfPCell cell89 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay52=="on"){
+cell89 = new PdfPCell(new Phrase("P",Normal));  
+cell89.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell89.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell89);
+} else{
+    cell89 = new PdfPCell(new Phrase("",Normal));  
+cell89.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell89.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell89);
+}
+
+PdfPCell cell90 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay53=="on"){
+cell90 = new PdfPCell(new Phrase("P",Normal)); 
+cell90.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell90.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell90);
+}else{
+    cell90 = new PdfPCell(new Phrase("",Normal));  
+cell90.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell90.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell90);
+}
+
+PdfPCell cell91 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay54=="on"){
+cell91 = new PdfPCell(new Phrase("P",Normal)); 
+cell91.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell91.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell91);
+}else{
+    cell91 = new PdfPCell(new Phrase("",Normal));  
+cell91.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell91.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell91);
+}
+
+
+PdfPCell cell92 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay55=="on"){
+cell92 = new PdfPCell(new Phrase("P",Normal)); 
+cell92.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell92.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell92);
+}else{
+    cell92 = new PdfPCell(new Phrase("",Normal));  
+cell92.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell92.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell92);
+}
+
+
+PdfPCell cell93 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay56=="on"){
+cell93 = new PdfPCell(new Phrase("P",Normal)); 
+cell93.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell93.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell93);
+}else{
+    cell93 = new PdfPCell(new Phrase("",Normal));  
+cell93.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell93.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell93);
+}
+
+
+PdfPCell cell94 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay57=="on"){
+cell94 = new PdfPCell(new Phrase("P",Normal)); 
+cell94.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell94.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell94);
+}else{
+    cell94 = new PdfPCell(new Phrase("",Normal));  
+cell94.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell94.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell94);
+}
+
+
+PdfPCell cell95 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay58=="on"){
+cell95 = new PdfPCell(new Phrase("P",Normal)); 
+cell95.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell95.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell95);
+}else{
+    cell95 = new PdfPCell(new Phrase("",Normal));  
+cell95.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell95.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell95);
+}
+
+
+PdfPCell cell96 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay59=="on"){
+cell96 = new PdfPCell(new Phrase("P",Normal)); 
+cell96.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell96.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell96);
+}else{
+    cell96 = new PdfPCell(new Phrase("",Normal));  
+cell96.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell96.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell96);
+}
+
+
+PdfPCell cell97 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay510=="on"){
+cell97 = new PdfPCell(new Phrase("P",Normal)); 
+cell97.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell97.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell97);
+}else{
+    cell97 = new PdfPCell(new Phrase("",Normal));  
+cell97.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell97.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell97);
+}
+
+
+PdfPCell cell98 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay511=="on"){
+cell98 = new PdfPCell(new Phrase("P",Normal)); 
+cell98.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell98.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell98);
+}else{
+    cell98 = new PdfPCell(new Phrase("",Normal));  
+cell98.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell98.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell98);
+}
+
+
+PdfPCell cell99 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay512=="on"){
+cell99 = new PdfPCell(new Phrase("P",Normal)); 
+cell99.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell99.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell99);
+}else{
+    cell99 = new PdfPCell(new Phrase("",Normal));  
+cell99.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell99.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell99);
+}
+//666666666666666
+PdfPCell cell100 = new PdfPCell(new Phrase("6",Normal));
+cell100.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell100.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell100);
+PdfPCell cell101 = new PdfPCell(new Phrase(madde6,Normal));
+cell101.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell101.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell101);
+PdfPCell cell102 = new PdfPCell(new Phrase(secilenPlan.periyod6,Normal));
+cell102.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell102.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell102);
+PdfPCell cell103 = new PdfPCell(new Phrase(mevzuat6,Normal));
+cell103.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell103.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell103);
+
+PdfPCell cell104 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay61=="on"){
+cell104 = new PdfPCell(new Phrase("P",Normal));  
+cell104.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell104.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell104);
+} else{
+    cell104 = new PdfPCell(new Phrase("",Normal));  
+cell104.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell104.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell104);
+}
+
+
+PdfPCell cell105 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay62=="on"){
+cell105 = new PdfPCell(new Phrase("P",Normal));  
+cell105.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell105.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell105);
+} else{
+    cell105 = new PdfPCell(new Phrase("",Normal));  
+cell105.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell105.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell105);
+}
+
+PdfPCell cell106 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay63=="on"){
+cell106 = new PdfPCell(new Phrase("P",Normal)); 
+cell106.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell106.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell106);
+}else{
+    cell106 = new PdfPCell(new Phrase("",Normal));  
+cell106.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell106.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell106);
+}
+
+PdfPCell cell107 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay64=="on"){
+cell107 = new PdfPCell(new Phrase("P",Normal)); 
+cell107.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell107.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell107);
+}else{
+    cell107 = new PdfPCell(new Phrase("",Normal));  
+cell107.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell107.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell107);
+}
+
+
+PdfPCell cell108 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay65=="on"){
+cell108 = new PdfPCell(new Phrase("P",Normal)); 
+cell108.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell108.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell108);
+}else{
+    cell108 = new PdfPCell(new Phrase("",Normal));  
+cell108.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell108.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell108);
+}
+
+
+PdfPCell cell109 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay66=="on"){
+cell109 = new PdfPCell(new Phrase("P",Normal)); 
+cell109.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell109.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell109);
+}else{
+    cell109 = new PdfPCell(new Phrase("",Normal));  
+cell109.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell109.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell109);
+}
+
+
+PdfPCell cell110 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay67=="on"){
+cell110 = new PdfPCell(new Phrase("P",Normal)); 
+cell110.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell110.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell110);
+}else{
+    cell110 = new PdfPCell(new Phrase("",Normal));  
+cell110.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell110.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell110);
+}
+
+
+PdfPCell cell111 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay68=="on"){
+cell111 = new PdfPCell(new Phrase("P",Normal)); 
+cell111.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell111.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell111);
+}else{
+    cell111 = new PdfPCell(new Phrase("",Normal));  
+cell111.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell111.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell111);
+}
+
+
+PdfPCell cell112 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay69=="on"){
+cell112 = new PdfPCell(new Phrase("P",Normal)); 
+cell112.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell112.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell112);
+}else{
+    cell112 = new PdfPCell(new Phrase("",Normal));  
+cell112.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell112.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell112);
+}
+
+
+PdfPCell cell113 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay610=="on"){
+cell113 = new PdfPCell(new Phrase("P",Normal)); 
+cell113.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell113.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell113);
+}else{
+    cell113 = new PdfPCell(new Phrase("",Normal));  
+cell113.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell113.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell113);
+}
+
+
+PdfPCell cell114 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay611=="on"){
+cell114 = new PdfPCell(new Phrase("P",Normal)); 
+cell114.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell114.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell114);
+}else{
+    cell114 = new PdfPCell(new Phrase("",Normal));  
+cell114.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell114.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell114);
+}
+
+
+PdfPCell cell115 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay612=="on"){
+cell115 = new PdfPCell(new Phrase("P",Normal)); 
+cell115.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell115.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell115);
+}else{
+    cell115 = new PdfPCell(new Phrase("",Normal));  
+cell115.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell115.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan1.AddCell(cell115);
+}
+
+
+doc.Add(Plan1);
+
+
+//sayfa 2 baslik
+doc.NewPage();
+PdfPTable Plan2 = new PdfPTable(16);
+PdfPCell cell116 = new PdfPCell(new Phrase(firmaAdi + "\nYILLIK ÇALIŞMA PLANI",bodyBaslik));
+cell116.Colspan = 12;
+cell116.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell116.VerticalAlignment=Element.ALIGN_MIDDLE;
+Plan2.AddCell(cell116);
+PdfPCell cell117 = new PdfPCell(new Phrase("Tarih:"+@secilenTarih.tarih+"\n RevizeNo:" + @secilenTarih.revNo+"\n Revize Tarihi:"+@secilenTarih.revTarih,Normal));
+cell117.Colspan = 4;
+cell117.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
+cell117.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell117);
+PdfPCell cell118 = new PdfPCell(new Phrase("No",Normal));
+cell118.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell118.Rowspan=2;
+cell118.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell118.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell118);
+PdfPCell cell119 = new PdfPCell(new Phrase("Periyodik Faaliyetler",Normal));
+cell119.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell119.Rowspan=2;
+cell119.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell119.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell119);
+PdfPCell cell120 = new PdfPCell(new Phrase("Periyot",Normal));
+cell120.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell120.Rowspan=2;
+cell120.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell120.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell120);
+PdfPCell cell121 = new PdfPCell(new Phrase("İlgili Mevzuat",Normal));
+cell121.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell121.Rowspan=2;
+cell121.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell121.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell121);
+PdfPCell cell122 = new PdfPCell(new Phrase("Aylar",Normal));
+cell122.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell122.Colspan=12;
+cell122.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell122.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell122);
+PdfPCell cell123 = new PdfPCell(new Phrase("Ocak",Normal));
+cell123.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell123.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell123);
+PdfPCell cell124 = new PdfPCell(new Phrase("Şubat",Normal));
+cell124.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell124.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell124);
+PdfPCell cell125 = new PdfPCell(new Phrase("Mart",Normal));
+cell125.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell125.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell125);
+PdfPCell cell126 = new PdfPCell(new Phrase("Nisan",Normal));
+cell126.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell126.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell126);
+PdfPCell cell127 = new PdfPCell(new Phrase("Mayıs",Normal));
+cell127.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell127.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell127);
+PdfPCell cell128 = new PdfPCell(new Phrase("Haziran",Normal));
+cell128.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell128.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell128);
+PdfPCell cell129 = new PdfPCell(new Phrase("Temmuz",Normal));
+cell129.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell129.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell129);
+PdfPCell cell130 = new PdfPCell(new Phrase("Ağustos",Normal));
+cell130.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell130.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell130);
+PdfPCell cell131 = new PdfPCell(new Phrase("Eylül",Normal));
+cell131.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell131.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell131);
+PdfPCell cell132 = new PdfPCell(new Phrase("Ekim",Normal));
+cell132.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell132.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell132);
+PdfPCell cell133 = new PdfPCell(new Phrase("Kasım",Normal));
+cell133.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell133.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell133);
+PdfPCell cell134 = new PdfPCell(new Phrase("Aralık",Normal));
+cell134.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell134.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell134);
+
+
+//7777777777777777777777
+PdfPCell cell135 = new PdfPCell(new Phrase("7",Normal));
+cell135.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell135.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell135);
+PdfPCell cell136 = new PdfPCell(new Phrase(madde7,Normal));
+cell136.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell136.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell136);
+PdfPCell cell137 = new PdfPCell(new Phrase(secilenPlan.periyod7,Normal));
+cell137.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell137.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell137);
+PdfPCell cell138 = new PdfPCell(new Phrase(mevzuat7,Normal));
+cell138.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell138.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell138);
+
+PdfPCell cell139 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay71=="on"){
+cell139 = new PdfPCell(new Phrase("P",Normal));  
+cell139.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell139.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell139);
+} else{
+    cell139 = new PdfPCell(new Phrase("",Normal));  
+cell139.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell139.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell139);
+}
+
+
+PdfPCell cell140 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay72=="on"){
+cell140 = new PdfPCell(new Phrase("P",Normal));  
+cell140.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell140.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell140);
+} else{
+    cell140 = new PdfPCell(new Phrase("",Normal));  
+cell140.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell140.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell140);
+}
+
+PdfPCell cell141 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay73=="on"){
+cell141 = new PdfPCell(new Phrase("P",Normal)); 
+cell141.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell141.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell141);
+}else{
+    cell141 = new PdfPCell(new Phrase("",Normal));  
+cell141.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell141.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell141);
+}
+
+PdfPCell cell142 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay74=="on"){
+cell142 = new PdfPCell(new Phrase("P",Normal)); 
+cell142.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell142.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell142);
+}else{
+    cell142 = new PdfPCell(new Phrase("",Normal));  
+cell142.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell142.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell142);
+}
+
+
+PdfPCell cell143 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay75=="on"){
+cell143 = new PdfPCell(new Phrase("P",Normal)); 
+cell143.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell143.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell143);
+}else{
+    cell143 = new PdfPCell(new Phrase("",Normal));  
+cell143.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell143.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell143);
+}
+
+
+PdfPCell cell144 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay76=="on"){
+cell144 = new PdfPCell(new Phrase("P",Normal)); 
+cell144.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell144.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell144);
+}else{
+    cell144 = new PdfPCell(new Phrase("",Normal));  
+cell144.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell144.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell144);
+}
+
+
+PdfPCell cell145 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay77=="on"){
+cell145 = new PdfPCell(new Phrase("P",Normal)); 
+cell145.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell145.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell145);
+}else{
+    cell145 = new PdfPCell(new Phrase("",Normal));  
+cell145.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell145.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell145);
+}
+
+
+PdfPCell cell146 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay78=="on"){
+cell146 = new PdfPCell(new Phrase("P",Normal)); 
+cell146.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell146.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell146);
+}else{
+    cell146 = new PdfPCell(new Phrase("",Normal));  
+cell146.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell146.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell146);
+}
+
+
+PdfPCell cell147 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay79=="on"){
+cell147 = new PdfPCell(new Phrase("P",Normal)); 
+cell147.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell147.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell147);
+}else{
+    cell147 = new PdfPCell(new Phrase("",Normal));  
+cell147.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell147.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell147);
+}
+
+
+PdfPCell cell148 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay710=="on"){
+cell148 = new PdfPCell(new Phrase("P",Normal)); 
+cell148.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell148.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell148);
+}else{
+    cell148 = new PdfPCell(new Phrase("",Normal));  
+cell148.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell148.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell148);
+}
+
+
+PdfPCell cell149 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay711=="on"){
+cell149 = new PdfPCell(new Phrase("P",Normal)); 
+cell149.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell149.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell149);
+}else{
+    cell149 = new PdfPCell(new Phrase("",Normal));  
+cell149.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell149.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell149);
+}
+
+
+PdfPCell cell150 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay712=="on"){
+cell150 = new PdfPCell(new Phrase("P",Normal)); 
+cell150.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell150.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell150);
+}else{
+    cell150 = new PdfPCell(new Phrase("",Normal));  
+cell150.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell150.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell150);
+}
+
+//888888888888888888888888
+PdfPCell cell151 = new PdfPCell(new Phrase("8",Normal));
+cell151.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell151.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell151);
+PdfPCell cell152 = new PdfPCell(new Phrase(madde8,Normal));
+cell152.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell152.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell152);
+PdfPCell cell153 = new PdfPCell(new Phrase(secilenPlan.periyod8,Normal));
+cell153.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell153.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell153);
+PdfPCell cell154 = new PdfPCell(new Phrase(mevzuat8,Normal));
+cell154.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell154.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell154);
+
+PdfPCell cell155 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay81=="on"){
+cell155 = new PdfPCell(new Phrase("P",Normal));  
+cell155.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell155.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell155);
+} else{
+    cell155 = new PdfPCell(new Phrase("",Normal));  
+cell155.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell155.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell155);
+}
+
+
+PdfPCell cell156 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay82=="on"){
+cell156 = new PdfPCell(new Phrase("P",Normal));  
+cell156.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell156.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell156);
+} else{
+    cell156 = new PdfPCell(new Phrase("",Normal));  
+cell156.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell156.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell156);
+}
+
+PdfPCell cell157 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay83=="on"){
+cell157 = new PdfPCell(new Phrase("P",Normal)); 
+cell157.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell157.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell157);
+}else{
+    cell157 = new PdfPCell(new Phrase("",Normal));  
+cell157.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell157.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell157);
+}
+
+PdfPCell cell158 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay84=="on"){
+cell158 = new PdfPCell(new Phrase("P",Normal)); 
+cell158.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell158.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell158);
+}else{
+    cell158 = new PdfPCell(new Phrase("",Normal));  
+cell158.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell158.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell158);
+}
+
+
+PdfPCell cell159 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay85=="on"){
+cell159 = new PdfPCell(new Phrase("P",Normal)); 
+cell159.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell159.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell159);
+}else{
+    cell159 = new PdfPCell(new Phrase("",Normal));  
+cell159.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell159.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell159);
+}
+
+
+PdfPCell cell160 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay86=="on"){
+cell160 = new PdfPCell(new Phrase("P",Normal)); 
+cell160.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell160.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell160);
+}else{
+    cell160 = new PdfPCell(new Phrase("",Normal));  
+cell160.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell160.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell160);
+}
+
+
+PdfPCell cell161 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay87=="on"){
+cell161 = new PdfPCell(new Phrase("P",Normal)); 
+cell161.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell161.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell161);
+}else{
+    cell161 = new PdfPCell(new Phrase("",Normal));  
+cell161.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell161.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell161);
+}
+
+
+PdfPCell cell162 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay88=="on"){
+cell162 = new PdfPCell(new Phrase("P",Normal)); 
+cell162.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell162.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell162);
+}else{
+    cell162 = new PdfPCell(new Phrase("",Normal));  
+cell162.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell162.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell162);
+}
+
+
+PdfPCell cell163 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay89=="on"){
+cell163 = new PdfPCell(new Phrase("P",Normal)); 
+cell163.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell163.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell163);
+}else{
+    cell163 = new PdfPCell(new Phrase("",Normal));  
+cell163.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell163.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell163);
+}
+
+
+PdfPCell cell164 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay810=="on"){
+cell164 = new PdfPCell(new Phrase("P",Normal)); 
+cell164.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell164.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell164);
+}else{
+    cell164 = new PdfPCell(new Phrase("",Normal));  
+cell164.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell164.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell164);
+}
+
+
+PdfPCell cell165 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay811=="on"){
+cell165 = new PdfPCell(new Phrase("P",Normal)); 
+cell165.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell165.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell165);
+}else{
+    cell165 = new PdfPCell(new Phrase("",Normal));  
+cell165.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell165.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell165);
+}
+
+
+PdfPCell cell166 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay812=="on"){
+cell166 = new PdfPCell(new Phrase("P",Normal)); 
+cell166.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell166.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell166);
+}else{
+    cell166 = new PdfPCell(new Phrase("",Normal));  
+cell166.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell166.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell166);
+}
+
+//9999999999999
+PdfPCell cell167 = new PdfPCell(new Phrase("9",Normal));
+cell167.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell167.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell167);
+PdfPCell cell168 = new PdfPCell(new Phrase(madde9,Normal));
+cell168.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell168.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell168);
+PdfPCell cell169 = new PdfPCell(new Phrase(secilenPlan.periyod9,Normal));
+cell169.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell169.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell169);
+PdfPCell cell170 = new PdfPCell(new Phrase(mevzuat9,Normal));
+cell170.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell170.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell170);
+
+PdfPCell cell171 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay91=="on"){
+cell171 = new PdfPCell(new Phrase("P",Normal));  
+cell171.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell171.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell171);
+} else{
+    cell171 = new PdfPCell(new Phrase("",Normal));  
+cell171.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell171.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell171);
+}
+
+
+PdfPCell cell172 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay92=="on"){
+cell172 = new PdfPCell(new Phrase("P",Normal));  
+cell172.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell172.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell172);
+} else{
+    cell172 = new PdfPCell(new Phrase("",Normal));  
+cell172.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell172.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell172);
+}
+
+PdfPCell cell173 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay93=="on"){
+cell173 = new PdfPCell(new Phrase("P",Normal)); 
+cell173.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell173.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell173);
+}else{
+    cell173 = new PdfPCell(new Phrase("",Normal));  
+cell173.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell173.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell173);
+}
+
+PdfPCell cell174 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay94=="on"){
+cell174 = new PdfPCell(new Phrase("P",Normal)); 
+cell174.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell174.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell174);
+}else{
+    cell174 = new PdfPCell(new Phrase("",Normal));  
+cell174.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell174.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell174);
+}
+
+
+PdfPCell cell175 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay95=="on"){
+cell175 = new PdfPCell(new Phrase("P",Normal)); 
+cell175.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell175.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell175);
+}else{
+    cell175 = new PdfPCell(new Phrase("",Normal));  
+cell175.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell175.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell175);
+}
+
+
+PdfPCell cell176 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay96=="on"){
+cell176 = new PdfPCell(new Phrase("P",Normal)); 
+cell176.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell176.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell176);
+}else{
+    cell176 = new PdfPCell(new Phrase("",Normal));  
+cell176.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell176.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell176);
+}
+
+
+PdfPCell cell177 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay97=="on"){
+cell177 = new PdfPCell(new Phrase("P",Normal)); 
+cell177.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell177.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell177);
+}else{
+    cell177 = new PdfPCell(new Phrase("",Normal));  
+cell177.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell177.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell177);
+}
+
+
+PdfPCell cell178 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay98=="on"){
+cell178 = new PdfPCell(new Phrase("P",Normal)); 
+cell178.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell178.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell178);
+}else{
+    cell178 = new PdfPCell(new Phrase("",Normal));  
+cell178.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell178.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell178);
+}
+
+
+PdfPCell cell179 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay99=="on"){
+cell179 = new PdfPCell(new Phrase("P",Normal)); 
+cell179.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell179.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell179);
+}else{
+    cell179 = new PdfPCell(new Phrase("",Normal));  
+cell179.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell179.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell179);
+}
+
+
+PdfPCell cell180 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay910=="on"){
+cell180 = new PdfPCell(new Phrase("P",Normal)); 
+cell180.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell180.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell180);
+}else{
+    cell180 = new PdfPCell(new Phrase("",Normal));  
+cell180.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell180.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell180);
+}
+
+
+PdfPCell cell181 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay911=="on"){
+cell181 = new PdfPCell(new Phrase("P",Normal)); 
+cell181.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell181.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell181);
+}else{
+    cell181 = new PdfPCell(new Phrase("",Normal));  
+cell181.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell181.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell181);
+}
+
+
+PdfPCell cell182 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay912=="on"){
+cell182 = new PdfPCell(new Phrase("P",Normal)); 
+cell182.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell182.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell182);
+}else{
+    cell182 = new PdfPCell(new Phrase("",Normal));  
+cell182.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell182.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell182);
+}
+
+//10 10 10 10 10 10 10
+PdfPCell cell183 = new PdfPCell(new Phrase("10",Normal));
+cell183.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell183.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell183);
+PdfPCell cell184 = new PdfPCell(new Phrase(madde10,Normal));
+cell184.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell184.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell184);
+PdfPCell cell185 = new PdfPCell(new Phrase(secilenPlan.periyod10,Normal));
+cell185.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell185.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell185);
+PdfPCell cell186 = new PdfPCell(new Phrase(mevzuat10,Normal));
+cell186.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell186.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell186);
+
+PdfPCell cell187 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay101=="on"){
+cell187 = new PdfPCell(new Phrase("P",Normal));  
+cell187.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell187.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell187);
+} else{
+    cell187 = new PdfPCell(new Phrase("",Normal));  
+cell187.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell187.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell187);
+}
+
+
+PdfPCell cell188 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay102=="on"){
+cell188 = new PdfPCell(new Phrase("P",Normal));  
+cell188.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell188.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell188);
+} else{
+    cell188 = new PdfPCell(new Phrase("",Normal));  
+cell188.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell188.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell188);
+}
+
+PdfPCell cell189 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay103=="on"){
+cell189 = new PdfPCell(new Phrase("P",Normal)); 
+cell189.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell189.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell189);
+}else{
+    cell189 = new PdfPCell(new Phrase("",Normal));  
+cell189.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell189.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell189);
+}
+
+PdfPCell cell190 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay104=="on"){
+cell190 = new PdfPCell(new Phrase("P",Normal)); 
+cell190.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell190.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell190);
+}else{
+    cell190 = new PdfPCell(new Phrase("",Normal));  
+cell190.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell190.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell190);
+}
+
+
+PdfPCell cell191 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay105=="on"){
+cell191 = new PdfPCell(new Phrase("P",Normal)); 
+cell191.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell191.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell191);
+}else{
+    cell191 = new PdfPCell(new Phrase("",Normal));  
+cell191.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell191.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell191);
+}
+
+
+PdfPCell cell192 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay106=="on"){
+cell192 = new PdfPCell(new Phrase("P",Normal)); 
+cell192.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell192.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell192);
+}else{
+    cell192 = new PdfPCell(new Phrase("",Normal));  
+cell192.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell192.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell192);
+}
+
+
+PdfPCell cell193 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay107=="on"){
+cell193 = new PdfPCell(new Phrase("P",Normal)); 
+cell193.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell193.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell193);
+}else{
+    cell193 = new PdfPCell(new Phrase("",Normal));  
+cell193.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell193.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell193);
+}
+
+
+PdfPCell cell194 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay108=="on"){
+cell194 = new PdfPCell(new Phrase("P",Normal)); 
+cell194.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell194.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell194);
+}else{
+    cell194 = new PdfPCell(new Phrase("",Normal));  
+cell194.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell194.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell194);
+}
+
+
+PdfPCell cell195 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay109=="on"){
+cell195 = new PdfPCell(new Phrase("P",Normal)); 
+cell195.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell195.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell195);
+}else{
+    cell195 = new PdfPCell(new Phrase("",Normal));  
+cell195.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell195.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell195);
+}
+
+
+PdfPCell cell196 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1010=="on"){
+cell196 = new PdfPCell(new Phrase("P",Normal)); 
+cell196.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell196.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell196);
+}else{
+    cell196 = new PdfPCell(new Phrase("",Normal));  
+cell196.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell196.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell196);
+}
+
+
+PdfPCell cell197 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1011=="on"){
+cell197 = new PdfPCell(new Phrase("P",Normal)); 
+cell197.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell197.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell197);
+}else{
+    cell197 = new PdfPCell(new Phrase("",Normal));  
+cell197.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell197.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell197);
+}
+
+
+PdfPCell cell198 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1012=="on"){
+cell198 = new PdfPCell(new Phrase("P",Normal)); 
+cell198.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell198.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell198);
+}else{
+    cell198 = new PdfPCell(new Phrase("",Normal));  
+cell198.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell198.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell198);
+}
+//11 11 11 11 11 11 11 11
+PdfPCell cell199 = new PdfPCell(new Phrase("11",Normal));
+cell199.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell199.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell199);
+PdfPCell cell200 = new PdfPCell(new Phrase(madde11,Normal));
+cell200.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell200.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell200);
+PdfPCell cell201 = new PdfPCell(new Phrase(secilenPlan.periyod11,Normal));
+cell201.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell201.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell201);
+PdfPCell cell202 = new PdfPCell(new Phrase(mevzuat11,Normal));
+cell202.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell202.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell202);
+
+PdfPCell cell203 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ayonbir1=="on"){
+cell203 = new PdfPCell(new Phrase("P",Normal));  
+cell203.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell203.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell203);
+} else{
+    cell203 = new PdfPCell(new Phrase("",Normal));  
+cell203.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell203.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell203);
+}
+
+
+PdfPCell cell204 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayonbir2=="on"){
+cell204 = new PdfPCell(new Phrase("P",Normal));  
+cell204.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell204.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell204);
+} else{
+    cell204 = new PdfPCell(new Phrase("",Normal));  
+cell204.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell204.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell204);
+}
+
+PdfPCell cell205 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayonbir3=="on"){
+cell205 = new PdfPCell(new Phrase("P",Normal)); 
+cell205.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell205.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell205);
+}else{
+    cell205 = new PdfPCell(new Phrase("",Normal));  
+cell205.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell205.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell205);
+}
+
+PdfPCell cell206 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayonbir4=="on"){
+cell206 = new PdfPCell(new Phrase("P",Normal)); 
+cell206.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell206.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell206);
+}else{
+    cell206 = new PdfPCell(new Phrase("",Normal));  
+cell206.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell206.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell206);
+}
+
+
+PdfPCell cell207 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayonbir5=="on"){
+cell207 = new PdfPCell(new Phrase("P",Normal)); 
+cell207.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell207.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell207);
+}else{
+    cell207 = new PdfPCell(new Phrase("",Normal));  
+cell207.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell207.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell207);
+}
+
+
+PdfPCell cell208 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayonbir6=="on"){
+cell208 = new PdfPCell(new Phrase("P",Normal)); 
+cell208.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell208.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell208);
+}else{
+    cell208 = new PdfPCell(new Phrase("",Normal));  
+cell208.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell208.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell208);
+}
+
+
+PdfPCell cell209 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayonbir7=="on"){
+cell209 = new PdfPCell(new Phrase("P",Normal)); 
+cell209.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell209.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell209);
+}else{
+    cell209 = new PdfPCell(new Phrase("",Normal));  
+cell209.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell209.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell209);
+}
+
+
+PdfPCell cell210 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayonbir8=="on"){
+cell210 = new PdfPCell(new Phrase("P",Normal)); 
+cell210.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell210.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell210);
+}else{
+    cell210 = new PdfPCell(new Phrase("",Normal));  
+cell210.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell210.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell210);
+}
+
+
+PdfPCell cell211 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayonbir9=="on"){
+cell211 = new PdfPCell(new Phrase("P",Normal)); 
+cell211.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell211.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell211);
+}else{
+    cell211 = new PdfPCell(new Phrase("",Normal));  
+cell211.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell211.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell211);
+}
+
+
+PdfPCell cell212 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayonbir10=="on"){
+cell212 = new PdfPCell(new Phrase("P",Normal)); 
+cell212.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell212.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell212);
+}else{
+    cell212 = new PdfPCell(new Phrase("",Normal));  
+cell212.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell212.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell212);
+}
+
+
+PdfPCell cell213 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayonbir11=="on"){
+cell213 = new PdfPCell(new Phrase("P",Normal)); 
+cell213.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell213.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell213);
+}else{
+    cell213 = new PdfPCell(new Phrase("",Normal));  
+cell213.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell213.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell213);
+}
+
+
+PdfPCell cell214 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayonbir12=="on"){
+cell214 = new PdfPCell(new Phrase("P",Normal)); 
+cell214.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell214.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell214);
+}else{
+    cell214 = new PdfPCell(new Phrase("",Normal));  
+cell214.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell214.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan2.AddCell(cell214);
+}
+
+
+//Sayfa 3 
+
+PdfPTable Plan3 = new PdfPTable(16);
+PdfPCell cell281 = new PdfPCell(new Phrase(firmaAdi + "\nYILLIK ÇALIŞMA PLANI",bodyBaslik));
+cell281.Colspan = 12;
+cell281.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell281.VerticalAlignment=Element.ALIGN_MIDDLE;
+Plan3.AddCell(cell281);
+PdfPCell cell215 = new PdfPCell(new Phrase("Tarih:"+@secilenTarih.tarih+"\n RevizeNo:" + @secilenTarih.revNo+"\n Revize Tarihi:"+@secilenTarih.revTarih,Normal));
+cell215.Colspan = 4;
+cell215.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
+cell215.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell215);
+PdfPCell cell216 = new PdfPCell(new Phrase("No",Normal));
+cell216.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell216.Rowspan=2;
+cell216.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell216.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell216);
+PdfPCell cell217 = new PdfPCell(new Phrase("Periyodik Faaliyetler",Normal));
+cell217.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell217.Rowspan=2;
+cell217.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell217.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell217);
+PdfPCell cell218 = new PdfPCell(new Phrase("Periyot",Normal));
+cell218.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell218.Rowspan=2;
+cell218.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell218.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell218);
+PdfPCell cell219 = new PdfPCell(new Phrase("İlgili Mevzuat",Normal));
+cell219.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell219.Rowspan=2;
+cell219.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell219.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell219);
+PdfPCell cell220 = new PdfPCell(new Phrase("Aylar",Normal));
+cell220.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell220.Colspan=12;
+cell220.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell220.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell220);
+PdfPCell cell221 = new PdfPCell(new Phrase("Ocak",Normal));
+cell221.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell221.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell221);
+PdfPCell cell222 = new PdfPCell(new Phrase("Şubat",Normal));
+cell222.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell222.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell222);
+PdfPCell cell223 = new PdfPCell(new Phrase("Mart",Normal));
+cell223.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell223.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell223);
+PdfPCell cell224 = new PdfPCell(new Phrase("Nisan",Normal));
+cell224.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell224.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell224);
+PdfPCell cell225 = new PdfPCell(new Phrase("Mayıs",Normal));
+cell225.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell225.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell225);
+PdfPCell cell226 = new PdfPCell(new Phrase("Haziran",Normal));
+cell226.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell226.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell226);
+PdfPCell cell227 = new PdfPCell(new Phrase("Temmuz",Normal));
+cell227.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell227.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell227);
+PdfPCell cell228 = new PdfPCell(new Phrase("Ağustos",Normal));
+cell228.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell228.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell228);
+PdfPCell cell229 = new PdfPCell(new Phrase("Eylül",Normal));
+cell229.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell229.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell229);
+PdfPCell cell230 = new PdfPCell(new Phrase("Ekim",Normal));
+cell230.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell230.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell230);
+PdfPCell cell231 = new PdfPCell(new Phrase("Kasım",Normal));
+cell231.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell231.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell231);
+PdfPCell cell232 = new PdfPCell(new Phrase("Aralık",Normal));
+cell232.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell232.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell232);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//12 12 12 12 12 12 12 12
+PdfPCell cell233 = new PdfPCell(new Phrase("12",Normal));
+cell233.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell233.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell233);
+PdfPCell cell234 = new PdfPCell(new Phrase(madde12,Normal));
+cell234.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell234.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell234);
+PdfPCell cell235 = new PdfPCell(new Phrase(secilenPlan.periyod12,Normal));
+cell235.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell235.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell235);
+PdfPCell cell236 = new PdfPCell(new Phrase(mevzuat12,Normal));
+cell236.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell236.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell236);
+
+PdfPCell cell237 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ayoniki1=="on"){
+cell237 = new PdfPCell(new Phrase("P",Normal));  
+cell237.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell237.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell237);
+} else{
+    cell237 = new PdfPCell(new Phrase("",Normal));  
+cell237.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell237.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell237);
+}
+
+
+PdfPCell cell238 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayoniki2=="on"){
+cell238 = new PdfPCell(new Phrase("P",Normal));  
+cell238.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell238.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell238);
+} else{
+    cell238 = new PdfPCell(new Phrase("",Normal));  
+cell238.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell238.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell238);
+}
+
+PdfPCell cell239 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayoniki3=="on"){
+cell239 = new PdfPCell(new Phrase("P",Normal)); 
+cell239.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell239.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell239);
+}else{
+    cell239 = new PdfPCell(new Phrase("",Normal));  
+cell239.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell239.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell239);
+}
+
+PdfPCell cell240 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayoniki4=="on"){
+cell240 = new PdfPCell(new Phrase("P",Normal)); 
+cell240.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell240.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell240);
+}else{
+    cell240 = new PdfPCell(new Phrase("",Normal));  
+cell240.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell240.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell240);
+}
+
+
+PdfPCell cell241 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayoniki5=="on"){
+cell241 = new PdfPCell(new Phrase("P",Normal)); 
+cell241.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell241.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell241);
+}else{
+    cell241 = new PdfPCell(new Phrase("",Normal));  
+cell241.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell241.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell241);
+}
+
+
+PdfPCell cell242 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayoniki6=="on"){
+cell242 = new PdfPCell(new Phrase("P",Normal)); 
+cell242.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell242.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell242);
+}else{
+    cell242 = new PdfPCell(new Phrase("",Normal));  
+cell242.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell242.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell242);
+}
+
+
+PdfPCell cell243 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayoniki7=="on"){
+cell243 = new PdfPCell(new Phrase("P",Normal)); 
+cell243.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell243.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell243);
+}else{
+    cell243 = new PdfPCell(new Phrase("",Normal));  
+cell243.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell243.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell243);
+}
+
+
+PdfPCell cell244 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayoniki8=="on"){
+cell244 = new PdfPCell(new Phrase("P",Normal)); 
+cell244.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell244.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell244);
+}else{
+    cell244 = new PdfPCell(new Phrase("",Normal));  
+cell244.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell244.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell244);
+}
+
+
+PdfPCell cell245 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayoniki9=="on"){
+cell245 = new PdfPCell(new Phrase("P",Normal)); 
+cell245.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell245.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell245);
+}else{
+    cell245 = new PdfPCell(new Phrase("",Normal));  
+cell245.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell245.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell245);
+}
+
+
+PdfPCell cell246 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayoniki10=="on"){
+cell246 = new PdfPCell(new Phrase("P",Normal)); 
+cell246.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell246.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell246);
+}else{
+    cell246 = new PdfPCell(new Phrase("",Normal));  
+cell246.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell246.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell246);
+}
+
+
+PdfPCell cell247 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayoniki11=="on"){
+cell247 = new PdfPCell(new Phrase("P",Normal)); 
+cell247.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell247.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell247);
+}else{
+    cell247 = new PdfPCell(new Phrase("",Normal));  
+cell247.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell247.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell247);
+}
+
+
+PdfPCell cell248 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ayoniki12=="on"){
+cell248 = new PdfPCell(new Phrase("P",Normal)); 
+cell248.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell248.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell248);
+}else{
+    cell248 = new PdfPCell(new Phrase("",Normal));  
+cell248.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell248.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell248);
+}
+
+
+//13 13 13 13 13 13 13 13 13 13
+PdfPCell cell249 = new PdfPCell(new Phrase("13",Normal));
+cell249.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell249.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell249);
+PdfPCell cell250 = new PdfPCell(new Phrase(madde13,Normal));
+cell250.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell250.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell250);
+PdfPCell cell251 = new PdfPCell(new Phrase(secilenPlan.periyod13,Normal));
+cell251.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell251.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell251);
+PdfPCell cell252 = new PdfPCell(new Phrase(mevzuat13,Normal));
+cell252.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell252.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell252);
+
+PdfPCell cell253 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay131=="on"){
+cell253 = new PdfPCell(new Phrase("P",Normal));  
+cell253.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell253.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell253);
+} else{
+    cell253 = new PdfPCell(new Phrase("",Normal));  
+cell253.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell253.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell253);
+}
+
+
+PdfPCell cell254 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay132=="on"){
+cell254 = new PdfPCell(new Phrase("P",Normal));  
+cell254.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell254.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell254);
+} else{
+    cell254 = new PdfPCell(new Phrase("",Normal));  
+cell254.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell254.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell254);
+}
+
+PdfPCell cell255 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay133=="on"){
+cell255 = new PdfPCell(new Phrase("P",Normal)); 
+cell255.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell255.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell255);
+}else{
+    cell255 = new PdfPCell(new Phrase("",Normal));  
+cell255.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell255.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell255);
+}
+
+PdfPCell cell256 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay134=="on"){
+cell256 = new PdfPCell(new Phrase("P",Normal)); 
+cell256.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell256.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell256);
+}else{
+    cell256 = new PdfPCell(new Phrase("",Normal));  
+cell256.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell256.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell256);
+}
+
+
+PdfPCell cell257 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay135=="on"){
+cell257 = new PdfPCell(new Phrase("P",Normal)); 
+cell257.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell257.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell257);
+}else{
+    cell257 = new PdfPCell(new Phrase("",Normal));  
+cell257.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell257.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell257);
+}
+
+
+PdfPCell cell258 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay136=="on"){
+cell258 = new PdfPCell(new Phrase("P",Normal)); 
+cell258.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell258.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell258);
+}else{
+    cell258 = new PdfPCell(new Phrase("",Normal));  
+cell258.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell258.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell258);
+}
+
+
+PdfPCell cell259 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay137=="on"){
+cell259 = new PdfPCell(new Phrase("P",Normal)); 
+cell259.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell259.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell259);
+}else{
+    cell259 = new PdfPCell(new Phrase("",Normal));  
+cell259.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell259.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell259);
+}
+
+
+PdfPCell cell260 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay138=="on"){
+cell260 = new PdfPCell(new Phrase("P",Normal)); 
+cell260.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell260.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell260);
+}else{
+    cell260 = new PdfPCell(new Phrase("",Normal));  
+cell260.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell260.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell260);
+}
+
+
+PdfPCell cell261 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay139=="on"){
+cell261 = new PdfPCell(new Phrase("P",Normal)); 
+cell261.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell261.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell261);
+}else{
+    cell261 = new PdfPCell(new Phrase("",Normal));  
+cell261.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell261.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell261);
+}
+
+
+PdfPCell cell262 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1310=="on"){
+cell262 = new PdfPCell(new Phrase("P",Normal)); 
+cell262.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell262.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell262);
+}else{
+    cell262 = new PdfPCell(new Phrase("",Normal));  
+cell262.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell262.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell262);
+}
+
+
+PdfPCell cell263 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1311=="on"){
+cell263 = new PdfPCell(new Phrase("P",Normal)); 
+cell263.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell263.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell263);
+}else{
+    cell263 = new PdfPCell(new Phrase("",Normal));  
+cell263.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell263.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell263);
+}
+
+
+PdfPCell cell264 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1312=="on"){
+cell264 = new PdfPCell(new Phrase("P",Normal)); 
+cell264.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell264.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell264);
+}else{
+    cell264 = new PdfPCell(new Phrase("",Normal));  
+cell264.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell264.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell264);
+}
+
+//14 14 14 14 14 14 14 14 14 14
+PdfPCell cell265 = new PdfPCell(new Phrase("14",Normal));
+cell265.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell265.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell265);
+PdfPCell cell266 = new PdfPCell(new Phrase(madde14,Normal));
+cell266.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell266.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell266);
+PdfPCell cell267 = new PdfPCell(new Phrase(secilenPlan.periyod14,Normal));
+cell267.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell267.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell267);
+PdfPCell cell268 = new PdfPCell(new Phrase(mevzuat14,Normal));
+cell268.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell268.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell268);
+
+PdfPCell cell269 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay141=="on"){
+cell269 = new PdfPCell(new Phrase("P",Normal));  
+cell269.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell269.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell269);
+} else{
+    cell269 = new PdfPCell(new Phrase("",Normal));  
+cell269.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell269.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell269);
+}
+
+
+PdfPCell cell270 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay142=="on"){
+cell270 = new PdfPCell(new Phrase("P",Normal));  
+cell270.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell270.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell270);
+} else{
+    cell270 = new PdfPCell(new Phrase("",Normal));  
+cell270.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell270.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell270);
+}
+
+PdfPCell cell271 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay143=="on"){
+cell271 = new PdfPCell(new Phrase("P",Normal)); 
+cell271.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell271.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell271);
+}else{
+    cell271 = new PdfPCell(new Phrase("",Normal));  
+cell271.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell271.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell271);
+}
+
+PdfPCell cell272 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay144=="on"){
+cell272 = new PdfPCell(new Phrase("P",Normal)); 
+cell272.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell272.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell272);
+}else{
+    cell272 = new PdfPCell(new Phrase("",Normal));  
+cell272.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell272.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell272);
+}
+
+
+PdfPCell cell273 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay145=="on"){
+cell273 = new PdfPCell(new Phrase("P",Normal)); 
+cell273.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell273.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell273);
+}else{
+    cell273 = new PdfPCell(new Phrase("",Normal));  
+cell273.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell273.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell273);
+}
+
+
+PdfPCell cell274 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay146=="on"){
+cell274 = new PdfPCell(new Phrase("P",Normal)); 
+cell274.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell274.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell274);
+}else{
+    cell274 = new PdfPCell(new Phrase("",Normal));  
+cell274.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell274.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell274);
+}
+
+
+PdfPCell cell275 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay147=="on"){
+cell275 = new PdfPCell(new Phrase("P",Normal)); 
+cell275.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell275.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell275);
+}else{
+    cell275 = new PdfPCell(new Phrase("",Normal));  
+cell275.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell275.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell275);
+}
+
+
+PdfPCell cell276 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay148=="on"){
+cell276 = new PdfPCell(new Phrase("P",Normal)); 
+cell276.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell276.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell276);
+}else{
+    cell276 = new PdfPCell(new Phrase("",Normal));  
+cell276.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell276.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell276);
+}
+
+
+PdfPCell cell277 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay149=="on"){
+cell277 = new PdfPCell(new Phrase("P",Normal)); 
+cell277.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell277.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell277);
+}else{
+    cell277 = new PdfPCell(new Phrase("",Normal));  
+cell277.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell277.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell277);
+}
+
+
+PdfPCell cell278 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1410=="on"){
+cell278 = new PdfPCell(new Phrase("P",Normal)); 
+cell278.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell278.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell278);
+}else{
+    cell278 = new PdfPCell(new Phrase("",Normal));  
+cell278.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell278.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell278);
+}
+
+
+PdfPCell cell279 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1411=="on"){
+cell279 = new PdfPCell(new Phrase("P",Normal)); 
+cell279.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell279.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell279);
+}else{
+    cell279 = new PdfPCell(new Phrase("",Normal));  
+cell279.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell279.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell279);
+}
+
+
+PdfPCell cell280 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1412=="on"){
+cell280 = new PdfPCell(new Phrase("P",Normal)); 
+cell280.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell280.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell280);
+}else{
+    cell280 = new PdfPCell(new Phrase("",Normal));  
+cell280.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell280.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell280);
+}
+
+
+//15 15 15 15 15 15 15 15 15 15
+PdfPCell cell282 = new PdfPCell(new Phrase("15",Normal));
+cell282.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell282.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell282);
+PdfPCell cell283 = new PdfPCell(new Phrase(madde15,Normal));
+cell283.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell283.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell283);
+PdfPCell cell284 = new PdfPCell(new Phrase(secilenPlan.periyod15,Normal));
+cell284.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell284.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell284);
+PdfPCell cell285 = new PdfPCell(new Phrase(mevzuat15,Normal));
+cell285.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell285.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell285);
+
+PdfPCell cell286 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay151=="on"){
+cell286 = new PdfPCell(new Phrase("P",Normal));  
+cell286.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell286.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell286);
+} else{
+    cell286 = new PdfPCell(new Phrase("",Normal));  
+cell286.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell286.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell286);
+}
+
+
+PdfPCell cell287 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay152=="on"){
+cell287 = new PdfPCell(new Phrase("P",Normal));  
+cell287.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell287.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell287);
+} else{
+    cell287 = new PdfPCell(new Phrase("",Normal));  
+cell287.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell287.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell287);
+}
+
+PdfPCell cell288 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay153=="on"){
+cell288 = new PdfPCell(new Phrase("P",Normal)); 
+cell288.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell288.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell288);
+}else{
+    cell288 = new PdfPCell(new Phrase("",Normal));  
+cell288.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell288.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell288);
+}
+
+PdfPCell cell289 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay154=="on"){
+cell289 = new PdfPCell(new Phrase("P",Normal)); 
+cell289.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell289.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell289);
+}else{
+    cell289 = new PdfPCell(new Phrase("",Normal));  
+cell289.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell289.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell289);
+}
+
+
+PdfPCell cell290 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay155=="on"){
+cell290 = new PdfPCell(new Phrase("P",Normal)); 
+cell290.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell290.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell290);
+}else{
+    cell290 = new PdfPCell(new Phrase("",Normal));  
+cell290.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell290.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell290);
+}
+
+
+PdfPCell cell291 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay156=="on"){
+cell291 = new PdfPCell(new Phrase("P",Normal)); 
+cell291.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell291.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell291);
+}else{
+    cell291 = new PdfPCell(new Phrase("",Normal));  
+cell291.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell291.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell291);
+}
+
+
+PdfPCell cell292 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay157=="on"){
+cell292 = new PdfPCell(new Phrase("P",Normal)); 
+cell292.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell292.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell292);
+}else{
+    cell292 = new PdfPCell(new Phrase("",Normal));  
+cell292.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell292.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell292);
+}
+
+
+PdfPCell cell293 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay158=="on"){
+cell293 = new PdfPCell(new Phrase("P",Normal)); 
+cell293.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell293.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell293);
+}else{
+    cell293 = new PdfPCell(new Phrase("",Normal));  
+cell293.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell293.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell293);
+}
+
+
+PdfPCell cell294 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay159=="on"){
+cell294 = new PdfPCell(new Phrase("P",Normal)); 
+cell294.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell294.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell294);
+}else{
+    cell294 = new PdfPCell(new Phrase("",Normal));  
+cell294.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell294.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell294);
+}
+
+
+PdfPCell cell295 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1510=="on"){
+cell295 = new PdfPCell(new Phrase("P",Normal)); 
+cell295.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell295.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell295);
+}else{
+    cell295 = new PdfPCell(new Phrase("",Normal));  
+cell295.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell295.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell295);
+}
+
+
+PdfPCell cell296 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1511=="on"){
+cell296 = new PdfPCell(new Phrase("P",Normal)); 
+cell296.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell296.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell296);
+}else{
+    cell296 = new PdfPCell(new Phrase("",Normal));  
+cell296.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell296.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell296);
+}
+
+
+PdfPCell cell297 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1512=="on"){
+cell297 = new PdfPCell(new Phrase("P",Normal)); 
+cell297.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell297.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell297);
+}else{
+    cell297 = new PdfPCell(new Phrase("",Normal));  
+cell297.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell297.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan3.AddCell(cell297);
+}
+
+//Sayfa 4
+
+PdfPTable Plan4 = new PdfPTable(16);
+PdfPCell cell298 = new PdfPCell(new Phrase(firmaAdi + "\nYILLIK ÇALIŞMA PLANI",bodyBaslik));
+cell298.Colspan = 12;
+cell298.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell298.VerticalAlignment=Element.ALIGN_MIDDLE;
+Plan4.AddCell(cell298);
+PdfPCell cell299 = new PdfPCell(new Phrase("Tarih:"+@secilenTarih.tarih+"\n RevizeNo:" + @secilenTarih.revNo+"\n Revize Tarihi:"+@secilenTarih.revTarih,Normal));
+cell299.Colspan = 4;
+cell299.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
+cell299.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell299);
+PdfPCell cell300 = new PdfPCell(new Phrase("No",Normal));
+cell300.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell300.Rowspan=2;
+cell300.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell300.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell300);
+PdfPCell cell301 = new PdfPCell(new Phrase("Periyodik Faaliyetler",Normal));
+cell301.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell301.Rowspan=2;
+cell301.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell301.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell301);
+PdfPCell cell302 = new PdfPCell(new Phrase("Periyot",Normal));
+cell302.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell302.Rowspan=2;
+cell302.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell302.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell302);
+PdfPCell cell303 = new PdfPCell(new Phrase("İlgili Mevzuat",Normal));
+cell303.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell303.Rowspan=2;
+cell303.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell303.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell303);
+PdfPCell cell304 = new PdfPCell(new Phrase("Aylar",Normal));
+cell304.BackgroundColor= new iTextSharp.text.Color(102,255,102);
+cell304.Colspan=12;
+cell304.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell304.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell304);
+PdfPCell cell305 = new PdfPCell(new Phrase("Ocak",Normal));
+cell305.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell305.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell305);
+PdfPCell cell306 = new PdfPCell(new Phrase("Şubat",Normal));
+cell306.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell306.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell306);
+PdfPCell cell307 = new PdfPCell(new Phrase("Mart",Normal));
+cell307.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell307.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell307);
+PdfPCell cell308 = new PdfPCell(new Phrase("Nisan",Normal));
+cell308.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell308.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell308);
+PdfPCell cell309 = new PdfPCell(new Phrase("Mayıs",Normal));
+cell309.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell309.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell309);
+PdfPCell cell310 = new PdfPCell(new Phrase("Haziran",Normal));
+cell310.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell310.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell310);
+PdfPCell cell311 = new PdfPCell(new Phrase("Temmuz",Normal));
+cell311.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell311.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell311);
+PdfPCell cell312 = new PdfPCell(new Phrase("Ağustos",Normal));
+cell312.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell312.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell312);
+PdfPCell cell313 = new PdfPCell(new Phrase("Eylül",Normal));
+cell313.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell313.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell313);
+PdfPCell cell314 = new PdfPCell(new Phrase("Ekim",Normal));
+cell314.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell314.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell314);
+PdfPCell cell315 = new PdfPCell(new Phrase("Kasım",Normal));
+cell315.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell315.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell315);
+PdfPCell cell316 = new PdfPCell(new Phrase("Aralık",Normal));
+cell316.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell316.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell316);
+
+
+//16 16 16 16 16 16 16 16 16 16 
+PdfPCell cell317 = new PdfPCell(new Phrase("16",Normal));
+cell317.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell317.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell317);
+PdfPCell cell318 = new PdfPCell(new Phrase(madde16,Normal));
+cell318.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell318.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell318);
+PdfPCell cell319 = new PdfPCell(new Phrase(secilenPlan.periyod16,Normal));
+cell319.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell319.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell319);
+PdfPCell cell320 = new PdfPCell(new Phrase(mevzuat16,Normal));
+cell320.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell320.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell320);
+
+PdfPCell cell321 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay161=="on"){
+cell321 = new PdfPCell(new Phrase("P",Normal));  
+cell321.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell321.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell321);
+} else{
+    cell321 = new PdfPCell(new Phrase("",Normal));  
+cell321.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell321.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell321);
+}
+
+
+PdfPCell cell322 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay162=="on"){
+cell322 = new PdfPCell(new Phrase("P",Normal));  
+cell322.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell322.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell322);
+} else{
+    cell322 = new PdfPCell(new Phrase("",Normal));  
+cell322.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell322.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell322);
+}
+
+PdfPCell cell323 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay163=="on"){
+cell323 = new PdfPCell(new Phrase("P",Normal)); 
+cell323.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell323.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell323);
+}else{
+    cell323 = new PdfPCell(new Phrase("",Normal));  
+cell323.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell323.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell323);
+}
+
+PdfPCell cell324 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay164=="on"){
+cell324 = new PdfPCell(new Phrase("P",Normal)); 
+cell324.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell324.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell324);
+}else{
+    cell324 = new PdfPCell(new Phrase("",Normal));  
+cell324.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell324.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell324);
+}
+
+
+PdfPCell cell325 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay165=="on"){
+cell325 = new PdfPCell(new Phrase("P",Normal)); 
+cell325.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell325.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell325);
+}else{
+    cell325 = new PdfPCell(new Phrase("",Normal));  
+cell325.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell325.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell325);
+}
+
+
+PdfPCell cell326 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay166=="on"){
+cell326 = new PdfPCell(new Phrase("P",Normal)); 
+cell326.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell326.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell326);
+}else{
+    cell326 = new PdfPCell(new Phrase("",Normal));  
+cell326.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell326.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell326);
+}
+
+
+PdfPCell cell327 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay167=="on"){
+cell327 = new PdfPCell(new Phrase("P",Normal)); 
+cell327.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell327.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell327);
+}else{
+    cell327 = new PdfPCell(new Phrase("",Normal));  
+cell327.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell327.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell327);
+}
+
+
+PdfPCell cell328 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay168=="on"){
+cell328 = new PdfPCell(new Phrase("P",Normal)); 
+cell328.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell328.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell328);
+}else{
+    cell328 = new PdfPCell(new Phrase("",Normal));  
+cell328.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell328.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell328);
+}
+
+
+PdfPCell cell329 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay169=="on"){
+cell329 = new PdfPCell(new Phrase("P",Normal)); 
+cell329.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell329.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell329);
+}else{
+    cell329 = new PdfPCell(new Phrase("",Normal));  
+cell329.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell329.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell329);
+}
+
+
+PdfPCell cell330 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1610=="on"){
+cell330 = new PdfPCell(new Phrase("P",Normal)); 
+cell330.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell330.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell330);
+}else{
+    cell330 = new PdfPCell(new Phrase("",Normal));  
+cell330.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell330.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell330);
+}
+
+
+PdfPCell cell331 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1611=="on"){
+cell331 = new PdfPCell(new Phrase("P",Normal)); 
+cell331.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell331.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell331);
+}else{
+    cell331 = new PdfPCell(new Phrase("",Normal));  
+cell331.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell331.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell331);
+}
+
+
+PdfPCell cell332 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1612=="on"){
+cell332 = new PdfPCell(new Phrase("P",Normal)); 
+cell332.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell332.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell332);
+}else{
+    cell332 = new PdfPCell(new Phrase("",Normal));  
+cell332.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell332.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell332);
+}
+
+//17 17 17 17 17 17 17 17 17 17 
+PdfPCell cell333 = new PdfPCell(new Phrase("17",Normal));
+cell333.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell333.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell333);
+PdfPCell cell334 = new PdfPCell(new Phrase(madde17,Normal));
+cell334.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell334.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell334);
+PdfPCell cell335 = new PdfPCell(new Phrase(secilenPlan.periyod17,Normal));
+cell335.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell335.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell335);
+PdfPCell cell336 = new PdfPCell(new Phrase(mevzuat17,Normal));
+cell336.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell336.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell336);
+
+PdfPCell cell337 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay171=="on"){
+cell337 = new PdfPCell(new Phrase("P",Normal));  
+cell337.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell337.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell337);
+} else{
+    cell337 = new PdfPCell(new Phrase("",Normal));  
+cell337.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell337.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell337);
+}
+
+
+PdfPCell cell338 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay172=="on"){
+cell338 = new PdfPCell(new Phrase("P",Normal));  
+cell338.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell338.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell338);
+} else{
+    cell338 = new PdfPCell(new Phrase("",Normal));  
+cell338.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell338.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell338);
+}
+
+PdfPCell cell339 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay173=="on"){
+cell339 = new PdfPCell(new Phrase("P",Normal)); 
+cell339.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell339.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell339);
+}else{
+    cell339 = new PdfPCell(new Phrase("",Normal));  
+cell339.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell339.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell339);
+}
+
+PdfPCell cell340 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay174=="on"){
+cell340 = new PdfPCell(new Phrase("P",Normal)); 
+cell340.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell340.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell340);
+}else{
+    cell340 = new PdfPCell(new Phrase("",Normal));  
+cell340.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell340.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell340);
+}
+
+
+PdfPCell cell341 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay175=="on"){
+cell341 = new PdfPCell(new Phrase("P",Normal)); 
+cell341.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell341.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell341);
+}else{
+    cell341 = new PdfPCell(new Phrase("",Normal));  
+cell341.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell341.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell341);
+}
+
+
+PdfPCell cell342 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay176=="on"){
+cell342 = new PdfPCell(new Phrase("P",Normal)); 
+cell342.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell342.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell342);
+}else{
+    cell342 = new PdfPCell(new Phrase("",Normal));  
+cell342.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell342.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell342);
+}
+
+
+PdfPCell cell343 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay177=="on"){
+cell343 = new PdfPCell(new Phrase("P",Normal)); 
+cell343.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell343.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell343);
+}else{
+    cell343 = new PdfPCell(new Phrase("",Normal));  
+cell343.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell343.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell343);
+}
+
+
+PdfPCell cell344 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay178=="on"){
+cell344 = new PdfPCell(new Phrase("P",Normal)); 
+cell344.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell344.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell344);
+}else{
+    cell344 = new PdfPCell(new Phrase("",Normal));  
+cell344.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell344.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell344);
+}
+
+
+PdfPCell cell345 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay179=="on"){
+cell345 = new PdfPCell(new Phrase("P",Normal)); 
+cell345.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell345.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell345);
+}else{
+    cell345 = new PdfPCell(new Phrase("",Normal));  
+cell345.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell345.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell345);
+}
+
+
+PdfPCell cell346 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1710=="on"){
+cell346 = new PdfPCell(new Phrase("P",Normal)); 
+cell346.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell346.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell346);
+}else{
+    cell346 = new PdfPCell(new Phrase("",Normal));  
+cell346.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell346.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell346);
+}
+
+
+PdfPCell cell347 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1711=="on"){
+cell347 = new PdfPCell(new Phrase("P",Normal)); 
+cell347.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell347.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell347);
+}else{
+    cell347 = new PdfPCell(new Phrase("",Normal));  
+cell347.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell347.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell347);
+}
+
+
+PdfPCell cell348 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1712=="on"){
+cell348 = new PdfPCell(new Phrase("P",Normal)); 
+cell348.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell348.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell348);
+}else{
+    cell348 = new PdfPCell(new Phrase("",Normal));  
+cell348.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell348.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell348);
+}
+
+//18 18 18 18 18 18 18 18 18 18 
+PdfPCell cell349 = new PdfPCell(new Phrase("18",Normal));
+cell349.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell349.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell349);
+PdfPCell cell350 = new PdfPCell(new Phrase(madde18,Normal));
+cell350.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell350.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell350);
+PdfPCell cell351 = new PdfPCell(new Phrase(secilenPlan.periyod18,Normal));
+cell351.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell351.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell351);
+PdfPCell cell352 = new PdfPCell(new Phrase(mevzuat18,Normal));
+cell352.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell352.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell352);
+
+PdfPCell cell353 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay181=="on"){
+cell353 = new PdfPCell(new Phrase("P",Normal));  
+cell353.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell353.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell353);
+} else{
+    cell353 = new PdfPCell(new Phrase("",Normal));  
+cell353.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell353.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell353);
+}
+
+
+PdfPCell cell354 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay182=="on"){
+cell354 = new PdfPCell(new Phrase("P",Normal));  
+cell354.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell354.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell354);
+} else{
+    cell354 = new PdfPCell(new Phrase("",Normal));  
+cell354.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell354.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell354);
+}
+
+PdfPCell cell355 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay183=="on"){
+cell355 = new PdfPCell(new Phrase("P",Normal)); 
+cell355.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell355.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell355);
+}else{
+    cell355 = new PdfPCell(new Phrase("",Normal));  
+cell355.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell355.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell355);
+}
+
+PdfPCell cell356 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay184=="on"){
+cell356 = new PdfPCell(new Phrase("P",Normal)); 
+cell356.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell356.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell356);
+}else{
+    cell356 = new PdfPCell(new Phrase("",Normal));  
+cell356.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell356.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell356);
+}
+
+
+PdfPCell cell357 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay185=="on"){
+cell357 = new PdfPCell(new Phrase("P",Normal)); 
+cell357.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell357.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell357);
+}else{
+    cell357 = new PdfPCell(new Phrase("",Normal));  
+cell357.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell357.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell357);
+}
+
+
+PdfPCell cell358 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay186=="on"){
+cell358 = new PdfPCell(new Phrase("P",Normal)); 
+cell358.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell358.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell358);
+}else{
+    cell358 = new PdfPCell(new Phrase("",Normal));  
+cell358.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell358.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell358);
+}
+
+
+PdfPCell cell359 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay187=="on"){
+cell359 = new PdfPCell(new Phrase("P",Normal)); 
+cell359.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell359.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell359);
+}else{
+    cell359 = new PdfPCell(new Phrase("",Normal));  
+cell359.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell359.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell359);
+}
+
+
+PdfPCell cell360 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay188=="on"){
+cell360 = new PdfPCell(new Phrase("P",Normal)); 
+cell360.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell360.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell360);
+}else{
+    cell360 = new PdfPCell(new Phrase("",Normal));  
+cell360.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell360.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell360);
+}
+
+
+PdfPCell cell361 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay189=="on"){
+cell361 = new PdfPCell(new Phrase("P",Normal)); 
+cell361.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell361.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell361);
+}else{
+    cell361 = new PdfPCell(new Phrase("",Normal));  
+cell361.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell361.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell361);
+}
+
+
+PdfPCell cell362 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1810=="on"){
+cell362 = new PdfPCell(new Phrase("P",Normal)); 
+cell362.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell362.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell362);
+}else{
+    cell362 = new PdfPCell(new Phrase("",Normal));  
+cell362.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell362.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell362);
+}
+
+
+PdfPCell cell363 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1811=="on"){
+cell363 = new PdfPCell(new Phrase("P",Normal)); 
+cell363.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell363.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell363);
+}else{
+    cell363 = new PdfPCell(new Phrase("",Normal));  
+cell363.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell363.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell363);
+}
+
+
+PdfPCell cell364 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1812=="on"){
+cell364 = new PdfPCell(new Phrase("P",Normal)); 
+cell364.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell364.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell364);
+}else{
+    cell364 = new PdfPCell(new Phrase("",Normal));  
+cell364.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell364.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell364);
+}
+
+//19 19 19 19 19 19 19 19 19 19 
+PdfPCell cell365 = new PdfPCell(new Phrase("19",Normal));
+cell365.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell365.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell365);
+PdfPCell cell366 = new PdfPCell(new Phrase(madde19,Normal));
+cell366.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell366.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell366);
+PdfPCell cell367 = new PdfPCell(new Phrase(secilenPlan.periyod19,Normal));
+cell367.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell367.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell367);
+PdfPCell cell368 = new PdfPCell(new Phrase(mevzuat19,Normal));
+cell368.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell368.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell368);
+
+PdfPCell cell369 = new PdfPCell(new Phrase("",Normal));  
+if(secilenPlan.ay191=="on"){
+cell369 = new PdfPCell(new Phrase("P",Normal));  
+cell369.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell369.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell369);
+} else{
+    cell369 = new PdfPCell(new Phrase("",Normal));  
+cell369.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell369.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell369);
+}
+
+
+PdfPCell cell370 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay192=="on"){
+cell370 = new PdfPCell(new Phrase("P",Normal));  
+cell370.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell370.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell370);
+} else{
+    cell370 = new PdfPCell(new Phrase("",Normal));  
+cell370.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell370.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell370);
+}
+
+PdfPCell cell371 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay193=="on"){
+cell371 = new PdfPCell(new Phrase("P",Normal)); 
+cell371.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell371.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell371);
+}else{
+    cell371 = new PdfPCell(new Phrase("",Normal));  
+cell371.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell371.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell371);
+}
+
+PdfPCell cell372 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay194=="on"){
+cell372 = new PdfPCell(new Phrase("P",Normal)); 
+cell372.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell372.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell372);
+}else{
+    cell372 = new PdfPCell(new Phrase("",Normal));  
+cell372.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell372.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell372);
+}
+
+
+PdfPCell cell373 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay195=="on"){
+cell373 = new PdfPCell(new Phrase("P",Normal)); 
+cell373.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell373.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell373);
+}else{
+    cell373 = new PdfPCell(new Phrase("",Normal));  
+cell373.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell373.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell373);
+}
+
+
+PdfPCell cell374 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay196=="on"){
+cell374 = new PdfPCell(new Phrase("P",Normal)); 
+cell374.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell374.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell374);
+}else{
+    cell374 = new PdfPCell(new Phrase("",Normal));  
+cell374.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell374.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell374);
+}
+
+
+PdfPCell cell375 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay197=="on"){
+cell375 = new PdfPCell(new Phrase("P",Normal)); 
+cell375.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell375.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell375);
+}else{
+    cell375 = new PdfPCell(new Phrase("",Normal));  
+cell375.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell375.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell375);
+}
+
+
+PdfPCell cell376 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay198=="on"){
+cell376 = new PdfPCell(new Phrase("P",Normal)); 
+cell376.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell376.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell376);
+}else{
+    cell376 = new PdfPCell(new Phrase("",Normal));  
+cell376.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell376.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell376);
+}
+
+
+PdfPCell cell377 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay199=="on"){
+cell377 = new PdfPCell(new Phrase("P",Normal)); 
+cell377.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell377.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell377);
+}else{
+    cell377 = new PdfPCell(new Phrase("",Normal));  
+cell377.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell377.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell377);
+}
+
+
+PdfPCell cell378 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1910=="on"){
+cell378 = new PdfPCell(new Phrase("P",Normal)); 
+cell378.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell378.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell378);
+}else{
+    cell378 = new PdfPCell(new Phrase("",Normal));  
+cell378.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell378.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell378);
+}
+
+
+PdfPCell cell379 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1911=="on"){
+cell379 = new PdfPCell(new Phrase("P",Normal)); 
+cell379.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell379.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell379);
+}else{
+    cell379 = new PdfPCell(new Phrase("",Normal));  
+cell379.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell379.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell379);
+}
+
+
+PdfPCell cell380 = new PdfPCell(new Phrase("",Normal));
+if(secilenPlan.ay1912=="on"){
+cell380 = new PdfPCell(new Phrase("P",Normal)); 
+cell380.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell380.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell380);
+}else{
+    cell380 = new PdfPCell(new Phrase("",Normal));  
+cell380.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+cell380.VerticalAlignment = Element.ALIGN_MIDDLE; //0=Left, 1=Centre, 2=Right
+Plan4.AddCell(cell380);
+}
+
+
+
+doc.Add(Plan2);
+doc.Add(Plan3);
+doc.Add(Plan4);
+
+
+/*
+sondurmeEkibi.AddCell(cell1);
+sondurmeEkibi.AddCell(sondurmeUye1);
+sondurmeEkibi.AddCell("Yedek");
+sondurmeEkibi.AddCell(sondurmeUye2);
+sondurmeEkibi.AddCell("Yedek");
+doc.Add(sondurmeEkibi);
+
+doc.Add(new Paragraph("\n                 2)	Kurtarma Ekibi ( en az üç kişi)  \n\n",Normal));
+PdfPTable kurtarmaEkibi = new PdfPTable(3);
+kurtarmaEkibi.AddCell("Adi Soyadi");
+kurtarmaEkibi.AddCell("Ekip Elemanlari");
+kurtarmaEkibi.AddCell("Ekipteki Gorevi");
+kurtarmaEkibi.AddCell(kurtarmaBaskan);
+kurtarmaEkibi.AddCell("Ekip Baskani");
+PdfPCell cell2 = new PdfPCell(new Phrase("Yangın ve diğer acil durumlarda can ve mal kurtarma işlerini yapma",Normal));
+cell2.Rowspan = 3;
+cell2.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+kurtarmaEkibi.AddCell(cell2);
+kurtarmaEkibi.AddCell(kurtarmaUye1);
+kurtarmaEkibi.AddCell("Yedek");
+kurtarmaEkibi.AddCell(kurtarmaUye2);
+kurtarmaEkibi.AddCell("Yedek");
+doc.Add(kurtarmaEkibi);
+doc.NewPage();
+Image page2 = Image.GetInstance("C:/inetpub/vhosts/yasamyildizi.com.tr/portal/images/2.png");
+  page2.ScalePercent(40f);
+ page2.SetAbsolutePosition(doc.PageSize.Width-26f-72f,doc.PageSize.Height-600f-216f);
+  doc.Add(page2);
+doc.Add(new Paragraph("                  3)	Koruma Ekibi (en az iki kişi) \n\n",Normal));
+PdfPTable korumaEkibi = new PdfPTable(3);
+korumaEkibi.AddCell("Adi Soyadi");
+korumaEkibi.AddCell("Ekip Elemanlari ");
+korumaEkibi.AddCell("Ekipteki Gorevi");
+korumaEkibi.AddCell(korumaBaskan);
+korumaEkibi.AddCell("Ekip Baskani");
+PdfPCell cell3 = new PdfPCell(new Phrase("Kurtarma ekibince kurtarılan eşya ve evrakı korumak, acil durum nedeniyle ortaya çıkması muhtemel panik ve kargaşayı önlemek",Normal));
+cell3.Rowspan = 3;
+cell3.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+korumaEkibi.AddCell(cell3);
+korumaEkibi.AddCell(korumaUye1);
+korumaEkibi.AddCell("Yedek");
+korumaEkibi.AddCell(korumaUye2);
+korumaEkibi.AddCell("Yedek");
+doc.Add(korumaEkibi);
+
+doc.Add(new Paragraph("\n                  4)	İlkyardım Ekibi (en az iki kişi) \n\n",Normal));
+PdfPTable ilyardimEkibi = new PdfPTable(3);
+ilyardimEkibi.AddCell("Adi Soyadi");
+ilyardimEkibi.AddCell("Ekip Elemanlari ");
+ilyardimEkibi.AddCell("Ekipteki Gorevi");
+ilyardimEkibi.AddCell(ilkyardimBaskan);
+ilyardimEkibi.AddCell("Ekip Baskani");
+PdfPCell cell4 = new PdfPCell(new Phrase("Acil durum sebebiyle yaralanan ve hastalanan kişilere ilk yardım yapmak",Normal));
+cell4.Rowspan = 3;
+cell4.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+ilyardimEkibi.AddCell(cell4);
+ilyardimEkibi.AddCell(ilkyardimUye1);
+ilyardimEkibi.AddCell("Yedek");
+ilyardimEkibi.AddCell(ilkyardimUye2);
+ilyardimEkibi.AddCell("Yedek");
+doc.Add(ilyardimEkibi);
+doc.Add(new Paragraph("\n2.2.Acil Durum Ekiplerinin Görevleri\n",bodyBaslik));
+doc.Add(new Paragraph("\n***Söndürme Ekibi",italikFont));
+doc.Add(new Paragraph("Binada çıkacak yangına derhal müdahale ederek yangının genişlemesine mani olmak ve söndürmek.",Normal));
+doc.Add(new Paragraph("\n***Kurtarma Ekibi",italikFont));
+doc.Add(new Paragraph("Yangın ve diğer acil durumlarda can ve mal kurtarma işlerini yapmak.",Normal));
+doc.Add(new Paragraph("\n***Koruma (Emniyet) Ekibi",italikFont));
+doc.Add(new Paragraph("Kurtarma ekibince kurtarılan eşya evrakı korumak, yangın nedeniyle ortaya çıkması muhtemel panik ve kargaşayı önlemek.",Normal));
+doc.Add(new Paragraph("\n***İlk Yardım Ekibi",italikFont));
+doc.Add(new Paragraph("Yangın sebebiyle yaralanan veya hastalanan kişilere ilk yardım yapmak.",Normal));
+
+doc.Add(new Paragraph("\n2.3.Acil Durumda Yapılacak İşler\n",bodyBaslik));
+doc.Add(new Paragraph("     Yangın esnasında yapılması gerekenler “Binaların Yangından Korunması Hakkında Yönetmelik ”de belirtilmiştir. Gerek duyulduğu takdirde diğer acil durum olayları için de talimat ve/veya yönergeler oluşturulabilecektir.",Normal));
+
+doc.Add(new Paragraph("\n2.4.Acil Durum Plan1ları\n",bodyBaslik));
+doc.Add(new Paragraph("     Acil durumlarda personelin yapması gerekenler iş kazası, sızıntı-dökülme, deprem, yangın, sabotaj ve ilk yardım acil durum Plan1larında belirtilmiştir. Tüm çalışanlar bu Plan1lara uymakla yükümlüdür",Normal));
+
+doc.Add(new Paragraph("\n2.5.Kayıt Ve Teçhizatın Korunması\n",bodyBaslik));
+doc.Add(new Paragraph("     Yangın sırasında korunması ve kurtarılması gereken evrak ve eşyalar yangında ilk öncelikli kurtarılacaklar listesinde belirtilmiştir. Birinci öncelik kurtarılacak malzeme kırmızı daire içinde siyah renk ‘’Y’’ harfi, İkinci öncelik kurtarılacak malzeme mavi daire içinde siyah renk ‘’Y’’ harfi Üçüncü öncelik kurtarılacak malzeme yeşil daire içinde siyah renk ‘’Y’’ harfi etiketlerle belirtilir.",Normal));
+doc.NewPage();
+Image page3 = Image.GetInstance("C:/inetpub/vhosts/yasamyildizi.com.tr/portal/images/3.png");
+  page3.ScalePercent(40f);
+ page3.SetAbsolutePosition(doc.PageSize.Width-26f-72f,doc.PageSize.Height-600f-216f);
+  doc.Add(page3);
+doc.Add(new Paragraph("3.ACİL DURUMLARDA KURULUŞ İÇİ VE DIŞI MAKAMLARLA İLETİŞİM",bodyBaslik));
+doc.Add(new Paragraph("     Acil durumlarda gerekli olabilecek, acil durum telefon listesinde belirtilmiş telefon numaraları(Yangın, Hızır Acil servis, Polis imdat, Jandarma, Orman yangın ihbarı vb.)  herkesin ulaşabileceği yerlere asılmalı ve sürekli güncelliği sağlanmalıdır.",Normal));
+doc.Add(new Paragraph("\nAcil durum ekipleri aralarındaki grup içi iletişimi telefon dışında ekip amirlerinde bulunan telefonlarla sağlayacaklardır.",Normal));
+*/
+doc.Close();
+}

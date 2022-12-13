@@ -1,0 +1,27 @@
+﻿@{
+    WebSecurity.InitializeDatabaseConnection("OsgbPortal", "UserProfiles", "UserId", "email", autoCreateTables: true);
+
+    // Bu site kullanıcılarının Microsoft, Facebook ve Twitter gibi diğer sitelerdeki hesaplarını kullanarak oturum açmasına izin vermek için,
+    // bu siteyi güncelleştirmeniz gerekir. Daha fazla bilgi için http://go.microsoft.com/fwlink/?LinkID=226949 adresini ziyaret edin
+
+    //OAuthWebSecurity.RegisterMicrosoftClient(
+    //    clientId: "",
+    //    clientSecret: "");
+
+    //OAuthWebSecurity.RegisterTwitterClient(
+    //    consumerKey: "",
+    //    consumerSecret: "");
+
+    //OAuthWebSecurity.RegisterFacebookClient(
+    //    appId: "",
+    //    appSecret: "");
+
+    //OAuthWebSecurity.RegisterGoogleClient();
+
+    WebMail.SmtpServer = "smtpout.europe.secureserver.net";
+    WebMail.UserName = "info@yasamyildizi.com.tr";
+    WebMail.Password = "MsT20323847.";
+    WebMail.From = "info@yasamyildizi.com.tr";
+
+    // Sitenizdeki komut dosyalarını ve stil sayfalarını nasıl en iyi duruma getirebileceğinizi öğrenmek için http://go.microsoft.com/fwlink/?LinkID=248973 adresine gidin
+}

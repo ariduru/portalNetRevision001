@@ -1,0 +1,311 @@
+﻿@using WebMatrix.WebData
+@{
+    var id=Request["id"];
+    var yol="";
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var db=Database.Open("OsgbPortal");
+    var firmam=db.QuerySingle(sec,id);
+    var firmaAdi=firmam.name;
+
+
+
+ WebImage photo = null;
+    var newFileName = "";
+    var imagePath = "";
+ 
+    if(IsPost){
+
+        //Kullanıcı adına fotoğraflar için dosya açıyoruz
+        var root = Server.MapPath("~/images/");
+        var foldername =  id.ToString();//dosya adı olarak firma id kullanıyoruz
+        var path = Path.Combine(root, foldername);
+       
+        if(!Directory.Exists(path)){
+            Directory.CreateDirectory(path);
+        }
+        photo = WebImage.GetImageFromRequest();
+        if(photo != null){
+            newFileName = Guid.NewGuid().ToString() + "_" +
+                Path.GetFileName(photo.FileName);
+            imagePath =@"images\" +foldername+@"\"+ newFileName;
+            yol=imagePath;
+            photo.AddTextWatermark("Yaşam Yıldızı OSGB - "+@DateTime.Now,fontColor:"Brown",fontFamily:"Verdana",fontSize:36, opacity:80);
+            photo.Resize(width: 500, height: 250, preserveAspectRatio: true,
+               preventEnlarge: true);
+               photo.Save(@"~\"+imagePath);
+
+        }
+      }  
+      
+  
+}
+<script type="text/javascript" src="~/Scripts/tableExport.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery.base64.js"></script>
+<script type="text/javascript" src="~/Scripts/jspdf/libs/sprintf.js"></script>
+<script type="text/javascript" src="~/Scripts/jspdf/jspdf.js"></script>
+<script type="text/javascript" src="~/Scripts/jspdf/libs/base64.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+   function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+     window.print();
+     document.body.innerHTML = originalContents;
+}
+
+</script>
+<h1><a href="~/Member/edit?id=@id">@firmaAdi</a></h1>
+<br/>
+<h2>Düzenleyici Ve Önleyici Faaliyetler</h2><br/>
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        var preview1 = $(".upload-preview");
+        $("#kurulKararlari").hide();
+        $("#kurulTutanaklari").hide();
+        $("#kurulUyeleri").show();
+        $(".openKurul").click(function () {
+            $("#kurulKararlari").hide();
+            $("#kurulTutanaklari").hide();
+            $("#kurulUyeleri").toggle(500);
+        });
+        $(".openKarar").click(function () {
+            $("#kurulTutanaklari").hide();
+            $("#kurulUyeleri").hide();
+            $("#kurulKararlari").toggle(500);
+        });
+        $(".openTutanak").click(function () {
+            $("#kurulKararlari").hide();
+            $("#kurulUyeleri").hide();
+            $("#kurulTutanaklari").toggle(500);
+        });
+        $(".file").change(function (event) {
+            var input = $(event.currentTarget);
+            var file = input[0].files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                image_base64 = e.target.result;
+                preview1.html("<img src='" + image_base64 + "'/>");
+            };
+            reader.readAsDataURL(file);
+        });
+
+
+    });
+    $(".yazdir").onClick ="$('#deneme').tableExport({type:'pdf',escape:'false'});"
+</script>
+<style>
+.upload-preview{
+		margin:0 auto;
+		text-align:center;	
+		border:none;
+		height:250px;
+		width:100%;
+	}
+    .upload-preview img {
+        max-height: 250px;
+        padding: 3px;
+        border: 1px solid #e2e2e2;
+    }
+   .onlem-preview{
+		margin:0 auto;
+		text-align:center;	
+		border:none;
+		height:250px;
+		width:100%;
+	}
+	.onlem-preview img{
+		max-height:250px;
+		padding:3px;
+		border:1px solid #e2e2e2;
+		
+	}
+</style>
+
+<input type="button" class="openKurul" name="kurul" value="Uygunsuzluk Bildirimi" />
+<input type="button" class="openKarar" name="kararlar" value="Kurul Kararları" />
+<input type="button" class="openTutanak" name="tutanaklar" value="Kurul Tutanakları" />
+
+<div id="kurul">
+    <div id="kurulUyeleri">
+        <div id="printableArea">
+<form enctype="multipart/form-data" action="" method="post" style="background-color: #fff;">
+<table id="deneme" width="100%" border="1" cellspacing="0" cellpadding="1">
+  <tr>
+    <td height="66" colspan="11" align="center"><h2><strong>UYGUNSUZLUK BİLDİRİM FORMU</strong></h2></td>
+  </tr>
+  <tr>
+    <td colspan="11">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="16%"><strong>Firma</strong></td>
+    <td colspan="4">@firmaAdi</td>
+    <td width="1%" rowspan="3">&nbsp;</td>
+    <td width="20%"><strong>Tarih - Saat</strong></td>
+    <td colspan="4"></td>
+  </tr>
+  <tr>
+    <td><strong>Adres</strong></td>
+    <td colspan="4">@firmam.adres</td>
+    <td><strong>Rapor No</strong></td>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><strong>Denetmen</strong></td>
+    <td colspan="4">&nbsp;</td>
+    <td><strong>Uygunsuzluk No</strong></td>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="11">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="24" colspan="11"><h3><strong>Tehlike Kaynağı ve Risk Seviyesi Değerlendirme</strong></h3></td>
+  </tr>
+  <tr>
+    <td><strong>Bölüm</strong></td>
+    <td colspan="4"></td>
+    <td rowspan="9">&nbsp;</td>
+    <td colspan="5"><strong>
+      Uygunsuzluk Fotoğrafı :
+    </strong>
+      <input type="file" name="resim" class="file" />
+    <a href="dof?id=@id&yol=@yol" ><input type="submit" value="Kaydet" /> </a>
+</td>
+    </tr>
+  <tr>
+    <td><strong>Faaliyet</strong></td>
+    <td colspan="4">&nbsp;</td>
+    <td colspan="5" rowspan="8" align="left" valign="top">
+        <div class="upload-preview"><img src="~/@yol" /></div></td>
+    </tr>
+  <tr>
+    <td><strong>Tehlike Kaynağı</strong></td>
+    <td colspan="4">&nbsp;</td>
+    </tr>
+  <tr>
+    <td height="47"><strong>Oluşabilecek Risk / Riskler</strong></td>
+    <td colspan="4" valign="top"><p>&nbsp;</p></td>
+    </tr>
+  <tr>
+    <td><strong>Zarar Sonucu</strong></td>
+    <td colspan="4"></td>
+    </tr>
+  <tr>
+    <td><strong>Etkilenenler</strong></td>
+    <td colspan="4"></td>
+    </tr>
+  <tr>
+    <td><strong>Mevcut Durum</strong></td>
+    <td colspan="4"></td>
+    </tr>
+  <tr>
+    <td><strong>Şiddet</strong></td>
+    <td width="10%">&nbsp;</td>
+    <td width="1%" rowspan="2">&nbsp;</td>
+    <td width="7%" rowspan="2"><strong>RDS Sonucu</strong></td>
+    <td width="12%" rowspan="2">&nbsp;</td>
+    </tr>
+  <tr>
+    <td><strong>Olasılık</strong></td>
+    <td>&nbsp;</td>
+    </tr>
+  <tr>
+    <td colspan="11">&nbsp;</td>
+    </tr>
+  <tr>
+    <td height="36" colspan="5"><h3><strong>Yapılacak Düzenleyici ve Önleyici Faaliyet</strong></h3></td>
+    <td rowspan="3">&nbsp;</td>
+    <td colspan="5"><h3><strong>Önlem Sonrası Risk Seviyesi Değerlendirme</strong></h3></td>
+    </tr>
+  <tr>
+    <td height="45"><strong>Ekleme Tarihi</strong></td>
+    <td colspan="4">&nbsp;</td>
+    <td><strong>Şiddet</strong></td>
+    <td width="9%">&nbsp;</td>
+    <td width="1%" rowspan="2">&nbsp;</td>
+    <td width="7%" rowspan="2"><strong>RDS Sonucu</strong></td>
+    <td width="16%" rowspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="45"><strong>Alınması Gereken Önlemler</strong></td>
+    <td colspan="4">&nbsp;</td>
+    <td><strong>Olasılık</strong></td>
+    <td>&nbsp;</td>
+    </tr>
+  <tr>
+    <td colspan="11">&nbsp;</td>
+    </tr>
+  <tr>
+    <td colspan="5"><h3><strong>Tebliğ Eden</strong></h3></td>
+    <td rowspan="3">&nbsp;</td>
+    <td colspan="5"><h3><strong>Firma Yetkilisi</strong></h3></td>
+    </tr>
+  <tr>
+    <td><strong>Adı Soyadı</strong></td>
+    <td colspan="4"><label for="textfield"></label>
+      </td>
+    <td><strong>Adı Soyadı</strong></td>
+    <td colspan="4"><label for="textfield5"></label>
+      </td>
+  </tr>
+  <tr>
+    <td height="45"><strong>İmza</strong></td>
+    <td colspan="4"><label for="textfield2"></label>
+      </td>
+    <td height="45"><strong>İmza</strong></td>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+   <!--Saha Eylem planı
+  <tr>
+    <td colspan="11">&nbsp;</td>
+    </tr>
+ <tr>
+    <td colspan="11"><h3><strong>Yapılan Düzenlemeler ve Saha Eylemleri</strong></h3></td>
+    </tr>
+  <tr>
+    <td><strong>Gerçekleşme Tarihi</strong></td>
+    <td colspan="4"><label for="textfield3"></label>
+      <input type="text" name="textfield3" id="textfield3" /></td>
+    <td rowspan="5">&nbsp;</td>
+    <td colspan="5"><strong>Alınan Önlem Fotoğrafı : <input type="file" name="fileField" class="onlem" />
+    </strong></td>
+    </tr>
+  <tr>
+    <td><strong>Gerçekleştiren Kişi / Kişiler</strong></td>
+    <td colspan="4"><label for="textfield4"></label>
+      <input type="text" name="textfield4" id="textfield4" /></td>
+    <td colspan="5" rowspan="4" align="left" valign="top"><div class="onlem-preview"></div></td>
+    </tr>
+  <tr>
+    <td><strong>Uygunsuzluk Bildiriminden İtibaren Geçen Zaman</strong></td>
+    <td colspan="4">&nbsp;</td>
+    </tr>
+  <tr>
+    <td colspan="5"><strong>Yorum ve Açıklamalar</strong></td>
+    </tr>
+  <tr>
+    <td colspan="5"><label for="textarea"></label>
+      <textarea name="textarea" id="textarea" cols="45" rows="5"></textarea></td>
+  </tr>
+  <tr>
+    <td colspan="11">&nbsp;</td>
+  </tr>-->
+</table>
+ 
+
+</form></div>
+    <br/>
+      <input type="submit" onclick="printDiv('printableArea')" value="Yazdır" />
+    </div>
+    <div id="kurulKararlari">
+    <h2>Kurul Kararları</h2><br/>
+    </div>
+    <div id="kurulTutanaklari">
+     <h2>Kurul Tutanakları</h2><br/>
+    </div>
+    
+</div>

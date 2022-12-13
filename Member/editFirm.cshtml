@@ -1,0 +1,101 @@
+﻿@{var id=Request["id"];
+  var firmasec="SELECT * FROM firmalar WHERE id=@0";
+  var db=Database.Open("OsgbPortal");
+  var firmam=db.QuerySingle(firmasec,id);
+    
+    var firmaAdi="";
+    var sgk="";
+    var calisanSayisi="";
+    var vergiDairesi="";
+    var vergiNo="";
+    var tel="";
+    var fax="";
+    var web="";
+    var adress="";
+    var muhasebeName="";
+    var muhasebeTel="";
+    var muhasebeEmail="";
+    var yetkili="";
+    var isgUzman="";
+    var hekim="";
+    var dsp="";
+
+     if (IsPost){
+        firmaAdi=Request["firmaadi"];
+        sgk=Request["sgk"];
+        calisanSayisi=Request["calisan"];
+        vergiDairesi=Request["vergiDairesi"];
+        vergiNo=Request["vergiNo"];
+        tel=Request["telefon"];
+        fax=Request["fax"];
+        web=Request["webUrl"];
+        adress=Request["adres"];
+        muhasebeName=Request["muhasebeci"];
+        muhasebeTel=Request["muhasebeciTel"];
+        muhasebeEmail=Request["muhasebeciEmail"];
+        yetkili=Request["yetkili"];
+        isgUzman=Request["isgUzman"];
+        hekim=Request["hekim"];
+        dsp=Request["dsp"];
+        var UPDATE="UPDATE firmalar Set name=@0,sgkNo=@1,calisanSayi=@2,vergiDairesi=@3,vergiNo=@4,telefon=@5,fax=@6,web=@7,adres=@8,muhasebeci=@9,muhasebeTel=@10,muhasebeMail=@11,yetkili=@12,isgUzman=@13,hekim=@14,dsp=@15 WHERE id=@16";
+        db.Execute(UPDATE,firmaAdi,sgk,calisanSayisi,vergiDairesi,vergiNo,tel,fax,web,adress,muhasebeName,muhasebeTel,muhasebeEmail,yetkili,isgUzman,hekim,dsp,id);
+        }
+
+}
+
+<h1>@firmam.name</h1>
+
+<form action="" method="post">
+<table border="1">
+  <tr>
+    <td scope="col">Firma Adı</td><td><input type="text" value="@firmam.name" name="firmaadi" ></td>
+  </tr>
+    <tr>
+    <td scope="col">SGK Sicil No</td><td><input type="text" value="@firmam.sgkNo" name="sgk" ></td>
+  </tr>
+<tr>
+    <td scope="col">Çalışan Sayısı</td><td><input type="text" value="@firmam.calisanSayi" name="calisan" ></td>
+  </tr>
+<tr>
+    <td scope="col">Vergi Dairesi</td><td><input type="text" value="@firmam.vergiDairesi" name="vergiDairesi" ></td>
+  </tr>
+<tr>
+    <td scope="col">Vergi No</td><td><input type="text" value="@firmam.vergiNo" name="vergiNo" ></td>
+  </tr>
+<tr>
+    <td scope="col">Telefon</td><td><input type="text" value="@firmam.telefon" name="telefon" ></td>
+  </tr>
+    <tr>
+    <td scope="col">Fax</td><td><input type="text" value="@firmam.fax" name="fax" ></td>
+  </tr>
+<tr>
+    <td scope="col">Web Adresi</td><td><input type="text" value="@firmam.web" name="webUrl" ></td>
+  </tr>
+<tr>
+    <td scope="col">Adres</td><td><input type="text" value="@firmam.adres" name="adres" ></td>
+  </tr>
+    <tr>
+    <td scope="col">Muhasebeci</td><td><input type="text" value="@firmam.muhasebeci" name="muhasebeci" ></td>
+  </tr>
+<tr>
+    <td scope="col">Muhasebe Telefon</td><td><input type="text" value="@firmam.muhasebeTel" name="muhasebeciTel" ></td>
+  </tr>
+<tr>
+    <td scope="col">Muhasebeci Email</td><td><input type="text" value="@firmam.muhasebeMail" name="muhasebeciEmail" ></td>
+  </tr>
+    <tr>
+    <td scope="col">Yetkili Kişi</td><td><input type="text" value="@firmam.yetkili" name="yetkili" ></td>
+  </tr>
+<tr>
+    <td scope="col">İSG Uzmanı</td><td><input type="text" value="@firmam.isgUzman" name="isgUzman" ></td>
+  </tr>
+    <tr>
+    <td scope="col">İşyeri Hekimi</td><td><input type="text" value="@firmam.hekim" name="hekim" ></td>
+  </tr>
+<tr>
+    <td scope="col">Sağlık Personel</td><td><input type="text" value="@firmam.dsp" name="dsp" ></td>
+  </tr>
+</table>
+    <input type="submit" value="Güncelle" />
+</form>
+<a href="~/Member/edit?id=@id"><input type="submit" value="Firma Bilgileri"/></a>

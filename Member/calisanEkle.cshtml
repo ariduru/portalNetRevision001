@@ -1,0 +1,52 @@
+﻿@{
+    var id=Request["id"];
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var db=Database.Open("OsgbPortal");
+    var firmam=db.QuerySingle(sec,id);
+    var firmaAdi=firmam.name;
+
+    var isim="";
+    var soyisim="";
+    var tckimlik="";
+    var telefon="";
+    var adres="";
+    var gorev="";
+    var cinsiyet="";
+    var medenihal="";
+    var cocuksayisi="";
+    var aktif="Evet";
+
+    if (IsPost){
+        isim=Request["name"];
+        soyisim=Request["surname"];
+        tckimlik=Request["tckimlik"];
+        telefon=Request["telefon"];
+        adres=Request["adres"];
+        gorev=Request["gorev"];
+        cinsiyet=Request["cinsiyet"];
+        medenihal=Request["medenihal"];
+        cocuksayisi=Request["cocuksayisi"];
+
+    var EKLE="INSERT INTO calisanlar (firmaID,isim,soyisim,tckimlik,telefon,adres,gorev,cinsiyet,medenihal,cocuksayisi,aktif) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10)";
+    db.Execute(EKLE,id,isim,soyisim,tckimlik,telefon,adres,gorev,cinsiyet,medenihal,cocuksayisi,aktif);
+    }
+     
+}
+<h1><a href="~/Member/edit?id=@id">@firmaAdi</a></h1>
+
+<form action="" method="post">
+    <div class="floatleft">
+    <p>İsim :</br> <input type="text" name="name" /></p>
+    <p>Soyisim :</br> <input type="text" name="surname" /></p>
+    <p>T.C. Kimlik :</br> <input type="text" name="tckimlik" /></p>
+    <p>Telefon :</br> <input type="text" name="telefon" /></p>
+    <p>Adres :</br> <input type="text" name="adres" /></p>
+        </div><div class="floatleft">
+    <p>Görevi :</br> <input type="text" name="gorev" /></p>
+    <p>Cinsiyet :</br> <input type="text" name="cinsiyet" /></p>
+    <p>Medeni Hal :</br> <input type="text" name="medenihal" /></p>
+    <p>Çocuk Sayısı :</br> <input type="text" name="cocuksayisi" /></p>
+    </div>
+<input type="submit" value="Çalışanı Ekle" />
+</form>
+<a href="~/Member/calisanlar?id=@firmam.id"><input type="submit" value="Çalışanlar"/></a>

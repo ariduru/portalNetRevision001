@@ -1,0 +1,495 @@
+﻿@{
+    var id=Request["id"];
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var plansec="SELECT firmaId FROM yillikFaaliyetPlani WHERE firmaId=@0";
+    var db=Database.Open("OsgbPortal");
+    var evrakID=db.QuerySingle("SELECT ID FROM gerekenEvraklar WHERE ID=@0",id);
+    var belgeler=db.QuerySingle("SELECT * FROM gerekenEvraklar WHERE ID=@0",id);
+    var firmam=db.QuerySingle(sec,id);
+    var planVarmi=db.QuerySingle(plansec,id);
+    var riskAnalizi = db.Query(@"SELECT * FROM riskAnalizi WHERE firmaID=@0 ORDER BY MaddeNo ASC",id);
+    var firmaAdi=firmam.name;
+    var sgk=firmam.sgkNo;
+    var calisanSayisi=firmam.calisanSayi;
+    var vergiDairesi=firmam.vergiDairesi;
+    var vergiNo=firmam.vergiNo;
+    var tel=firmam.telefon;
+    var fax=firmam.fax;
+    var web=firmam.web;
+    var adress=firmam.adres;
+    var muhasebeName=firmam.muhasebeci;
+    var muhasebeTel=firmam.muhasebeTel;
+    var muhasebeEmail=firmam.muhasebeMail;
+    var yetkili=firmam.yetkili;
+    var isgUzman=firmam.isgUzman;
+    var hekim=firmam.hekim;
+    var dsp=firmam.dsp;
+   
+   
+}
+    @if(evrakID!=null){
+<script type="text/javascript">
+    $(function () {
+        $("#yonlendirme").dialog({
+            autoOpen: false,
+            maxWidth: 500,
+            maxHeight: 400,
+            width: 500,
+            height: 400,
+            modal: true,
+            buttons: {
+                Kapat: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog").dialog({
+            autoOpen: true,
+            maxWidth: 1240,
+            maxHeight: 800,
+            width: 1240,
+            height: 500,
+            modal: true,
+            buttons: {
+                Kapat: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $(".ozluk").change(function () {
+
+            $("#yonlendirme").dialog("open");
+        });
+        $("#git").click(function(){
+            $("#yonlendirme").dialog("close");
+        });
+    });
+
+</script>
+} else{
+    <script type="text/javascript">
+        alert("Firma Evrak Listesi ve Risk Analizi Yapılmamış. Firma Adına Tıklayınız.");
+    </script>
+}
+<div id="yonlendirme" title="Açıklama">
+    <p>Eğer gerekli dokümantasyon adımı tamamlandıysa, <a href="http://portal.yasamyildizi.com.tr/Member/GerekliEvraklar?id=@id" id="git" target="_blank" style="color:#f00;">buraya</a> giderek, en altta bulunan 'Düzenle' butonuna tıklamalı ve açılan bölümden ilgili maddenin karşına gerekli açıklamaları yazmalısın.</p>
+</div>
+ @if(evrakID!=null){
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;float:left;}
+.tg td{font-family:Arial, sans-serif;font-size:12px;padding:5px 20px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;border-top-width:1px;border-bottom-width:1px;}
+.tg th{font-family:Arial, sans-serif;font-size:12px;font-weight:normal;padding:5px 20px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;border-top-width:1px;border-bottom-width:1px;}
+.tg .tg-s6z2{text-align:center}
+.tg .tg-spn1{background-color:#f9f9f9;text-align:center}
+.tg .tg-4eph{background-color:#f9f9f9}
+</style>
+<div id="dialog" class="dialogfirmalar" title="@firmaAdi Yapılması Gerekenler">
+<table class="tg">
+  <tr>
+    <th class="tg-031e" colspan="3">Yasal Belge Kontrolü</th>
+  </tr>
+  <tr>
+    <td class="tg-vn4c"><h3>Belge Adı</h3></td>
+    <td class="tg-vn4c"><h3>Eylem</h3></td>
+    <td class="tg-vn4c">Tamamlandı mı?</td>
+  </tr>
+    @if(@belgeler.OzlukDosyalari=="" || @belgeler.OzlukDosyalari==null){
+  <tr class="satirlar">
+    <td class="tg-031e">Özlük Dosyaları</td>
+    <td class="tg-031e"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+}
+@if(@belgeler.CalisanSaglikRaporlari=="" || @belgeler.CalisanSaglikRaporlari==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Çalışan Sağlık Raporları</td>
+    <td class="tg-vn4c"><a href="yillikplan?id=@id">Planla</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  } 
+@if(@belgeler.KapasiteRaporu=="" || @belgeler.KapasiteRaporu==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Kapasite Raporu</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.calisanSayisi=="" || @belgeler.calisanSayisi==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Kadın-Erkek Çalışan Sayıları</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.agiriscalisansayisi=="" || @belgeler.agiriscalisansayisi==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Ağır İş Kadın-Erkek Çalışan Sayıları</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.isletmeBelgesi=="" || @belgeler.isletmeBelgesi==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">İşletme Belgesi</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.UzmanSozlesme=="" || @belgeler.UzmanSozlesme==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Uzman Ataması ve Onayı</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.HekimSozlesme=="" || @belgeler.HekimSozlesme==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Hekim Ataması ve Onayı</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.TespitOneriDefteri=="" || @belgeler.TespitOneriDefteri==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Tespit ve Öneri Defteri Onayı</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.YillikCalismaPlani=="" || @belgeler.YillikCalismaPlani==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Yıllık Çalışma Planı</td>
+    <td class="tg-vn4c"><a href="yillikplan?id=@id">Planla</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.YillikDegerlendirmeRaporu=="" || @belgeler.YillikDegerlendirmeRaporu==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Yıllık Değerlendirme Raporu</td>
+    <td class="tg-vn4c"><a href="yillikplan?id=@id">Planla</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.KurulToplantiTutanaklari=="" || @belgeler.KurulToplantiTutanaklari==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Kurul Toplantı Tutanakları</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.RiskAnalizi=="" || @belgeler.RiskAnalizi==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Risk Analizi</td>
+    <td class="tg-vn4c"><a href="riskanalizi?id=@id">Hazırla</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.AcilEylemPlani=="" || @belgeler.AcilEylemPlani==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Acil Durum Eylem Planı</td>
+    <td class="tg-vn4c"><a href="acilDurumPlaniOlustur?id=@id">Hazırla</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.AcilDurumTatbikatPlani=="" || @belgeler.AcilDurumTatbikatPlani==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Acil Durum Tatbikatları</td>
+    <td class="tg-vn4c"><a href="yillikplan?id=@id">Planla</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.AcilDurumEkipEgitimleri=="" || @belgeler.AcilDurumEkipEgitimleri==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Acil Durum Ekiplerinin Eğitimleri</td>
+    <td class="tg-vn4c"><a href="yillikplan?id=@id">Planla</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.MeslekiEgitimBelge=="" || @belgeler.MeslekiEgitimBelge==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Çalışanların Mesleki Eğitim Belgeleri</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.ilkYardimEkibiEgitimBelgeleri=="" || @belgeler.ilkYardimEkibiEgitimBelgeleri==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">İlk Yardım Eğitim Belgeleri</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.talimatlar=="" || @belgeler.talimatlar==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Çalışan Talimatları</td>
+    <td class="tg-vn4c"><a href="yillikplan?id=@id">Planla</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.OperatorlukBelgeleri=="" || @belgeler.OperatorlukBelgeleri==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Operatörlük Belgeleri</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.kkdZimmetBelgesi=="" || @belgeler.kkdZimmetBelgesi==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Kişisel Koruyucu Donanım Zimmet Belgeleri</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+  @if(@belgeler.msdsFormlari=="" || @belgeler.msdsFormlari==null){
+  <tr class="satirlar">
+    <td class="tg-vn4c">Kimyasal MSDS Formları</td>
+    <td class="tg-vn4c"><a href="iletisimYazisi?id=@id">Bildir</a></td>
+    <td class="tg-vn4c"><select name="ozluk" class="ozluk" style="width: 85px;"><option>Hayır</option><option>Evet</option></select></td>
+  </tr>
+  }
+</table>
+
+
+    <table class="tg" style="margin-left: 10px;">
+  <tr>
+    <th class="tg-031e" colspan="5">Çalışma Ortamı Gözetimi</th>
+  </tr>
+  <tr>
+    <td class="tg-vn4c"><h3>No</h3></td>
+<td class="tg-vn4c"><h3>Faaliyet</h3></td>
+    <td class="tg-vn4c"><h3>Tehlike</h3></td>
+    <td class="tg-vn4c"><h3>DOF</h3></td>
+      <td class="tg-vn4c"><h3>Eylem</h3></td>
+  </tr>
+   @foreach(var risk in riskAnalizi){
+       if(risk.OnlemAlindimi==false){
+    <tr>
+    <td class="tg-vn4c">@risk.MaddeNo</td>
+    <td class="tg-vn4c">@risk.Faaliyet</td>
+    <td class="tg-vn4c">@risk.Tehlike</td>
+    <td class="tg-vn4c"><a href="~/Member/dof?id=@id" >Dof Oluştur</a></td>
+    <td class="tg-vn4c"><a href="~/Member/riskanalizi?id=@id" >Dof Kapat</a></td>
+  </tr>
+   }
+   }
+</table>
+
+</div>
+      }
+<a class="link" href="~/Member/editFirm?id=@firmam.id">Düzenle</a>
+<a class="link" href="~/Member/firmalar">Firmalar</a>
+<a class="link" href="~/Member/calisanlar?id=@id">Çalışanlar</a>
+<table width="100%" border="1">
+  <tr>
+    <th width="50%" scope="col"><table>
+      <tbody>
+  
+        <tr></tr>
+        <tr>
+          <td>Firma Adı :</td>
+          <td><a href="~/Member/GerekliEvraklar?id=@firmam.id">@firmaAdi</a></td>
+        </tr>
+        <tr>
+          <td>SGk Sicil No :</td>
+          <td>@sgk</td>
+        </tr>
+        <tr>
+          <td>Çalışan Sayısı :</td>
+          <td>@calisanSayisi</td>
+        </tr>
+        <tr>
+          <td>Vergi Dairesi :</td>
+          <td>@vergiDairesi</td>
+        </tr>
+        <tr>
+          <td>Vergi No :</td>
+          <td>@vergiNo</td>
+        </tr>
+        <tr>
+          <td>Telefon :</td>
+          <td>@tel</td>
+        </tr>
+        <tr>
+          <td>Fax :</td>
+          <td>@fax</td>
+        </tr>
+        <tr>
+          <td>Web Sitesi :</td>
+          <td>@web</td>
+        </tr>
+        <tr>
+          <td>Adres :</td>
+          <td>@adress</td>
+        </tr>
+        <tr>
+          <td>Muhasebeci :</td>
+          <td>@muhasebeName</td>
+        </tr>
+        <tr>
+          <td>Muhasebe Telefon :</td>
+          <td>@muhasebeTel</td>
+        </tr>
+        <tr>
+          <td>Muhasebe E-mail :</td>
+          <td>@muhasebeEmail</td>
+        </tr>
+        <tr>
+          <td>Firma Yetkilisi :</td>
+          <td>@yetkili</td>
+        </tr>
+        <tr>
+          <td>İSG Uzmanı :</td>
+          <td>@isgUzman</td>
+        </tr>
+        <tr>
+          <td>İşyeri Hekimi :</td>
+          <td>@hekim</td>
+        </tr>
+        <tr>
+          <td>Sağlık Personeli :</td>
+            <td>@dsp</td>
+        </tr>
+      </tbody>
+    </table>
+    <br /></th>
+    <th width="25%" align="left" valign="top" scope="col">
+    <table>
+      <tbody>
+        <tr>
+          <td class="link">
+@if(planVarmi==null){
+                <a href="~/Member/yillikplan?id=@id">Yıllık Çalışma Planı</a>
+}else{
+    <a href="~/Member/YillikFaaliyetPlani?id=@id">Yıllık Çalışma Planı</a>
+  
+}
+          </td>
+          </tr>
+        <tr>
+          <td class="link"><a href="~/Member/PersonelEgitim?id=@id">Eğitim</a></td>
+          </tr>
+        <tr>
+          <td class="link"><a href="~/Member/kurul?id=@id">İsg Kurulu</a></td>
+          </tr>
+        <tr>
+          <td class="link"><a href="~/Member/riskanalizi?id=@id">Risk Analizi</a></td>
+          </tr>
+        <tr>
+          <td class="link"><a href="~/Member/acilDurumPlaniOlustur?id=@id">Acil Durum Eylem Planı</a></td>
+          </tr>
+        <tr>
+          <td class="link"><a href="~/Member/periyodik?id=@id">Periyodik Kontol ve Ölçümler</a></td>
+          </tr>
+        <tr>
+          <td class="link"><a href="~/Member/kimyasal?id=@id">Kimyasal MSDS Formları</a></td>
+          </tr>
+        <tr>
+          <td class="link"><a href="~/Member/talimatlar?id=@id">İSG Talimatlar</a></td>
+          </tr>
+        <tr>
+          <td class="link"><a href="~/Member/muayeneler?id=@id">Muayeneler</a></td>
+          </tr>
+        <tr>
+          <td class="link"><a href="~/Member/toolbox?id=@id">ToolBox</a></td>
+          </tr>
+        <tr>
+          <td class="link"><a href="~/Member/diger?id=@id">Diğer</a></td>
+          </tr>
+         <tr>
+          <td class="link"><a href="~/Member/yazismalar?id=@id">Yazışmalar</a></td>
+          </tr>
+         <tr>
+          <td class="link"><a href="~/Member/dof?id=@id">Düzenleyici ve Önleyici Faaliyetler</a></td>
+          </tr>
+        <tr>
+          <td class="link"><a href="~/Member/calismaTutanak?id=@id">Çalışma Tutanağı</a></td>
+          </tr>
+      </tbody>
+    </table>
+    <br /></th>
+    <th width="25%" align="left" valign="top" scope="col"><table width="245" border="0" cellspacing="0" cellpadding="1">
+      <tr>
+        <td colspan="3" align="center">ARŞİVDE BULUNMASI GEREKNLER</td>
+        </tr>
+      <tr>
+        <td colspan="3">&nbsp;</td>
+        </tr>
+      <tr>
+        <td width="160" class="link"><a href="">Eğitim  Dokümanları</a></td>
+        <td width="40"><a href="#">Yükle</a></td>
+        <td width="39">Düzenle</td>
+      </tr>
+      <tr>
+        <td class="link"><a href="~/Member/acilDurumPlaniOlustur?id=@id" >Acil durum planı</a></td>
+        <td>Yükle</td>
+        <td>Düzenle</td>
+      </tr>
+      <tr>
+        <td class="link"><a href="#" >Yıllık çalışma planı</a></td>
+        <td>Yükle</td>
+        <td>Düzenle</td>
+      </tr>
+      <tr>
+        <td class="link"><a href="#" >Yıllık değerlendirme raporu</a></td>
+        <td>Yükle</td>
+        <td>Düzenle</td>
+      </tr>
+      <tr>
+        <td class="link"><a href="#" >Çalışma Ortamı gözetimi</a></td>
+        <td>Yükle</td>
+        <td>Düzenle</td>
+      </tr>
+      <tr>
+        <td class="link"><a href="#" >Sağlık gözetimi</a></td>
+        <td>Yükle</td>
+        <td>Düzenle</td>
+      </tr>
+      <tr>
+        <td class="link"><a href="#" >İş kazası raporları</a></td>
+        <td>Yükle</td>
+        <td>Düzenle</td>
+      </tr>
+      <tr>
+        <td class="link"><a href="#" >Meslek hastalığı rap.</a></td>
+        <td>Yükle</td>
+        <td>Düzenle</td>
+      </tr>
+      <tr>
+        <td class="link"><a href="#" >Risk değerlendirmesi</a></td>
+        <td>Yükle</td>
+        <td>Düzenle</td>
+      </tr>
+      <tr>
+        <td class="link"><a href="#" >Muayeneler</a></td>
+        <td>Yükle</td>
+        <td>Düzenle</td>
+      </tr>
+      <tr>
+        <td class="link"><a href="#" >Onaylı defter suretleri</a></td>
+        <td>Yükle</td>
+        <td>Düzenle</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table></th>
+  </tr>
+</table>

@@ -1,0 +1,74 @@
+﻿@{
+   
+    var firmaID=Request["id"];
+    var userID=WebSecurity.CurrentUserId;
+    var maddeNo=Request["maddeNoform"];
+    var bolum=Request["bolumform"];
+    var faaliyet=Request["faaliyetform"];
+    var tehlike=Request["tehlikeform"];
+    var risk=Request["riskform"];
+    var sonuc=Request["sonucform"];
+    var mevcut1=Request["mevcut1form"];
+    var olasilik1=Request["olasilik1form"];
+    var siddet1=Request["siddet1form"];
+    var rds1=olasilik1.AsInt()*siddet1.AsInt();
+    var oncelik1="";
+    var aciklama1="";
+    var onlem=Request["onlemform"];
+    var sorumlu=Request["sorumluform"];
+    var termin=Request["terminform"];
+    var dof=Request["dofform"];
+    var olasilik2=Request["olasilik2form"];
+    var siddet2=Request["siddet2form"];
+    var rds2=olasilik2.AsInt()*siddet2.AsInt();
+    var oncelik2="";
+    var aciklama2="";
+    bool duzeltme=false;
+
+
+    if(rds1<5 && rds1>0){
+        oncelik1="4";
+        aciklama1="Gözetim altında tutulmalıdır.";
+    }else if(rds1<10 && rds1>4){
+        oncelik1="3";
+        aciklama1="Uzun dönemde iyileştirilmelidir.  Sürekli kontroller yapılmalıdır.Alınan önlemler gerektiğinde kontrol edilmelidir.";
+    }else if(rds1<16 && rds1>9){
+        oncelik1="2";
+        aciklama1="Kısa dönemde iyileştirici tedbirler alınmalıdır. Eğitimler ile çalışanlar riskler hakkında bilgilendirilmelidir.";
+    }else if(rds1<26 && rds1>15){
+        oncelik1="1";
+        aciklama1="Hemen gerekli önlemler alınmalıdır. Eğitimler ile çalışanlar riskler hakkında bilgilendirilmelidir.";
+    }else{
+        oncelik1="0";
+        aciklama1="Risk Derecelendirmesi Yapılmamıştır.";
+    }
+
+
+     if(rds2<5 && rds2>0){
+        oncelik2="4";
+        aciklama2="Gözetim altında tutulmalıdır.";
+    }else if(rds2<10 && rds2>4){
+        oncelik2="3";
+        aciklama2="Uzun dönemde iyileştirilmelidir.  Sürekli kontroller yapılmalıdır.Alınan önlemler gerektiğinde kontrol edilmelidir.";
+    }else if(rds2<16 && rds2>9){
+        oncelik2="2";
+        aciklama2="Kısa dönemde iyileştirici tedbirler alınmalıdır. Eğitimler ile çalışanlar riskler hakkında bilgilendirilmelidir.";
+    }else if(rds2<26 && rds2>15){
+        oncelik2="1";
+        aciklama2="Hemen gerekli önlemler alınmalıdır. Eğitimler ile çalışanlar riskler hakkında bilgilendirilmelidir.";
+    }else{
+        oncelik2="0";
+        aciklama2="Risk Derecelendirmesi Yapılmamıştır.";
+    }
+
+    if(dof=="Evet"){
+        duzeltme=true;
+    }
+
+    var db=Database.Open("OsgbPortal");
+    var EKLE="INSERT INTO riskAnalizi (MaddeNo,Bolum,Faaliyet,Tehlike,Risk,Sonuc,MevcutDurum,Olasilik,Siddet,RDS,OncelikSirasi,Aciklama,AlinacakOnlem,Sorumlu,Termin,OnlemAlindimi,OnlemSonrasiOlasilik,OnlemSonrasiSiddet,OnlemSonrasiRDS,OnlemSonrasiOncelik,OnlemSonrasiAciklama,firmaID,UserID) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14,@15,@16,@17,@18,@19,@20,@21,@22)";
+    db.Execute(EKLE,maddeNo,bolum,faaliyet,tehlike,risk,sonuc,mevcut1,olasilik1,siddet1,rds1,oncelik1,aciklama1,onlem,sorumlu,termin,duzeltme,olasilik2,siddet2,rds2,oncelik2,aciklama2,firmaID,userID);
+    
+   Response.Redirect("~/Member/riskanalizi?id="+firmaID);
+}
+

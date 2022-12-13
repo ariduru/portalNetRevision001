@@ -1,0 +1,432 @@
+﻿@{
+    var id=Request["id"];
+    var db=Database.Open("OsgbPortal");
+    var firma=db.QuerySingle("SELECT * FROM firmalar WHERE id=@0",id);
+    var evrakID=db.QuerySingle("SELECT ID FROM gerekenEvraklar WHERE ID=@0",id);
+    var belgeler=db.QuerySingle("SELECT * FROM gerekenEvraklar WHERE ID=@0",id);
+    var OzlukDosyalari="";
+    var CalisanSaglikRaporlari="";
+    var PortorMuayenesi="";
+    var KulakRadyografisi="";
+    var GogusRadyografisi="";
+    var Tetanoz="";
+    var gozMuayene="";
+    var agirissaglikraporu="";
+    var KapasiteRaporu="";
+    var calisanSayisi="";
+    var agiriscalisansayisi="";
+    var isletmeBelgesi="";
+    var KurulDefteri="";
+    var UzmanSozlesme="";
+    var HekimSozlesme="";
+    var TespitOneriDefteri="";
+    var YillikCalismaPlani="";
+    var YillikDegerlendirmeRaporu="";
+    var KurulToplantiTutanaklari="";
+    var Kurulisgegitimleri="";
+    var KurulYillikCalismaPlani="";
+    var KurulYillikCalismaRaporu="";
+    var KurulYillikDegerlendirmeRaporu="";
+    var RiskAnalizi="";
+    var AcilEylemPlani="";
+    var AcilDurumTatbikatPlani="";
+    var AcilDurumEkipListesi="";
+    var AcilDurumEkipEgitimleri="";
+    var GurultuOlcum="";
+    var TermalKonforOlcum="";
+    var TozOlcum="";
+    var AydinlatmaOlcum="";
+    var TitresimOlcum="";
+    var KimyasalCalisaniEgitimi="";
+    var MeslekiEgitimBelge="";
+    var ilkyardimEkibi="";
+    var ilkYardimEkibiEgitimBelgeleri="";
+    var talimatlar="";
+    var basincliKapKontrolleri="";
+    var KazanKontrolBelgeleri="";
+    var KazanciEhliyeti="";
+    var HavalandirmaSistemKontrolBelgesi="";
+    var HavalandirmaTesisatKontrolBelgeleri="";
+    var ParatonerKontrolBelgesi="";
+    var ElektrikTesisatKontrolBelgesi="";
+    var ElektrikTesisatTopraklamaBelgesi="";
+    var GovdeTopraklamaTesisatiKontrolBelgesi="";
+    var YanginSondurmeEkibiEgitim="";
+    var YscKontrolBelgesi="";
+    var KaldirmaAraciKontrolBelgesi="";
+    var OperatorlukBelgeleri="";
+    var kkdUygunlukBelgesi="";
+    var kkdZimmetBelgesi="";
+    var msdsFormlari="";
+    var KullanmaSuyuTahlilRaporu="";
+    var icmeSuyuTahlilRaporu="";
+    var hijyenTahlilleri="";
+    var message="";
+    
+    
+    if (evrakID==null){
+        
+       db.Execute("INSERT INTO gerekenEvraklar (ID) VALUES (@0)",id);
+       db.Execute("INSERT INTO yazismalar (firmaID,yazi,iletisimsayi,uyarisayi,cezasayi) VALUES (@0,@1,@2,@3,@4)",id,0,0,0,0);
+    }else{
+       if (IsPost){
+           
+        OzlukDosyalari=Request["OzlukDosyalari"];
+         CalisanSaglikRaporlari=Request["CalisanSaglikRaporlari"];
+          PortorMuayenesi=Request["PortorMuayenesi"];
+           KulakRadyografisi=Request["KulakRadyografisi"];
+            GogusRadyografisi=Request["GogusRadyografisi"];
+             Tetanoz=Request["Tetanoz"];
+              gozMuayene=Request["gozMuayene"];
+               agirissaglikraporu=Request["agirissaglikraporu"];
+                KapasiteRaporu=Request["KapasiteRaporu"];
+                calisanSayisi=Request["calisanSayisi"];
+                 agiriscalisansayisi=Request["agiriscalisansayisi"];
+                  isletmeBelgesi=Request["isletmeBelgesi"];
+                   KurulDefteri=Request["KurulDefteri"];
+                   UzmanSozlesme=Request["UzmanSozlesme"];
+                   HekimSozlesme=Request["HekimSozlesme"];
+         TespitOneriDefteri=Request["TespitOneriDefteri"];
+          YillikCalismaPlani=Request["YillikCalismaPlani"];
+           YillikDegerlendirmeRaporu=Request["YillikDegerlendirmeRaporu"];
+            KurulToplantiTutanaklari=Request["KurulToplantiTutanaklari"];
+             Kurulisgegitimleri=Request["Kurulisgegitimleri"];
+              KurulYillikCalismaPlani=Request["KurulYillikCalismaPlani"];
+               KurulYillikCalismaRaporu=Request["KurulYillikCalismaRaporu"];
+                KurulYillikDegerlendirmeRaporu=Request["KurulYillikDegerlendirmeRaporu"];
+                RiskAnalizi=Request["RiskAnalizi"];
+                 AcilEylemPlani=Request["AcilEylemPlani"];
+                  AcilDurumTatbikatPlani=Request["AcilDurumTatbikatPlani"];
+                   AcilDurumEkipListesi=Request["AcilDurumEkipListesi"];
+                   AcilDurumEkipEgitimleri=Request["AcilDurumEkipEgitimleri"];
+                   GurultuOlcum=Request["GurultuOlcum"];
+         TermalKonforOlcum=Request["TermalKonforOlcum"];
+          TozOlcum=Request["TozOlcum"];
+           AydinlatmaOlcum=Request["AydinlatmaOlcum"];
+            TitresimOlcum=Request["TitresimOlcum"];
+             KimyasalCalisaniEgitimi=Request["KimyasalCalisaniEgitimi"];
+              MeslekiEgitimBelge=Request["MeslekiEgitimBelge"];
+               ilkyardimEkibi=Request["ilkyardimEkibi"];
+                ilkYardimEkibiEgitimBelgeleri=Request["ilkYardimEkibiEgitimBelgeleri"];
+                talimatlar=Request["talimatlar"];
+                 basincliKapKontrolleri=Request["basincliKapKontrolleri"];
+                  KazanKontrolBelgeleri=Request["KazanKontrolBelgeleri"];
+                   KazanciEhliyeti=Request["KazanciEhliyeti"];
+                   HavalandirmaSistemKontrolBelgesi=Request["HavalandirmaSistemKontrolBelgesi"];
+                   HavalandirmaTesisatKontrolBelgeleri=Request["HavalandirmaTesisatKontrolBelgeleri"];
+         ParatonerKontrolBelgesi=Request["ParatonerKontrolBelgesi"];
+          ElektrikTesisatKontrolBelgesi=Request["ElektrikTesisatKontrolBelgesi"];
+           ElektrikTesisatTopraklamaBelgesi=Request["ElektrikTesisatTopraklamaBelgesi"];
+            GovdeTopraklamaTesisatiKontrolBelgesi=Request["GovdeTopraklamaTesisatiKontrolBelgesi"];
+             YanginSondurmeEkibiEgitim=Request["YanginSondurmeEkibiEgitim"];
+              YscKontrolBelgesi=Request["YscKontrolBelgesi"];
+               KaldirmaAraciKontrolBelgesi=Request["KaldirmaAraciKontrolBelgesi"];
+                OperatorlukBelgeleri=Request["OperatorlukBelgeleri"];
+                kkdUygunlukBelgesi=Request["kkdUygunlukBelgesi"];
+                 kkdZimmetBelgesi=Request["kkdZimmetBelgesi"];
+                  msdsFormlari=Request["msdsFormlari"];
+                   KullanmaSuyuTahlilRaporu=Request["KullanmaSuyuTahlilRaporu"];
+                   icmeSuyuTahlilRaporu=Request["icmeSuyuTahlilRaporu"];
+                   hijyenTahlilleri=Request["hijyenTahlilleri"];
+
+
+       
+    //,sozlesme@2,gorevtanimi=@3,agirisraporu=@4,meslekiegitim=@5,talimat=@6,kkd=@7,isegirisegitim=@8,gorevlendirme=@9,sabikakaydi=@10,ikametgah=@11,nufus=@12,sertifika=@13,istifa=@14 
+    var UPDATE="UPDATE gerekenEvraklar Set OzlukDosyalari=@0,CalisanSaglikRaporlari=@1,PortorMuayenesi=@2,KulakRadyografisi=@3,GogusRadyografisi=@4,Tetanoz=@5,gozMuayene=@6,agirissaglikraporu=@7,KapasiteRaporu=@8,calisanSayisi=@9,agiriscalisansayisi=@10,isletmeBelgesi=@11,KurulDefteri=@12,UzmanSozlesme=@13,HekimSozlesme=@14,TespitOneriDefteri=@15,YillikCalismaPlani=@16,YillikDegerlendirmeRaporu=@17,KurulToplantiTutanaklari=@18,Kurulisgegitimleri=@19,KurulYillikCalismaPlani=@20,KurulYillikCalismaRaporu=@21,KurulYillikDegerlendirmeRaporu=@22,RiskAnalizi=@23,AcilEylemPlani=@24,AcilDurumTatbikatPlani=@25,AcilDurumEkipListesi=@26,AcilDurumEkipEgitimleri=@27,GurultuOlcum=@28,TermalKonforOlcum=@29,TozOlcum=@30,AydinlatmaOlcum=@31,TitresimOlcum=@32,KimyasalCalisaniEgitimi=@33,MeslekiEgitimBelge=@34,ilkyardimEkibi=@35,ilkYardimEkibiEgitimBelgeleri=@36,talimatlar=@37,basincliKapKontrolleri=@38,KazanKontrolBelgeleri=@39,KazanciEhliyeti=@40,HavalandirmaSistemKontrolBelgesi=@41,HavalandirmaTesisatKontrolBelgeleri=@42,ParatonerKontrolBelgesi=@43,ElektrikTesisatKontrolBelgesi=@44,ElektrikTesisatTopraklamaBelgesi=@45,GovdeTopraklamaTesisatiKontrolBelgesi=@46,YanginSondurmeEkibiEgitim=@47,YscKontrolBelgesi=@48,KaldirmaAraciKontrolBelgesi=@49,OperatorlukBelgeleri=@50,kkdUygunlukBelgesi=@51,kkdZimmetBelgesi=@52,msdsFormlari=@53,KullanmaSuyuTahlilRaporu=@54,icmeSuyuTahlilRaporu=@55,hijyenTahlilleri=@56 WHERE id=@57";
+    db.Execute(UPDATE,OzlukDosyalari,CalisanSaglikRaporlari,PortorMuayenesi,KulakRadyografisi,GogusRadyografisi,Tetanoz,gozMuayene,agirissaglikraporu,KapasiteRaporu,calisanSayisi,agiriscalisansayisi,isletmeBelgesi,KurulDefteri,UzmanSozlesme,HekimSozlesme,TespitOneriDefteri,YillikCalismaPlani,YillikDegerlendirmeRaporu,KurulToplantiTutanaklari,Kurulisgegitimleri,KurulYillikCalismaPlani,KurulYillikCalismaRaporu,KurulYillikDegerlendirmeRaporu,RiskAnalizi,AcilEylemPlani,AcilDurumTatbikatPlani,AcilDurumEkipListesi,AcilDurumEkipEgitimleri,GurultuOlcum,TermalKonforOlcum,TozOlcum,AydinlatmaOlcum,TitresimOlcum,KimyasalCalisaniEgitimi,MeslekiEgitimBelge,ilkyardimEkibi,ilkYardimEkibiEgitimBelgeleri,talimatlar,basincliKapKontrolleri,KazanKontrolBelgeleri,KazanciEhliyeti,HavalandirmaSistemKontrolBelgesi,HavalandirmaTesisatKontrolBelgeleri,ParatonerKontrolBelgesi,ElektrikTesisatKontrolBelgesi,ElektrikTesisatTopraklamaBelgesi,GovdeTopraklamaTesisatiKontrolBelgesi,YanginSondurmeEkibiEgitim,YscKontrolBelgesi,KaldirmaAraciKontrolBelgesi,OperatorlukBelgeleri,kkdUygunlukBelgesi,kkdZimmetBelgesi,msdsFormlari,KullanmaSuyuTahlilRaporu,icmeSuyuTahlilRaporu,hijyenTahlilleri,id);
+    //db.Execute(UPDATE,taahhut,sgk,sozlesme,gorevtanimi,agirisraporu,meslekiegitim,talimat,kkd,isegirisegitim,gorevlendirme,sabikakaydi,ikametgah,nufus,sertifika,istifa,id);
+   
+    }
+}
+
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("fieldset").hide();
+        $(".duzenle").click(function () {
+            $("fieldset").show(1000);
+        });
+       
+  $("tr:even").css("background-color", "#BCF1ED");
+   $("tr:odd").css("background-color", "#FFFFFF");
+  });
+
+</script>
+@if (evrakID==null){
+    <H1>EVRAK LİSTESİ OLUŞTURULDU. SAYFAYI YENİLEYİN</H1>
+}else{
+<h1><a href="~/Member/edit?id=@id">@firma.name</a></h1>
+<h2>Gerekli Bilgi ve Evraklar</h2><br/>
+<table>
+    <tr>
+    <td style="width: 3%"></td><td style="width: 15%;"></td><td style="width: 25%;"><h3>Dokuman</h3> </td><td style="width: 25%;"><h3>Açıklama</h3></td><td style="width: 25%;"><h3>Tamamlandı mı?</h3></td>
+  </tr>
+  <tr>
+      <td style="width: 3%">1. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">İşçilerin Özlük Dosyaları</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.OzlukDosyalari</td><td></td>
+  </tr><tr>
+    <td style="width: 3%">2. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Çalışanların İşe Giriş Sağlık Raporları</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.CalisanSaglikRaporlari</td>
+  </tr><tr>
+    <td style="width: 3%">3. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Gıda Üzerine Çalışanların Portör vb. Muayeneleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.PortorMuayenesi</td>
+  </tr><tr>
+    <td style="width: 3%">4. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Gürültülü Ortamlarda Çalışanların Kulak Radyografileri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KulakRadyografisi</td>
+  </tr><tr>
+    <td style="width: 3%">5. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Tozlu / Kimyasal Ortamda Çalışanların Göğüs Radyografileri </td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.GogusRadyografisi</td>
+  </tr><tr>
+    <td style="width: 3%">6. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Metal Üzerine Çalışanların Tetanoz Aşıları</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.Tetanoz</td>
+  </tr><tr>
+    <td style="width: 3%">7. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Ekranlı Araçlarda Çalışanlara Ait Göz Muayene Raporları</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.gozMuayene</td>
+  </tr><tr>
+    <td style="width: 3%">8. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Ağır ve Tehlikeli İşlerde Çalışanların Sağlık Raporları</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.agirissaglikraporu</td>
+  </tr><tr>
+    <td style="width: 3%">9. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kapasite Raporu</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KapasiteRaporu</td>
+  </tr><tr>
+    <td style="width: 3%">10. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Çalışan Sayısı (Kadın ve Erkek Olarak)</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.calisanSayisi</td>
+  </tr><tr>
+    <td style="width: 3%">11. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Ağır ve Tehlikeli İşlerde Çalışan Sayısı (Kadın / Erkek)</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.agiriscalisansayisi</td>
+  </tr><tr>
+    <td style="width: 3%">12. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">İşletme Belgesi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.isletmeBelgesi</td>
+  </tr><tr>
+    <td style="width: 3%">13. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">İSG Kurul Defteri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KurulDefteri</td>
+  </tr><tr>
+    <td style="width: 3%">14. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">İSG Uzmanı Sözleşmesi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.UzmanSozlesme</td>
+  </tr><tr>
+    <td style="width: 3%">15. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">İşyeri Hekimi Sözleşmesi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.HekimSozlesme</td>
+  </tr>
+    <tr>
+    <td style="width: 3%">16. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Tespit ve Öneri Defteri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.TespitOneriDefteri</td>
+  </tr>
+    <tr>
+    <td style="width: 3%">17. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Yıllık Çalışma Planı</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.YillikCalismaPlani</td>
+  </tr>
+     <tr>
+    <td style="width: 3%">18. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Yıllık Değerlendirme Raporu</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.YillikDegerlendirmeRaporu</td>
+  </tr><tr>
+    <td style="width: 3%">19. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kurul Toplantı Tutanakları</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KurulToplantiTutanaklari</td>
+  </tr><tr>
+    <td style="width: 3%">20. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kurul Üyeleri İSG Eğitimleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.Kurulisgegitimleri</td>
+  </tr><tr>
+    <td style="width: 3%">21. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kurul Yıllık Çalışma Planı</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KurulYillikCalismaPlani</td>
+  </tr><tr>
+    <td style="width: 3%">22. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kurul Yıllık Çalışma Raporu</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KurulYillikCalismaRaporu</td>
+  </tr><tr>
+    <td style="width: 3%">23. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kurul Yıllık Değerlendirme Raporu</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KurulYillikDegerlendirmeRaporu</td>
+  </tr><tr>
+    <td style="width: 3%">24. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Risk Analizi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.RiskAnalizi</td>
+  </tr><tr>
+    <td style="width: 3%">25. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Acil Eylem Planı</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.AcilEylemPlani</td>
+  </tr><tr>
+    <td style="width: 3%">26. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Acil Durum Tatbikat Planı</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.AcilDurumTatbikatPlani</td>
+  </tr><tr>
+    <td style="width: 3%">27. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Acil Durum Ekiplerinin Listesi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.AcilDurumEkipListesi</td>
+  </tr><tr>
+    <td style="width: 3%">28. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Acil Durum Ekiplerinin Eğitimleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.AcilDurumEkipEgitimleri</td>
+  </tr><tr>
+    <td style="width: 3%">29. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Gürültü Ölçüm Raporu</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.GurultuOlcum</td>
+  </tr><tr>
+    <td style="width: 3%">30. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Termal Konfor Ölçüm Raporu</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.TermalKonforOlcum</td>
+  </tr><tr>
+    <td style="width: 3%">31. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Tozlu Ortam Ölçüm Raporu</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.TozOlcum</td>
+  </tr><tr>
+    <td style="width: 3%">32. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Aydınlatma Ölçüm Raporu</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.AydinlatmaOlcum</td>
+  </tr>
+    <tr>
+    <td style="width: 3%">33. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Titreşim Ölçüm Raporu</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.TitresimOlcum</td>
+  </tr>
+    <tr>
+    <td style="width: 3%">34. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kimyasallarla Çalışanların İSG Eğitim Belgeleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KimyasalCalisaniEgitimi</td>
+  </tr>
+     <tr>
+    <td style="width: 3%">35. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Çalışanların Mesleki Eğitim Belgeleri / Diplomaları</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.MeslekiEgitimBelge</td>
+  </tr><tr>
+    <td style="width: 3%">36. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">İlkyardım Ekibi Listesi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.ilkyardimEkibi</td>
+  </tr><tr>
+    <td style="width: 3%">37. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">İlkyardım Ekibi Eğitim Belgeleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.ilkYardimEkibiEgitimBelgeleri</td>
+  </tr><tr>
+    <td style="width: 3%">38. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">İş Talimatları ve Çalışanlara Verildiğine Dair Dokümanlar</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.talimatlar</td>
+  </tr><tr>
+    <td style="width: 3%">39. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Basınçlı Kapların Periyodik Kontrol Belgeleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.basincliKapKontrolleri</td>
+  </tr><tr>
+    <td style="width: 3%">40. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kazanların Kontrol Belgeleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KazanKontrolBelgeleri</td>
+  </tr><tr>
+    <td style="width: 3%">41. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kazan Dairesinde Çalışan Kazancı Ehliyeti</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KazanciEhliyeti</td>
+  </tr><tr>
+    <td style="width: 3%">42. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Havalandırma Sistemi Kontrol Belgesi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.HavalandirmaSistemKontrolBelgesi</td>
+  </tr><tr>
+    <td style="width: 3%">43. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Havalandırma Tesisatı Kontrol Belgesi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.HavalandirmaTesisatKontrolBelgeleri</td>
+  </tr><tr>
+    <td style="width: 3%">44. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Paratoner Kontrol Belgesi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.ParatonerKontrolBelgesi</td>
+  </tr><tr>
+    <td style="width: 3%">45. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Elektrik Tesisatı Kontrol Belgesi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.ElektrikTesisatKontrolBelgesi</td>
+  </tr><tr>
+    <td style="width: 3%">46. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Elektrik Topraklama Kontrol Belgesi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.ElektrikTesisatTopraklamaBelgesi</td>
+  </tr><tr>
+    <td style="width: 3%">47. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Gövde Topraklama Tesisatı Kontrol Belgesi</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.GovdeTopraklamaTesisatiKontrolBelgesi</td>
+  </tr><tr>
+    <td style="width: 3%">48. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Yangın Söndürme Ekibi Eğitim Belgeleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.YanginSondurmeEkibiEgitim</td>
+  </tr><tr>
+    <td style="width: 3%">49. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Seyyar YSC'larının Periyodik Kontol Belgeleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.YscKontrolBelgesi</td>
+  </tr>
+    <tr>
+    <td style="width: 3%">50. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kaldırma ve Taşıma Ekipmanları Kontrol Belgeleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KaldirmaAraciKontrolBelgesi</td>
+  </tr>
+    <tr>
+    <td style="width: 3%">51. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Operatörlük Belgeleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.OperatorlukBelgeleri</td>
+  </tr><tr>
+    <td style="width: 3%">52. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">KKD Uygunluk Belgeleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.kkdUygunlukBelgesi</td>
+  </tr>
+    <tr>
+    <td style="width: 3%">53. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">KKD Zimmet Belgeleri ve Tutanakları</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.kkdZimmetBelgesi</td>
+  </tr><tr>
+    <td style="width: 3%">54. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kimyasalların MSDS Formları</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.msdsFormlari</td>
+  </tr>
+    <tr>
+    <td style="width: 3%">55. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Kullanma Suyu Tahlil Raporları</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.KullanmaSuyuTahlilRaporu</td>
+  </tr><tr>
+    <td style="width: 3%">56. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">İçme Suyu Tahlil Raporları</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.icmeSuyuTahlilRaporu</td>
+  </tr>
+    <tr>
+    <td style="width: 3%">57. </td><td style="width: 15%;"><a href="~/Member/iletisimYazisi?id=@id">İletişim Yazısı Oluştur</a><br/><a href="~/Member/uyariYazisi?id=@id">Uyarı Yazısı Oluştur</a><br/><a href="~/Member/cezaYazisi?id=@id">Ceza Yazısı Oluştur</a></td><td style="width: 25%;">Hijyen Tahlilleri</td><td style="width: 25%;">Düzenli olarak kontrol edilir. Eksikliklerin ivedilikle giderilmesi gerekir.</td><td style="width: 25%;">@belgeler.hijyenTahlilleri</td>
+  </tr>
+    
+</table>
+
+
+if (!Roles.IsUserInRole(WebSecurity.CurrentUserName, "firmaYetkilisi")){ 
+    <input class="duzenle" type="button" value="Düzenle" name="duzenle"/>
+<fieldset id="belgeDuzenlemeBolumu">
+<form action="" method="post">
+<table>
+  <tr>
+    <td style="width: 25%;">İşçilerin Özlük Dosyaları</td><td style="width: 25%;"><input type="text" name="OzlukDosyalari" value="@belgeler.OzlukDosyalari" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Çalışanların İşe Giriş Sağlık Raporları</td><td style="width: 25%;"><input type="text" name="CalisanSaglikRaporlari" value="@belgeler.CalisanSaglikRaporlari" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Gıda Üzerine Çalışanların Portör vb. Muayeneleri</td><td style="width: 25%;"><input type="text" name="PortorMuayenesi" value="@belgeler.PortorMuayenesi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Gürültülü Ortamlarda Çalışanların Kulak Radyografileri</td><td style="width: 25%;"><input type="text" name="KulakRadyografisi" value="@belgeler.KulakRadyografisi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Tozlu / Kimyasal Ortamda Çalışanların Göğüs Radyografileri </td><td style="width: 25%;"><input type="text" name="GogusRadyografisi" value="@belgeler.GogusRadyografisi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Metal Üzerine Çalışanların Tetanoz Aşıları</td><td style="width: 25%;"><input type="text" name="Tetanoz" value="@belgeler.Tetanoz" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Ekranlı Araçlarda Çalışanlara Ait Göz Muayene Raporları</td><td style="width: 25%;"><input type="text" name="gozMuayene" value="@belgeler.gozMuayene" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Ağır ve Tehlikeli İşlerde Çalışanların Sağlık Raporları</td><td style="width: 25%;"><input type="text" name="agirissaglikraporu" value="@belgeler.agirissaglikraporu" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Kapasite Raporu</td><td style="width: 25%;"><input type="text" name="KapasiteRaporu" value="@belgeler.KapasiteRaporu" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Çalışan Sayısı (Kadın ve Erkek Olarak)</td><td style="width: 25%;"><input type="text" name="calisanSayisi" value="@belgeler.calisanSayisi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Ağır ve Tehlikeli İşlerde Çalışan Sayısı (Kadın / Erkek)</td><td style="width: 25%;"><input type="text" name="agiriscalisansayisi" value="@belgeler.agiriscalisansayisi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">İşletme Belgesi</td><td style="width: 25%;"><input type="text" name="isletmeBelgesi" value="@belgeler.isletmeBelgesi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">İSG Kurul Defteri</td><td style="width: 25%;"><input type="text" name="KurulDefteri" value="@belgeler.KurulDefteri" /></td>
+  </tr><tr>
+    <td style="width: 25%;">İSG Uzmanı Sözleşmesi</td><td style="width: 25%;"><input type="text" name="UzmanSozlesme" value="@belgeler.UzmanSozlesme" /></td>
+  </tr><tr>
+    <td style="width: 25%;">İşyeri Hekimi Sözleşmesi</td><td style="width: 25%;"><input type="text" name="HekimSozlesme" value="@belgeler.HekimSozlesme" /></td>
+  </tr>
+    <tr>
+    <td style="width: 25%;">Tespit ve Öneri Defteri</td><td style="width: 25%;"><input type="text" name="TespitOneriDefteri" value="@belgeler.TespitOneriDefteri" /></td>
+  </tr>
+    <tr>
+    <td style="width: 25%;">Yıllık Çalışma Planı</td><td style="width: 25%;"><input type="text" name="YillikCalismaPlani" value="@belgeler.YillikCalismaPlani" /></td>
+  </tr>
+     <tr>
+    <td style="width: 25%;">Yıllık Değerlendirme Raporu</td><td style="width: 25%;"><input type="text" name="YillikDegerlendirmeRaporu" value="@belgeler.YillikDegerlendirmeRaporu" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Kurul Toplantı Tutanakları</td><td style="width: 25%;"><input type="text" name="KurulToplantiTutanaklari" value="@belgeler.KurulToplantiTutanaklari" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Kurul Üyeleri İSG Eğitimleri</td><td style="width: 25%;"><input type="text" name="Kurulisgegitimleri" value="@belgeler.Kurulisgegitimleri" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Kurul Yıllık Çalışma Planı</td><td style="width: 25%;"><input type="text" name="KurulYillikCalismaPlani" value="@belgeler.KurulYillikCalismaPlani" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Kurul Yıllık Çalışma Raporu</td><td style="width: 25%;"><input type="text" name="KurulYillikCalismaRaporu" value="@belgeler.KurulYillikCalismaRaporu" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Kurul Yıllık Değerlendirme Raporu</td><td style="width: 25%;"><input type="text" name="KurulYillikDegerlendirmeRaporu" value="@belgeler.KurulYillikDegerlendirmeRaporu" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Risk Analizi</td><td style="width: 25%;"><input type="text" name="RiskAnalizi" value="@belgeler.RiskAnalizi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Acil Eylem Planı</td><td style="width: 25%;"><input type="text" name="AcilEylemPlani" value="@belgeler.AcilEylemPlani" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Acil Durum Tatbikat Planı</td><td style="width: 25%;"><input type="text" name="AcilDurumTatbikatPlani" value="@belgeler.AcilDurumTatbikatPlani" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Acil Durum Ekiplerinin Listesi</td><td style="width: 25%;"><input type="text" name="AcilDurumEkipListesi" value="@belgeler.AcilDurumEkipListesi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Acil Durum Ekiplerinin Eğitimleri</td><td style="width: 25%;"><input type="text" name="AcilDurumEkipEgitimleri" value="@belgeler.AcilDurumEkipEgitimleri" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Gürültü Ölçüm Raporu</td><td style="width: 25%;"><input type="text" name="GurultuOlcum" value="@belgeler.GurultuOlcum" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Termal Konfor Ölçüm Raporu</td><td style="width: 25%;"><input type="text" name="TermalKonforOlcum" value="@belgeler.TermalKonforOlcum" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Tozlu Ortam Ölçüm Raporu</td><td style="width: 25%;"><input type="text" name="TozOlcum" value="@belgeler.TozOlcum" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Aydınlatma Ölçüm Raporu</td><td style="width: 25%;"><input type="text" name="AydinlatmaOlcum" value="@belgeler.AydinlatmaOlcum" /></td>
+  </tr>
+    <tr>
+    <td style="width: 25%;">Titreşim Ölçüm Raporu</td><td style="width: 25%;"><input type="text" name="TitresimOlcum" value="@belgeler.TitresimOlcum" /></td>
+  </tr>
+    <tr>
+    <td style="width: 25%;">Kimyasallarla Çalışanların İSG Eğitim Belgeleri</td><td style="width: 25%;"><input type="text" name="KimyasalCalisaniEgitimi" value="@belgeler.KimyasalCalisaniEgitimi" /></td>
+  </tr>
+     <tr>
+    <td style="width: 25%;">Çalışanların Mesleki Eğitim Belgeleri / Diplomaları</td><td style="width: 25%;"><input type="text" name="MeslekiEgitimBelge" value="@belgeler.MeslekiEgitimBelge" /></td>
+  </tr><tr>
+    <td style="width: 25%;">İlkyardım Ekibi Listesi</td><td style="width: 25%;"><input type="text" name="ilkyardimEkibi" value="@belgeler.ilkyardimEkibi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">İlkyardım Ekibi Eğitim Belgeleri</td><td style="width: 25%;"><input type="text" name="ilkYardimEkibiEgitimBelgeleri" value="@belgeler.ilkYardimEkibiEgitimBelgeleri" /></td>
+  </tr><tr>
+    <td style="width: 25%;">İş Talimatları ve Çalışanlara Verildiğine Dair Dokümanlar</td><td style="width: 25%;"><input type="text" name="talimatlar" value="@belgeler.talimatlar" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Basınçlı Kapların Periyodik Kontrol Belgeleri</td><td style="width: 25%;"><input type="text" name="basincliKapKontrolleri" value="@belgeler.basincliKapKontrolleri" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Kazanların Kontrol Belgeleri</td><td style="width: 25%;"><input type="text" name="KazanKontrolBelgeleri" value="@belgeler.KazanKontrolBelgeleri" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Kazan Dairesinde Çalışan Kazancı Ehliyeti</td><td style="width: 25%;"><input type="text" name="KazanciEhliyeti" value="@belgeler.KazanciEhliyeti" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Havalandırma Sistemi Kontrol Belgesi</td><td style="width: 25%;"><input type="text" name="HavalandirmaSistemKontrolBelgesi" value="@belgeler.HavalandirmaSistemKontrolBelgesi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Havalandırma Tesisatı Kontrol Belgesi</td><td style="width: 25%;"><input type="text" name="HavalandirmaTesisatKontrolBelgeleri" value="@belgeler.HavalandirmaTesisatKontrolBelgeleri" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Paratoner Kontrol Belgesi</td><td style="width: 25%;"><input type="text" name="ParatonerKontrolBelgesi" value="@belgeler.ParatonerKontrolBelgesi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Elektrik Tesisatı Kontrol Belgesi</td><td style="width: 25%;"><input type="text" name="ElektrikTesisatKontrolBelgesi" value="@belgeler.ElektrikTesisatKontrolBelgesi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Elektrik Topraklama Kontrol Belgesi</td><td style="width: 25%;"><input type="text" name="ElektrikTesisatTopraklamaBelgesi" value="@belgeler.ElektrikTesisatTopraklamaBelgesi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Gövde Topraklama Tesisatı Kontrol Belgesi</td><td style="width: 25%;"><input type="text" name="GovdeTopraklamaTesisatiKontrolBelgesi" value="@belgeler.GovdeTopraklamaTesisatiKontrolBelgesi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Yangın Söndürme Ekibi Eğitim Belgeleri</td><td style="width: 25%;"><input type="text" name="YanginSondurmeEkibiEgitim" value="@belgeler.YanginSondurmeEkibiEgitim" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Seyyar YSC'larının Periyodik Kontol Belgeleri</td><td style="width: 25%;"><input type="text" name="YscKontrolBelgesi" value="@belgeler.YscKontrolBelgesi" /></td>
+  </tr>
+    <tr>
+    <td style="width: 25%;">Kaldırma ve Taşıma Ekipmanları Kontrol Belgeleri</td><td style="width: 25%;"><input type="text" name="KaldirmaAraciKontrolBelgesi" value="@belgeler.KaldirmaAraciKontrolBelgesi" /></td>
+  </tr>
+    <tr>
+    <td style="width: 25%;">Operatörlük Belgeleri</td><td style="width: 25%;"><input type="text" name="OperatorlukBelgeleri" value="@belgeler.OperatorlukBelgeleri" /></td>
+  </tr><tr>
+    <td style="width: 25%;">KKD Uygunluk Belgeleri</td><td style="width: 25%;"><input type="text" name="kkdUygunlukBelgesi" value="@belgeler.kkdUygunlukBelgesi" /></td>
+  </tr>
+    <tr>
+    <td style="width: 25%;">KKD Zimmet Belgeleri ve Tutanakları</td><td style="width: 25%;"><input type="text" name="kkdZimmetBelgesi" value="@belgeler.kkdZimmetBelgesi" /></td>
+  </tr><tr>
+    <td style="width: 25%;">Kimyasalların MSDS Formları</td><td style="width: 25%;"><input type="text" name="msdsFormlari" value="@belgeler.msdsFormlari" /></td>
+  </tr>
+    <tr>
+    <td style="width: 25%;">Kullanma Suyu Tahlil Raporları</td><td style="width: 25%;"><input type="text" name="KullanmaSuyuTahlilRaporu" value="@belgeler.KullanmaSuyuTahlilRaporu" /></td>
+  </tr><tr>
+    <td style="width: 25%;">İçme Suyu Tahlil Raporları</td><td style="width: 25%;"><input type="text" name="icmeSuyuTahlilRaporu" value="@belgeler.icmeSuyuTahlilRaporu" /></td>
+  </tr>
+    <tr>
+    <td style="width: 25%;">Hijyen Tahlilleri</td><td style="width: 25%;"><input type="text" name="hijyenTahlilleri" value="@belgeler.hijyenTahlilleri" /></td>
+  </tr>
+    
+</table>
+    <input type="submit" value="Güncelle" />
+</form>
+    </fieldset>
+}
+
+}

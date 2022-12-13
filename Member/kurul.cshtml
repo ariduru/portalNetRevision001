@@ -1,0 +1,325 @@
+﻿@{
+    var id=Request["id"];
+    var sec="SELECT * FROM firmalar WHERE id=@0";
+    var kurulidsec="SELECT id FROM KurulOlusumu WHERE firmaID=@0";
+    var db=Database.Open("OsgbPortal");
+    var kurulid=db.QuerySingle(kurulidsec,id);
+    var kurul=db.QuerySingle("SELECT * FROM KurulOlusumu WHERE firmaID=@0",id);
+    var firmam=db.QuerySingle(sec,id);
+    var firmaAdi=firmam.name;
+
+    if (IsPost){
+        var tarih=Request["tarih"];
+        var baskan=Request["baskan"];
+        var sekreter=Request["sekreter"];
+        var hekim=Request["hekim"];
+        var ik=Request["ik"];
+        var idari=Request["idari"];
+        var sivilsavunma=Request["sivilsavunma"];
+        var formen=Request["formen"];
+        var calisantemsilcisi=Request["calisantemsilcisi"];
+
+        var ekle="INSERT INTO KurulOlusumu (firmaID,KurulBaskani,KurulSekreteri,isyeriHekimi,ikSorumlusu,idariSorumlu,SivilSavunmaUzmani,Formen,CalisanTemsilcisi,OlusturulmaTarihi) VALUES (@0,@1,@2,@3,@4,@5,@6,@7,@8,@9)";
+        db.Execute(ekle,id,baskan,sekreter,hekim,ik,idari,sivilsavunma,formen,calisantemsilcisi,tarih);
+    }
+
+
+
+}
+
+<h1><a href="~/Member/edit?id=@id">@firmaAdi</a></h1>
+<br/>
+<div class="kurullarHkYonetmelik" id="kurullarHkYonetmelik">
+<p>Resmi Gazete Tarihi: 18.01.2013 Resmi Gazete Sayısı: 28532<br />
+&nbsp;</p>
+
+<div>
+<p align="center"><strong>İŞ</strong><strong>&nbsp;SA</strong><strong>Ğ</strong><strong>LI</strong><strong>Ğ</strong><strong>I VE G</strong><strong>&Uuml;</strong><strong>VENL</strong><strong>İĞİ</strong><strong>&nbsp;KURULLARI HAKKINDA Y</strong><strong>&Ouml;</strong><strong>NETMEL</strong><strong>İ</strong><strong>K</strong></p>
+
+<p align="center">&nbsp;</p>
+
+<p align="center"><strong>B</strong><strong>İ</strong><strong>R</strong><strong>İ</strong><strong>NC</strong><strong>İ</strong><strong>&nbsp;B</strong><strong>&Ouml;</strong><strong>L</strong><strong>&Uuml;</strong><strong>M</strong></p>
+
+<p align="center"><strong>Ama</strong><strong>&ccedil;</strong><strong>, Kapsam, Dayanak ve Tan</strong><strong>ı</strong><strong>mlar</strong></p>
+
+<p><strong>Ama</strong><strong>&ccedil;</strong></p>
+
+<p><strong>MADDE 1&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) Bu Y&ouml;netmeliğin amacı, iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği ile ilgili&nbsp;&ccedil;alışmalarda bulunmak&nbsp;&uuml;zere iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği kurullarının hangi işyerlerinde kurulacağı&nbsp;ve bu kurulların oluşumu, g&ouml;rev ve yetkileri,&nbsp;&ccedil;alışma usul ve esasları&nbsp;ile birden&nbsp;&ccedil;ok kurul bulunması&nbsp;halinde kurullar arasında koordinasyon ve işbirliği y&ouml;ntemlerini belirlemektir.</p>
+
+<p><strong>Kapsam</strong></p>
+
+<p><strong>MADDE 2&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) Bu Y&ouml;netmelik, 20/6/2012 tarihli ve 6331 sayılı&nbsp;İş&nbsp;Sağlığı&nbsp;ve G&uuml;venliği Kanunu kapsamına giren, elli ve daha fazla&ccedil;alışanın bulunduğu ve altı&nbsp;aydan fazla s&uuml;ren s&uuml;rekli işlerin yapıldığı&nbsp;işyerlerini kapsar.</p>
+
+<p><strong>Dayanak ve tan</strong><strong>ı</strong><strong>mlar</strong></p>
+
+<p><strong>MADDE 3&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) Bu Y&ouml;netmelik, 6331 sayılı&nbsp;İş&nbsp;Sağlığı&nbsp;ve G&uuml;venliği Kanununun 22 ve 30 uncu maddelerine g&ouml;re d&uuml;zenlenmiştir.</p>
+
+<p>(2) Bu Y&ouml;netmeliğin uygulanması&nbsp;bakımından&nbsp;&ccedil;alışan, işveren, kurul ve&nbsp;&ccedil;alışan temsilcisi ve benzeri kavramlar 6331 sayılı&nbsp;İş&nbsp;Sağlığı&nbsp;ve G&uuml;venliği Kanununda tanımlandığı&nbsp;gibidir.</p>
+
+<p align="center"><strong>İ</strong><strong>K</strong><strong>İ</strong><strong>NC</strong><strong>İ</strong><strong>&nbsp;B</strong><strong>&Ouml;</strong><strong>L</strong><strong>&Uuml;</strong><strong>M</strong></p>
+
+<p align="center"><strong>Genel H</strong><strong>&uuml;</strong><strong>k</strong><strong>&uuml;</strong><strong>mler</strong></p>
+
+<p><strong>İş</strong><strong>verenin y</strong><strong>&uuml;</strong><strong>k</strong><strong>&uuml;</strong><strong>ml</strong><strong>&uuml;</strong><strong>l</strong><strong>&uuml;ğ&uuml;</strong></p>
+
+<p><strong>MADDE 4&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) Elli ve daha fazla&nbsp;&ccedil;alışanın bulunduğu ve altı&nbsp;aydan fazla s&uuml;ren s&uuml;rekli işlerin yapıldığı&nbsp;işyerlerinde işveren, iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği ile ilgili&nbsp;&ccedil;alışmalarda bulunmak&nbsp;&uuml;zere kurul oluşturur.</p>
+
+<p>(2) Altı&nbsp;aydan fazla s&uuml;ren asıl işveren-alt işveren ilişkisinin bulunduğu hallerde;</p>
+
+<p>a) Asıl işveren alt işverenin&nbsp;&ccedil;alışan sayıları&nbsp;ayrı&nbsp;ayrı&nbsp;elli ve daha fazla ise asıl işveren ve alt işveren ayrı&nbsp;ayrı&nbsp;kurul kurar.&nbsp;İş&nbsp;sağlığı&nbsp;ve g&uuml;venliği faaliyetlerinin y&uuml;r&uuml;t&uuml;lmesi ve kurullarca alınan kararların uygulanması&nbsp;konusunda işbirliği ve koordinasyon asıl işverence sağlanır.</p>
+
+<p>b) Bir işyerinde sadece asıl işverenin&nbsp;&ccedil;alışan sayısı&nbsp;elli ve daha fazla ise bu durumda kurul asıl işverence kurulur. Kurul oluşturma y&uuml;k&uuml;ml&uuml;l&uuml;ğ&uuml;&nbsp;bulunmayan alt işveren, kurul tarafından alınan kararların uygulanması&nbsp;ile ilgili olarak koordinasyonu sağlamak&nbsp;&uuml;zere vek&acirc;leten yetkili bir temsilci atar.</p>
+
+<p>c) Alt işverenin&nbsp;&ccedil;alışan sayısı&nbsp;elli ve daha fazla, asıl işverenin&nbsp;&ccedil;alışan sayısı&nbsp;ellinin altında ise işyerinde kurul alt işverence oluşturulur. Asıl işveren alt işverenin oluşturduğu kurula işbirliği ve koordinasyonu sağlamak&nbsp;&uuml;zere vek&acirc;leten yetkili bir temsilci atar.</p>
+
+<p>&ccedil;) Asıl işveren ve alt işverenin&nbsp;&ccedil;alışan sayıları&nbsp;ayrı&nbsp;ayrı&nbsp;ellinin altında ve toplam&nbsp;&ccedil;alışan sayısı&nbsp;elliden fazla bulunduğu durumlarda ise koordinasyon asıl işverence yapılmak kaydıyla, asıl işveren ve alt işveren tarafından birlikte bir kurul oluşturulur. Kurulun oluşumunda&nbsp;&uuml;yeler 6 ncı&nbsp;maddeye g&ouml;re her iki işverenin ortak kararı&nbsp;ile atanır.</p>
+
+<p>(3) Asıl işveren alt işveren ilişkisi bulunmayan ve aynı&nbsp;&ccedil;alışma alanında birden fazla işverenin bulunması&nbsp;ve bu işverenlerce birden fazla kurulun oluşturulması&nbsp;h&acirc;linde işverenler, birbirlerinin&nbsp;&ccedil;alışmalarını&nbsp;etkileyebilecek kurul kararları&nbsp;hakkında diğer işverenleri bilgilendirir.</p>
+
+<p>(4)&nbsp;İşverenler, iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği mevzuatına uygun kurul kararlarını&nbsp;uygular.</p>
+
+<p><strong>Kurulun kurulaca</strong><strong>ğı</strong><strong>&nbsp;di</strong><strong>ğ</strong><strong>er i</strong><strong>ş</strong><strong>yerleri</strong></p>
+
+<p><strong>MADDE 5&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1)&nbsp;İşverene bağlı, fabrika, m&uuml;essese, işletme veya işletmeler grubu gibi birden&nbsp;&ccedil;ok işyeri bulunduğu hallerde elli ve daha fazla&ccedil;alışanın bulunduğu her bir işyerinde ayrı&nbsp;ayrı&nbsp;kurul kurulur.</p>
+
+<p>(2) Birinci fıkrada belirtilen durumlarda ihtiya&ccedil;&nbsp;duyulması&nbsp;halinde kurullar arasında koordinasyon ve bilgi alış&nbsp;verişi işverence sağlanır.İşveren, birden&nbsp;&ccedil;ok işyerinin her birinde kurulacak kurulların&nbsp;&ccedil;alışma usullerini d&uuml;zenlemek, iş&nbsp;ve g&ouml;r&uuml;ş&nbsp;birliğini sağlamak amacıyla bu işyerlerine ait iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği ile ilgili raporların, en az&nbsp;&uuml;&ccedil;&nbsp;ayda bir, ilgili teknik eleman ve uzmanlarca incelenmesini sağlar. Ayrıca bu raporları&nbsp;g&ouml;z&ouml;n&uuml;nde tutarak alınması&nbsp;gereken tedbirleri tespit eder ve uygulanmasını&nbsp;sağlar.</p>
+
+<p><strong>Kurulun olu</strong><strong>ş</strong><strong>umu</strong></p>
+
+<p><strong>MADDE 6&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) Kurul aşağıda belirtilen kişilerden oluşur:</p>
+
+<p>a)&nbsp;İşveren veya işveren vekili,</p>
+
+<p>b)&nbsp;İş&nbsp;g&uuml;venliği uzmanı,</p>
+
+<p>c)&nbsp;İşyeri hekimi,</p>
+
+<p>&ccedil;)&nbsp;İnsan kaynakları, personel, sosyal işler veya idari ve mali işleri y&uuml;r&uuml;tmekle g&ouml;revli bir kişi,</p>
+
+<p>d) Bulunması&nbsp;halinde sivil savunma uzmanı,</p>
+
+<p>e) Bulunması&nbsp;halinde formen, ustabaşı&nbsp;veya usta,</p>
+
+<p>f)&nbsp;&Ccedil;alışan temsilcisi, işyerinde birden&nbsp;&ccedil;ok&nbsp;&ccedil;alışan temsilcisi olması&nbsp;halinde baş&nbsp;temsilci.</p>
+
+<p>(2) Kurulun başkanı&nbsp;işveren veya işveren vekili, kurulun sekreteri ise iş&nbsp;g&uuml;venliği uzmanıdır.&nbsp;İş&nbsp;g&uuml;venliği uzmanının tam zamanlı&nbsp;&ccedil;alışma zorunluluğu olmayan işyerlerinde ise kurul sekretaryası; insan kaynakları, personel, sosyal işler veya idari ve mali işleri y&uuml;r&uuml;tmekle g&ouml;revli bir kişi tarafından y&uuml;r&uuml;t&uuml;l&uuml;r.</p>
+
+<p>(3) Bu maddenin birinci fıkrasının (b), (c), (&ccedil;) ve (d) bentlerinde g&ouml;sterilen&nbsp;&uuml;yeler işveren veya işveren vekili tarafından atanırlar.</p>
+
+<p>(4) Birden fazla iş&nbsp;g&uuml;venliği uzmanı&nbsp;ve işyeri hekiminin bulunduğu işyerlerinde işveren tarafından g&ouml;revlendirme yapılır.&nbsp;İş&nbsp;g&uuml;venliği uzmanının g&ouml;revlendirilmesinde o işyerinin tehlike sınıfına uygun uzmanlar arasından birisi g&ouml;revlendirilir.</p>
+
+<p>(5) Bu maddenin birinci fıkrasının (e) bendinde belirtilen&nbsp;&uuml;ye o işyerindeki formen, ustabaşı&nbsp;veya ustaların yarıdan fazlasının katılacağıtoplantıda a&ccedil;ık oyla se&ccedil;ilir. Se&ccedil;imle belirlenememesi halinde işveren tarafından atanır.</p>
+
+<p>(6) Bu maddenin birinci fıkrasının (e) ve (f) bentlerinde s&ouml;z&uuml;&nbsp;ge&ccedil;en kurul&nbsp;&uuml;yelerinin aynı&nbsp;usullerle yedekleri se&ccedil;ilir.</p>
+
+<p>(7) 4&nbsp;&uuml;nc&uuml;&nbsp;maddenin ikinci fıkrasının (&ccedil;) bendine g&ouml;re kurulacak kurullarda&nbsp;&uuml;yeler ve kurul sekreteri asıl işveren ve alt işveren tarafından ortak kararla atanır.</p>
+
+<p><strong>E</strong><strong>ğ</strong><strong>itim</strong></p>
+
+<p><strong>MADDE 7&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1)&nbsp;İşveren tarafından, kurulun&nbsp;&uuml;yelerine ve yedeklerine iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği konularında eğitim verilmesi sağlanır. Kurul&uuml;yelerinin ve yedeklerinin eğitimleri asgari aşağıdaki konuları&nbsp;kapsar;</p>
+
+<p>a) Kurulun g&ouml;rev ve yetkileri,</p>
+
+<p>b)&nbsp;İş&nbsp;sağlığı&nbsp;ve g&uuml;venliği konularında ulusal mevzuat ve standartlar,</p>
+
+<p>c) Sık&ccedil;a rastlanan iş&nbsp;kazaları&nbsp;ve tehlikeli vakaların nedenleri,</p>
+
+<p>&ccedil;)&nbsp;İş&nbsp;hijyeninin temel ilkeleri,</p>
+
+<p>d)&nbsp;İletişim teknikleri,</p>
+
+<p>e) Acil durum&nbsp;&ouml;nlemleri,</p>
+
+<p>f) Meslek hastalıkları,</p>
+
+<p>g)&nbsp;İşyerlerine ait&nbsp;&ouml;zel riskler,</p>
+
+<p>ğ) Risk değerlendirmesi.</p>
+
+<p>(2) Asıl işveren alt işveren ilişkilerinde ortak kurul oluşumunda eğitimden her iki işveren birlikte sorumludur.</p>
+
+<p><strong>G</strong><strong>&ouml;</strong><strong>rev ve yetkiler</strong></p>
+
+<p><strong>MADDE 8&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) Kurulun g&ouml;rev ve yetkileri&nbsp;şunlardır;</p>
+
+<p>a)&nbsp;İşyerinin niteliğine uygun bir iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği i&ccedil;&nbsp;y&ouml;nerge taslağı&nbsp;hazırlamak, işverenin veya işveren vekilinin onayına sunmak ve y&ouml;nergenin uygulanmasını&nbsp;izlemek, izleme sonu&ccedil;larını&nbsp;rapor haline getirip alınması&nbsp;gereken tedbirleri belirlemek ve kurul g&uuml;ndemine almak,</p>
+
+<p>b)&nbsp;İş&nbsp;sağlığı&nbsp;ve g&uuml;venliği konularında o işyerinde&nbsp;&ccedil;alışanlara yol g&ouml;stermek,</p>
+
+<p>c)&nbsp;İşyerinde iş&nbsp;sağlığı&nbsp;ve g&uuml;venliğine ilişkin tehlikeleri ve&nbsp;&ouml;nlemleri değerlendirmek, tedbirleri belirlemek, işveren veya işveren vekiline bildirimde bulunmak,</p>
+
+<p>&ccedil;)&nbsp;İşyerinde meydana gelen her iş&nbsp;kazası&nbsp;ve işyerinde meydana gelen ancak iş&nbsp;kazası&nbsp;olarak değerlendirilmeyen işyeri ya da iş&nbsp;ekipmanının zarara uğratma potansiyeli olan olayları&nbsp;veya meslek hastalığında yahut iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği ile ilgili bir tehlike halinde gerekli araştırma ve incelemeyi yapmak, alınması&nbsp;gereken tedbirleri bir raporla tespit ederek işveren veya işveren vekiline vermek,</p>
+
+<p>d)&nbsp;İşyerinde iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği eğitim ve&nbsp;&ouml;ğretimini planlamak, bu konu ve kurallarla ilgili programları&nbsp;hazırlamak, işveren veya işveren vekilinin onayına sunmak ve bu programların uygulanmasını&nbsp;izlemek ve eksiklik g&ouml;r&uuml;lmesi halinde geri bildirimde bulunmak,</p>
+
+<p>e)&nbsp;İşyerinde yapılacak bakım ve onarım&nbsp;&ccedil;alışmalarında gerekli g&uuml;venlik tedbirlerini planlamak ve bu tedbirlerin uygulamalarını&nbsp;kontrol etmek,</p>
+
+<p>f)&nbsp;İşyerinde yangın, doğal afet, sabotaj ve benzeri tehlikeler i&ccedil;in alınan tedbirlerin yeterliliğini ve ekiplerin&nbsp;&ccedil;alışmalarını&nbsp;izlemek,</p>
+
+<p>g)&nbsp;İşyerinin iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği durumuyla ilgili yıllık bir rapor hazırlamak, o yılki&nbsp;&ccedil;alışmaları&nbsp;değerlendirmek, elde edilen tecr&uuml;beye g&ouml;re ertesi yılın&nbsp;&ccedil;alışma programında yer alacak hususları&nbsp;değerlendirerek belirlemek ve işverene teklifte bulunmak,</p>
+
+<p>ğ) 6331 sayılı&nbsp;İş&nbsp;Sağlığı&nbsp;ve G&uuml;venliği Kanununun 13&nbsp;&uuml;nc&uuml;&nbsp;maddesinde belirtilen&nbsp;&ccedil;alışmaktan ka&ccedil;ınma hakkı&nbsp;talepleri ile ilgili acilen toplanarak karar vermek,</p>
+
+<p>h)&nbsp;İşyerinde teknoloji, iş&nbsp;organizasyonu,&nbsp;&ccedil;alışma&nbsp;şartları, sosyal ilişkiler ve&nbsp;&ccedil;alışma ortamı&nbsp;ile ilgili fakt&ouml;rlerin etkilerini kapsayan tutarlı&nbsp;ve genel bir&nbsp;&ouml;nleme politikası&nbsp;geliştirmeye y&ouml;nelik&nbsp;&ccedil;alışmalar yapmak.</p>
+
+<p>(2) Kurul&nbsp;&uuml;yeleri bu Y&ouml;netmelikle kendilerine verilen g&ouml;revleri yapmalarından dolayı&nbsp;hakları&nbsp;kısıtlanamaz, k&ouml;t&uuml;&nbsp;davranış&nbsp;ve muameleye maruz kalamazlar.</p>
+
+<p><strong>&Ccedil;</strong><strong>al</strong><strong>ış</strong><strong>ma usulleri</strong></p>
+
+<p><strong>MADDE 9&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) Kurul inceleme, izleme ve uyarmayı&nbsp;&ouml;ng&ouml;ren bir d&uuml;zen i&ccedil;inde ve aşağıdaki esasları&nbsp;g&ouml;z&nbsp;&ouml;n&uuml;nde bulundurarak&nbsp;&ccedil;alışır.</p>
+
+<p>a) Kurullar ayda en az bir kere toplanır. Ancak kurul, işyerinin tehlike sınıfını&nbsp;dikkate alarak, tehlikeli işyerlerinde bu s&uuml;renin iki ay, az tehlikeli işyerlerinde ise&nbsp;&uuml;&ccedil;&nbsp;ay olarak belirlenmesine karar verebilir.</p>
+
+<p>b) Toplantının g&uuml;ndemi, yeri, g&uuml;n&uuml;&nbsp;ve saati toplantıdan en az kırk sekiz saat&nbsp;&ouml;nce kurul&nbsp;&uuml;yelerine bildirilir. G&uuml;ndem, sorunların ve varsa işsağlığı&nbsp;ve g&uuml;venliğine ilişkin projelerin&nbsp;&ouml;nem sırasına g&ouml;re belirlenir. Kurul&nbsp;&uuml;yeleri g&uuml;ndemde değişiklik isteyebilirler. Bu istek kurulca uygun g&ouml;r&uuml;ld&uuml;ğ&uuml;nde g&uuml;ndem buna g&ouml;re değiştirilir.</p>
+
+<p>c)&nbsp;&Ouml;l&uuml;ml&uuml;, uzuv kayıplı&nbsp;veya ağır iş&nbsp;kazası&nbsp;halleri veya&nbsp;&ouml;zel bir tedbiri gerektiren&nbsp;&ouml;nemli hallerde kurul&nbsp;&uuml;yelerinden herhangi biri kurulu olağan&uuml;st&uuml;&nbsp;toplantıya&nbsp;&ccedil;ağırabilir. Bu konudaki tekliflerin kurul başkanına veya sekreterine yapılması&nbsp;gerekir. Toplantı&nbsp;zamanı, konunun ivedilik ve&nbsp;&ouml;nemine g&ouml;re tespit olunur.</p>
+
+<p>&ccedil;) Kurul toplantılarının g&uuml;nl&uuml;k&nbsp;&ccedil;alışma saatleri i&ccedil;inde yapılması&nbsp;asıldır. Kurulun toplantılarında ge&ccedil;ecek s&uuml;reler g&uuml;nl&uuml;k&nbsp;&ccedil;alışma s&uuml;resinden sayılır.</p>
+
+<p>d) Kurul,&nbsp;&uuml;ye tam sayısının salt&nbsp;&ccedil;oğunluğu ile işveren veya işveren vekili başkanlığında toplanır ve katılanların salt&nbsp;&ccedil;oğunluğu ile karar alır.&Ccedil;ekimser oy kullanılamaz. Oyların eşitliği halinde başkanın oyu kararı&nbsp;belirler.&nbsp;&Ccedil;oğunluğun sağlanamadığı&nbsp;veya başka bir nedenle toplantının yapılmadığı&nbsp;hallerde durumu belirten bir tutanak d&uuml;zenlenir.</p>
+
+<p>e) Her toplantıda, g&ouml;r&uuml;ş&uuml;len konularla ilgili alınan kararları&nbsp;i&ccedil;eren bir tutanak d&uuml;zenlenir. Tutanak, toplantıya katılan başkan ve&nbsp;&uuml;yeler tarafından imzalanır.&nbsp;İmza altına alınan kararlar herhangi bir işleme gerek kalmaksızın işverene bildirilmiş&nbsp;sayılır.&nbsp;İmzalı&nbsp;tutanak ve kararlar sırasıyla&nbsp;&ouml;zel dosyasında saklanır.</p>
+
+<p>f) Toplantıda alınan kararlar gereği yapılmak&nbsp;&uuml;zere ilgililere duyurulur. Ayrıca&nbsp;&ccedil;alışanlara duyurulması&nbsp;faydalı&nbsp;g&ouml;r&uuml;len konular işyerinde il&acirc;n edilir.</p>
+
+<p>g) Her toplantıda,&nbsp;&ouml;nceki toplantıya ilişkin kararlar ve bunlarla ilgili uygulamalar hakkında başkan veya kurulun sekreteri tarafından kurula gerekli bilgi verilir ve g&uuml;ndeme ge&ccedil;ilir.</p>
+
+<p>(2) Kurulca işyerinde il&acirc;n edilen kararlar işverenleri ve&nbsp;&ccedil;alışanları&nbsp;bağlar.</p>
+
+<p>(3) Kurul, 6331 sayılı&nbsp;İş&nbsp;Sağlığı&nbsp;ve G&uuml;venliği Kanununun 13&nbsp;&uuml;nc&uuml;&nbsp;maddesinde belirtilen&nbsp;&ccedil;alışmaktan ka&ccedil;ınma hakkı&nbsp;taleplerinde birinci fıkranın (a) bendine g&ouml;re belirlenen s&uuml;re dikkate alınmaksızın acilen toplanır. Toplantıda alınan karar&nbsp;&ccedil;alışan ve&nbsp;&ccedil;alışan temsilcisine yazılı&nbsp;olarak tebliğ&nbsp;edilir.</p>
+
+<p><strong>İş</strong><strong>verenin veya i</strong><strong>ş</strong><strong>veren vekilinin kurula ili</strong><strong>ş</strong><strong>kin genel y</strong><strong>&uuml;</strong><strong>k</strong><strong>&uuml;</strong><strong>ml</strong><strong>&uuml;</strong><strong>l</strong><strong>&uuml;ğ&uuml;</strong></p>
+
+<p><strong>MADDE 10&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1)&nbsp;İşveren veya işveren vekili, kurul i&ccedil;in gerekli toplantı&nbsp;yeri, ara&ccedil;&nbsp;ve gere&ccedil;leri sağlar.</p>
+
+<p>(2)&nbsp;İşveren veya işveren vekili, kurulca hazırlanan toplantı&nbsp;tutanaklarını, kaza ve diğer vakaların inceleme raporlarını&nbsp;ve kurulca işyerinde yapılan denetim sonu&ccedil;larına ait kurul raporlarını, iş&nbsp;m&uuml;fettişlerinin incelemesini sağlamak amacıyla, işyerinde bulundurur.</p>
+
+<p><strong>Kurulun y</strong><strong>&uuml;</strong><strong>k</strong><strong>&uuml;</strong><strong>ml</strong><strong>&uuml;</strong><strong>l</strong><strong>&uuml;ğ&uuml;</strong></p>
+
+<p><strong>MADDE 11&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) Kurullar, yapacakları&nbsp;tekliflerde, bulunacakları&nbsp;tavsiyelerde ve verecekleri kararlarda işyerinin durumunu ve işverenin olanaklarını&nbsp;g&ouml;z&nbsp;&ouml;n&uuml;nde bulundururlar.</p>
+
+<p>(2) Kurul&nbsp;&uuml;yeleri, g&ouml;revleri nedeniyle işyerlerinin yapım ve&nbsp;&uuml;retim teknikleri, ticari sırları&nbsp;ve ekonomik durumları&nbsp;hakkında g&ouml;rd&uuml;kleri ve&ouml;ğrendiklerini gizli tutmak zorundadırlar.</p>
+
+<p>(3) Kurullar, iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği y&ouml;n&uuml;nden teftiş&nbsp;yapmaya yetkili Bakanlık iş&nbsp;m&uuml;fettişlerine işyerlerinde yapacakları&nbsp;teftiş&nbsp;ve incelemelerde kolaylık sağlamak ve yardımcı&nbsp;olmakla y&uuml;k&uuml;ml&uuml;d&uuml;r.</p>
+
+<p><strong>&Ccedil;</strong><strong>al</strong><strong>ış</strong><strong>anlar</strong><strong>ı</strong><strong>n y</strong><strong>&uuml;</strong><strong>k</strong><strong>&uuml;</strong><strong>ml</strong><strong>&uuml;</strong><strong>l</strong><strong>&uuml;ğ&uuml;</strong></p>
+
+<p><strong>MADDE 12&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1)&nbsp;&Ccedil;alışanlar sağlık ve g&uuml;venliğin korunması&nbsp;ve geliştirilmesi amacıyla iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği kurullarınca konulan kurallar, yasaklar ile alınan karar ve tedbirlere uymak zorundadırlar.</p>
+
+<p>(2)&nbsp;İşyerinde iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği tedbirlerinin belirlenmesi, uygulanması&nbsp;ve alınan tedbirlere uyulması&nbsp;hususunda&nbsp;&ccedil;alışanlar kurullarla işbirliği yaparlar.</p>
+
+<p>(3) Kurullar tarafından alınan kararlar veya uygulamada karşılaştıkları&nbsp;g&uuml;&ccedil;l&uuml;kler hakkında&nbsp;&ccedil;alışanlar&nbsp;&ccedil;alışan temsilcileri aracılığı&nbsp;ile kurula bilgi verirler.</p>
+
+<p align="center"><strong>&Uuml;&Ccedil;&Uuml;</strong><strong>NC</strong><strong>&Uuml;</strong><strong>&nbsp;B</strong><strong>&Ouml;</strong><strong>L</strong><strong>&Uuml;</strong><strong>M</strong></p>
+
+<p align="center"><strong>Son H</strong><strong>&uuml;</strong><strong>k</strong><strong>&uuml;</strong><strong>mler</strong></p>
+
+<p><strong>Y</strong><strong>&uuml;</strong><strong>r</strong><strong>&uuml;</strong><strong>rl</strong><strong>&uuml;</strong><strong>kten kald</strong><strong>ı</strong><strong>r</strong><strong>ı</strong><strong>lan mevzuat</strong></p>
+
+<p><strong>MADDE 13&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) 7/4/2004 tarihli ve 25426 sayılı&nbsp;Resm&icirc;&nbsp;Gazete&rsquo;de yayımlanan&nbsp;İş&nbsp;Sağlığı&nbsp;ve G&uuml;venliği Kurulları&nbsp;Hakkında Y&ouml;netmelik y&uuml;r&uuml;rl&uuml;kten kaldırılmıştır.</p>
+
+<p><strong>Ge</strong><strong>&ccedil;</strong><strong>i</strong><strong>ş</strong><strong>&nbsp;h</strong><strong>&uuml;</strong><strong>km</strong><strong>&uuml;</strong></p>
+
+<p><strong>GE</strong><strong>&Ccedil;İ</strong><strong>C</strong><strong>İ</strong><strong>&nbsp;MADDE 1&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) 6 ncı&nbsp;madde uyarınca oluşturulacak kurulda, mezk&ucirc;r maddenin birinci fıkrasının (b) ve (c) bentlerinde sayılanların bulundurulma zorunluluğu Kanunun 38 inci maddesinde belirtilen s&uuml;relere uygun olarak aranır.</p>
+
+<p>(2) Bu Y&ouml;netmeliğin yayımı&nbsp;tarihinden&nbsp;&ouml;nce işyerlerinde oluşturulmuş&nbsp;olan iş&nbsp;sağlığı&nbsp;ve g&uuml;venliği kurullarınca alınan kararların ge&ccedil;erliliği devam eder.</p>
+
+<p><strong>Y</strong><strong>&uuml;</strong><strong>r</strong><strong>&uuml;</strong><strong>rl</strong><strong>&uuml;</strong><strong>k</strong></p>
+
+<p><strong>MADDE 14&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) Bu Y&ouml;netmelik yayımı&nbsp;tarihinde y&uuml;r&uuml;rl&uuml;ğe girer.</p>
+
+<p><strong>Y</strong><strong>&uuml;</strong><strong>r</strong><strong>&uuml;</strong><strong>tme</strong></p>
+
+<p><strong>MADDE 15&nbsp;</strong><strong>&ndash;</strong>&nbsp;(1) Bu Y&ouml;netmelik h&uuml;k&uuml;mlerini&nbsp;&Ccedil;alışma ve Sosyal G&uuml;venlik Bakanı&nbsp;y&uuml;r&uuml;t&uuml;r.</p>
+
+<p>&nbsp;</p>
+</div>
+</div>
+<table><tr><td><h2>İş Sağlığı ve Güvenliği Kurulu</h2></td><td><a href="#" id="kurulYonetmelik" class="yonetmelikbuton" style="margin-left: 100px;">İş Sağlığı ve Güvenliği Kurulları Hk. Yönetmelik.</a></td></tr></table>
+<br/>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#kurullarHkYonetmelik").hide();
+        $("#kurulKararlari").hide();
+        $("#kurulTutanaklari").hide();
+        $("#kurulUyeleri").show();
+        $(".openKurul").click(function () {
+            $("#kurulKararlari").hide();
+            $("#kurulTutanaklari").hide();
+            $("#kurulUyeleri").toggle(500);
+        });
+        $(".openKarar").click(function () {
+            $("#kurulTutanaklari").hide();
+            $("#kurulUyeleri").hide();
+            $("#kurulKararlari").toggle(500);
+        });
+        $(".openTutanak").click(function () {
+            $("#kurulKararlari").hide();
+            $("#kurulUyeleri").hide();
+            $("#kurulTutanaklari").toggle(500);
+        });
+        $("#kurullarHkYonetmelik").dialog({
+            autoOpen: false,
+            maxWidth: 800,
+            maxHeight: 500,
+            width: 800,
+            height: 500,
+            modal: true,
+            buttons: {
+                Kapat: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#kurulYonetmelik").click(function(){
+            $("#kurullarHkYonetmelik").dialog("open");
+        });
+
+    });
+
+   </script>
+<input type="button" class="openKurul" name="kurul" value="Kurul Oluşumu" />
+<input type="button" class="openKarar" name="kararlar" value="Kurul Kararları" />
+<input type="button" class="openTutanak" name="tutanaklar" value="Kurul Tutanakları" />
+<div id="kurul">
+    @if(kurulid==null){
+        <div id="kurulUyeleri">
+        <br/><h2>Kurul Oluşumu</h2><br/>
+            <form id="kurulOlusumuForm" method="post">
+    <table>
+        <tr><td>Tarih :</td><td><input type="date" name="tarih" /></td> </tr>
+    <tr><td>Kurul Başkanı :</td><td><input type="text" name="baskan" /></td> </tr>
+    <tr><td>Kurul Sekreteri :</td><td><input type="text" name="sekreter"  /></td> </tr>
+    <tr><td>İşyeri Hekimi :</td><td><input type="text" name="hekim"  /></td> </tr>
+    <tr><td>İnsan Kaynakları :</td><td><input type="text" name="ik"  /></td> </tr>
+    <tr><td>İdari Birim :</td><td><input type="text" name="idari"  /></td> </tr>
+    <tr><td>Sivil Savunma Uzmanı :</td><td><input type="text" name="sivilsavunma"  /></td> </tr>
+    <tr><td>Formen :</td><td><input type="text" name="formen"  /></td> </tr>
+    <tr><td>Çalışan Temsilcisi :</td><td><input type="text" name="calisantemsilcisi"  /></td> </tr>
+    </table>
+                <input type="submit" value="Kaydet" />
+                </form>
+    </div>
+    }else{
+    <div id="kurulUyeleri">
+        <br/><h2>Kurul Oluşumu</h2><br/>
+    <table><thead>Kurul Oluşturulma Tarihi : @kurul.OlusturulmaTarihi</thead>
+    <tr><td>Kurul Başkanı :</td><td>@kurul.Kurulbaskani</td> </tr>
+    <tr><td>Kurul Sekreteri :</td><td>@kurul.KurulSekreteri</td> </tr>
+    <tr><td>İşyeri Hekimi :</td><td>@kurul.isyeriHekimi</td> </tr>
+    <tr><td>İnsan Kaynakları :</td><td>@kurul.ikSorumlusu</td> </tr>
+    <tr><td>İdari Birim :</td><td>@kurul.idariSorumlu</td> </tr>
+    <tr><td>Sivil Savunma Uzmanı :</td><td>@kurul.SivilSavunmaUzmani</td> </tr>
+    <tr><td>Formen :</td><td>@kurul.Formen</td> </tr>
+    <tr><td>Çalışan Temsilcisi :</td><td>@kurul.CalisanTemsilcisi</td> </tr>
+    </table>
+    </div>
+}
+    <div id="kurulKararlari">
+    <br/><h2>Kurul Kararları</h2><br/>
+    </div>
+    <div id="kurulTutanaklari">
+     <br/><h2>Kurul Tutanakları</h2><br/>
+    </div>
+    
+</div>

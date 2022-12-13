@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Personel Yönetimi";
+    
+    string[] userNames = new string[1];
+    string[] firmNames = new string[1];
+    var db = Database.Open("OsgbPortal");
+    var queryStringUser = "SELECT UserId, email,name,surname FROM UserProfiles WHERE onay=@0";
+    var queryStringFirm = "SELECT * FROM firmalar";
+ var kullanicilar= db.Query(queryStringUser,"true");
+ var firmalar=db.Query(queryStringFirm);
+ if (IsPost){
+     userNames[0]=Request["selectUserName"];
+     firmNames[0]=Request["selectFirm"];
+     var queryUserSec="SELECT * FROM UserProfiles WHERE email=@0";
+     var queryFirmaSec="SELECT * FROM firmalar WHERE name=@0";
+     var firma=db.QuerySingle(queryFirmaSec,firmNames[0]);
+     var user=db.QuerySingle(queryUserSec,userNames[0]);
+     var isgUzman=user.name+" "+user.surname;
+     var UserIdEkle = "UPDATE firmalar SET UserId=@0, isgUzman=@1 WHERE id=@2";
+     db.Execute(UserIdEkle, user.UserId, isgUzman, firma.id);
+      
+ }
+ 
+}
+
+<hgroup class="title">
+    <h1>@Page.Title.</h1><br/>
+    <h2>Personele sorumlu olacakları firmaları atamak için formu kullanın.</h2>
+</hgroup>
+
+<form method="post">
+        <label for="selectUserName">Kullanıcılar:</label>
+          <select name="selectUserName">
+            @foreach(var row in kullanicilar) {
+              <option>@row.email</option>
+            }
+          </select>
+    <label for="selectFirm">Firmalar:</label>
+          <select name="selectFirm">
+            @foreach(var row in firmalar) {
+              <option>@row.name</option>
+            }
+          </select>
+    <input type="submit" value="Onayla" />
+      </form>
